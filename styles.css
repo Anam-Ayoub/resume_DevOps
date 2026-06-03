@@ -1,0 +1,160 @@
+/* Base variables matching the project requirements */
+:root {
+    --bg-color: #faf6ee; /* Warm off-white / parchment */
+    --text-primary: #222222; /* Deep soft black */
+    --accent-secondary: #4a3525; /* Rich walnut brown */
+    --accent-highlight: #a62626; /* Striking terracotta / crimson */
+    
+    --font-stack-headings: "Newsreader", "Georgia", serif;
+    --font-stack-body: "Google Sans", sans-serif;
+    --font-size-body: 1.2rem;
+    --line-height-body: 1.65;
+}
+
+/* Global Reset & Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: var(--font-stack-body);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+    padding: 2rem 1rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Layout */
+.content-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-stack-headings);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+    line-height: 1.2;
+    text-align: center;
+    color: var(--accent-secondary);
+    margin-bottom: 1.5rem;
+}
+
+h2 {
+    font-size: 1.8rem;
+    border-bottom: 2px solid var(--accent-secondary);
+    padding-bottom: 0.3rem;
+}
+
+h3 {
+    font-size: 1.4rem;
+    color: var(--accent-secondary);
+}
+
+p {
+    margin-bottom: 1.5rem;
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+}
+
+strong {
+    font-weight: 700;
+}
+
+em {
+    font-style: italic;
+}
+
+/* Blockquotes */
+blockquote {
+    border-left: 4px solid var(--accent-highlight);
+    background: rgba(166, 38, 38, 0.05); /* Very subtle tint of highlight color */
+    padding: 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: var(--accent-secondary);
+    border-radius: 0 4px 4px 0;
+}
+
+blockquote strong {
+    color: var(--accent-highlight);
+}
+
+/* Lists */
+ul, ol {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+}
+
+li {
+    margin-bottom: 0.5rem;
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+}
+
+/* Tables */
+.table-container {
+    overflow-x: auto;
+    margin: 2rem 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+    background-color: #fdfbf7; /* Slightly brighter off-white for table */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(74, 53, 37, 0.2);
+}
+
+th {
+    background-color: var(--accent-secondary);
+    color: var(--bg-color);
+    font-weight: 600;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Dividers */
+hr.section-divider {
+    border: 0;
+    height: 1px;
+    background: radial-gradient(circle, var(--accent-secondary) 0%, transparent 100%);
+    margin: 3rem 0;
+    opacity: 0.5;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .content-wrapper {
+        padding: 1rem;
+    }
+    h1 {
+        font-size: 2rem;
+    }
+    body {
+        font-size: 1.15rem; /* slightly smaller on mobile */
+    }
+}
