@@ -1782,6 +1782,23 @@ docker build --target builder -t monapp:build .
 </code></pre>
 <hr class="section-divider">
     <h2 id="sub-20">5.6 Réseaux Docker</h2>
+    <p>Le réseau Docker permet aux conteneurs de communiquer entre eux de manière sécurisée et isolée, ou d'être exposés vers l'extérieur. Par défaut, Docker gère un résolveur DNS interne, permettant aux conteneurs situés sur le même réseau personnalisé de se "trouver" via leur nom (ex: <code>ping ma-base-de-donnees</code>).</p>
+    
+    <div style="display: flex; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 250px; background: rgba(69, 123, 157, 0.05); padding: 1rem; border-left: 3px solid #457b9d; border-radius: 0 4px 4px 0;">
+            <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: #457b9d;">Bridge (Pont)</h5>
+            <p style="font-size: 0.95rem; margin-bottom: 0;">Le réseau par défaut. Isole les conteneurs du réseau de la machine hôte, mais leur permet de communiquer entre eux s'ils partagent le même <em>bridge</em>.</p>
+        </div>
+        <div style="flex: 1; min-width: 250px; background: rgba(166, 38, 38, 0.05); padding: 1rem; border-left: 3px solid #a62626; border-radius: 0 4px 4px 0;">
+            <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: #a62626;">Host (Hôte)</h5>
+            <p style="font-size: 0.95rem; margin-bottom: 0;">Supprime l'isolation. Le conteneur ne possède pas sa propre adresse IP et partage directement l'interface réseau du serveur physique.</p>
+        </div>
+        <div style="flex: 1; min-width: 250px; background: rgba(42, 157, 143, 0.05); padding: 1rem; border-left: 3px solid #2a9d8f; border-radius: 0 4px 4px 0;">
+            <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: #2a9d8f;">Overlay (Superposé)</h5>
+            <p style="font-size: 0.95rem; margin-bottom: 0;">Connecte de manière transparente des conteneurs qui sont répartis sur plusieurs machines physiques différentes (Swarm, K8s).</p>
+        </div>
+    </div>
+
     <h4>Listing 5.7 – Gestion des réseaux Docker</h4>
 <pre><code class="language-bash"># Lister les réseaux
 docker network ls
