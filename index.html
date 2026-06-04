@@ -1160,6 +1160,65 @@ env:
     <h2>5.1 Introduction</h2>
     <blockquote><strong>Conteneur :</strong> unité d'exécution légère et isolée qui regroupe une application et toutes ses dépendances (bibliothèques, configuration, code) dans un environnement standardisé et portable.</blockquote>
     <p><strong>Docker</strong> est la plateforme de conteneurisation la plus utilisée. Elle repose sur les fonctionnalités du noyau Linux : <em>namespaces</em> (isolation) et <em>cgroups</em> (limitation des ressources).</p>
+
+    <svg viewBox="0 0 700 320" style="width: 100%; max-width: 700px; height: auto; margin: 3rem auto 2rem; display: block; font-family: 'Adwaita Sans', 'Google Sans', sans-serif;">
+        <!-- Déploiement Classique -->
+        <text x="175" y="30" font-size="18" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Déploiement Classique</text>
+        
+        <!-- Apps -->
+        <rect x="50" y="50" width="115" height="40" rx="4" fill="#457b9d" />
+        <text x="107" y="75" font-size="14" fill="#fdfbf7" text-anchor="middle" font-weight="bold">App A</text>
+        
+        <rect x="185" y="50" width="115" height="40" rx="4" fill="#457b9d" />
+        <text x="242" y="75" font-size="14" fill="#fdfbf7" text-anchor="middle" font-weight="bold">App B</text>
+        
+        <!-- Shared Libs -->
+        <rect x="50" y="100" width="250" height="40" rx="4" fill="#a62626" opacity="0.8" />
+        <text x="175" y="125" font-size="14" fill="#fdfbf7" text-anchor="middle" font-weight="bold">Dépendances Partagées</text>
+        
+        <!-- OS -->
+        <rect x="50" y="150" width="250" height="60" rx="4" fill="#5c4a3c" />
+        <text x="175" y="185" font-size="16" fill="#fdfbf7" text-anchor="middle" font-weight="bold">Système d'Exploitation</text>
+        
+        <!-- Infra -->
+        <rect x="50" y="220" width="250" height="70" rx="4" fill="#4a3525" />
+        <text x="175" y="260" font-size="16" fill="#fdfbf7" text-anchor="middle" font-weight="bold">Infrastructure / Serveur</text>
+        
+        <!-- Déploiement Docker -->
+        <text x="525" y="30" font-size="18" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Déploiement Docker</text>
+        
+        <!-- Container A Box -->
+        <rect x="400" y="40" width="115" height="100" rx="4" fill="rgba(166, 38, 38, 0.05)" stroke="#a62626" stroke-width="2" stroke-dasharray="4 4" />
+        <text x="457" y="132" font-size="12" fill="#a62626" text-anchor="middle" font-style="italic" font-weight="bold">Conteneur A</text>
+        
+        <rect x="410" y="50" width="95" height="35" rx="4" fill="#457b9d" />
+        <text x="457" y="72" font-size="14" fill="#fdfbf7" text-anchor="middle" font-weight="bold">App A</text>
+        
+        <rect x="410" y="90" width="95" height="25" rx="4" fill="#a62626" opacity="0.8" />
+        <text x="457" y="107" font-size="12" fill="#fdfbf7" text-anchor="middle" font-weight="bold">Libs A</text>
+        
+        <!-- Container B Box -->
+        <rect x="535" y="40" width="115" height="100" rx="4" fill="rgba(166, 38, 38, 0.05)" stroke="#a62626" stroke-width="2" stroke-dasharray="4 4" />
+        <text x="592" y="132" font-size="12" fill="#a62626" text-anchor="middle" font-style="italic" font-weight="bold">Conteneur B</text>
+        
+        <rect x="545" y="50" width="95" height="35" rx="4" fill="#457b9d" />
+        <text x="592" y="72" font-size="14" fill="#fdfbf7" text-anchor="middle" font-weight="bold">App B</text>
+        
+        <rect x="545" y="90" width="95" height="25" rx="4" fill="#a62626" opacity="0.8" />
+        <text x="592" y="107" font-size="12" fill="#fdfbf7" text-anchor="middle" font-weight="bold">Libs B</text>
+        
+        <!-- Docker Engine -->
+        <rect x="400" y="150" width="250" height="60" rx="4" fill="#a62626" />
+        <text x="525" y="185" font-size="16" fill="#fdfbf7" text-anchor="middle" font-weight="bold">Moteur Docker (Engine)</text>
+        
+        <!-- OS -->
+        <rect x="400" y="220" width="250" height="30" rx="4" fill="#5c4a3c" />
+        <text x="525" y="240" font-size="14" fill="#fdfbf7" text-anchor="middle" font-weight="bold">Système d'Expl. (OS)</text>
+        
+        <!-- Infra -->
+        <rect x="400" y="260" width="250" height="30" rx="4" fill="#4a3525" />
+        <text x="525" y="280" font-size="14" fill="#fdfbf7" text-anchor="middle" font-weight="bold">Infrastructure</text>
+    </svg>
 <hr class="section-divider">
     <h2>5.2 Installation de Docker</h2>
     <h4>Listing 5.1 – Installation de Docker sur Ubuntu</h4>
