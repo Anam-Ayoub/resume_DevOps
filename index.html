@@ -270,6 +270,7 @@ git diff --staged</code></pre>
             <hr class="section-divider">
 
             <h3>2.3.5 Gestion des Branches</h3>
+            <blockquote><strong>Branche (Branch) :</strong> Une ligne de développement indépendante. Elle permet de travailler sur de nouvelles fonctionnalités ou de corriger des bugs de manière isolée sans affecter la ligne principale du projet (généralement nommée <code>main</code>).</blockquote>
             <h4>Listing 2.7 – Gestion des branches</h4>
             <pre><code class="language-bash"># Lister les branches locales
 git branch
@@ -302,6 +303,7 @@ git push origin --delete feature/ma-fonctionnalite</code></pre>
             <hr class="section-divider">
 
             <h3>2.3.6 Fusion et Rebase</h3>
+            <blockquote><strong>Fusion (Merge) :</strong> L'action d'intégrer l'historique et les modifications d'une branche dans une autre. Par exemple, après avoir terminé une tâche sur une branche de travail, vous la fusionnez dans la branche principale pour assembler le code.</blockquote>
             <h4>Listing 2.8 – Fusion de branches</h4>
             <pre><code class="language-bash"># Fusionner une branche dans la branche courante
 git merge feature/ma-fonctionnalite
@@ -326,6 +328,7 @@ git cherry-pick &lt;hash-commit&gt;</code></pre>
             <hr class="section-divider">
 
             <h3>2.3.7 Interaction avec le Dépôt Distant</h3>
+            <blockquote><strong>Dépôt Distant (Remote) :</strong> Une version de votre projet hébergée sur Internet ou un réseau (par exemple, sur <strong>GitHub</strong>, GitLab ou Bitbucket). Il sert de point de synchronisation central permettant à plusieurs développeurs de collaborer sur le même code.</blockquote>
             <h4>Listing 2.9 – Commandes distantes (remote)</h4>
             <pre><code class="language-bash"># Afficher les dépôts distants
 git remote -v
@@ -407,6 +410,7 @@ git stash clear</code></pre>
             <hr class="section-divider">
 
             <h3>2.3.9 Étiquettes (Tags)</h3>
+            <blockquote><strong>Tag :</strong> Un marqueur immuable rattaché à un commit spécifique. Les tags sont généralement utilisés pour marquer les versions de publication d'un logiciel (par exemple, <code>v1.0.0</code>, <code>v2.1.3</code>).</blockquote>
             <h4>Listing 2.11 – Gestion des tags</h4>
             <pre><code class="language-bash"># Créer un tag léger
 git tag v1.0.0
