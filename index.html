@@ -12,13 +12,65 @@
         <nav class="toc">
             <h2>Sommaire</h2>
             <ul id="toc-list">
-                <li><a href="#chap-1">Chapitre 1 — Introduction et Culture DevOps</a></li>
-                <li><a href="#chap-2">Chapitre 2 — Gestion de Versions et Collaboration avec Git</a></li>
-                <li><a href="#chap-3">Chapitre 3 : Intégration Continue (CI)</a></li>
-                <li><a href="#chap-4">Chapitre 4 — Livraison et Déploiement Continu (CD)</a></li>
-                <li><a href="#chap-5">Chapitre 5 — Conteneurisation avec Docker</a></li>
-                <li><a href="#chap-6">Chapitre 6 — Orchestration avec Kubernetes</a></li>
-                <li><a href="#chap-7">Chapitre 7 — Infrastructure as Code</a></li>
+                <li><a href="#chap-1" class="toc-h1">Chapitre 1 — Introduction et Culture DevOps</a>
+                <ul class="toc-sublist">
+                    <li><a href="#sub-1" class="toc-h2">1.1 Historique et Contexte</a></li>
+                    <li><a href="#sub-2" class="toc-h2">1.2 Définition et Philosophie</a></li>
+                    <li><a href="#sub-3" class="toc-h2">1.3 Le Cycle de Vie DevOps (CALMS)</a></li>
+                    <li><a href="#sub-4" class="toc-h2">1.4 Le Pipeline DevOps</a></li>
+                    <li><a href="#sub-5" class="toc-h2">1.5 Avantages du DevOps</a></li>
+                </ul>
+                </li>
+                <li><a href="#chap-2" class="toc-h1">Chapitre 2 — Gestion de Versions et Collaboration avec Git</a>
+                <ul class="toc-sublist">
+                    <li><a href="#sub-6" class="toc-h2">2.1 Introduction à Git</a></li>
+                    <li><a href="#sub-7" class="toc-h2">2.2 Installation et Configuration initiale</a></li>
+                    <li><a href="#sub-8" class="toc-h2">2.3 Commandes Fondamentales</a></li>
+                    <li><a href="#sub-9" class="toc-h2">2.4 Stratégies de Branchement</a></li>
+                    <li><a href="#sub-10" class="toc-h2">2.5 Fichier .gitignore</a></li>
+                </ul>
+                </li>
+                <li><a href="#chap-3" class="toc-h1">Chapitre 3 : Intégration Continue (CI)</a>
+                <ul class="toc-sublist">
+                    <li><a href="#sub-11" class="toc-h2">3.1 Définition et Principes</a></li>
+                    <li><a href="#sub-12" class="toc-h2">3.2 Jenkins</a></li>
+                </ul>
+                </li>
+                <li><a href="#chap-4" class="toc-h1">Chapitre 4 — Livraison et Déploiement Continu (CD)</a>
+                <ul class="toc-sublist">
+                    <li><a href="#sub-13" class="toc-h2">4.1 Définitions</a></li>
+                    <li><a href="#sub-14" class="toc-h2">4.2 Stratégies de Déploiement</a></li>
+                </ul>
+                </li>
+                <li><a href="#chap-5" class="toc-h1">Chapitre 5 — Conteneurisation avec Docker</a>
+                <ul class="toc-sublist">
+                    <li><a href="#sub-15" class="toc-h2">5.1 Introduction</a></li>
+                    <li><a href="#sub-16" class="toc-h2">5.2 Installation de Docker</a></li>
+                    <li><a href="#sub-17" class="toc-h2">5.3 Gestion des Images</a></li>
+                    <li><a href="#sub-18" class="toc-h2">5.4 Gestion des Conteneurs</a></li>
+                    <li><a href="#sub-19" class="toc-h2">5.5 Le Dockerfile</a></li>
+                    <li><a href="#sub-20" class="toc-h2">5.6 Réseaux Docker</a></li>
+                    <li><a href="#sub-21" class="toc-h2">5.7 Volumes Docker</a></li>
+                    <li><a href="#sub-22" class="toc-h2">5.8 Docker Compose</a></li>
+                </ul>
+                </li>
+                <li><a href="#chap-6" class="toc-h1">Chapitre 6 — Orchestration avec Kubernetes</a>
+                <ul class="toc-sublist">
+                    <li><a href="#sub-23" class="toc-h2">6.1 Introduction</a></li>
+                    <li><a href="#sub-24" class="toc-h2">6.2 Architecture de Kubernetes</a></li>
+                    <li><a href="#sub-25" class="toc-h2">6.3 Installation et Configuration (kubectl)</a></li>
+                    <li><a href="#sub-26" class="toc-h2">6.4 Ressources Fondamentales</a></li>
+                    <li><a href="#sub-27" class="toc-h2">6.5 Commandes Générales kubectl</a></li>
+                    <li><a href="#sub-28" class="toc-h2">6.6 Helm – Gestionnaire de Paquets Kubernetes</a></li>
+                </ul>
+                </li>
+                <li><a href="#chap-7" class="toc-h1">Chapitre 7 — Infrastructure as Code</a>
+                <ul class="toc-sublist">
+                    <li><a href="#sub-29" class="toc-h2">7.1 Introduction</a></li>
+                    <li><a href="#sub-30" class="toc-h2">7.2 Terraform</a></li>
+                    <li><a href="#sub-31" class="toc-h2">7.3 Ansible</a></li>
+                </ul>
+                </li>
             </ul>
         </nav>
         <article class="content-wrapper">
@@ -28,14 +80,14 @@
         </header>
 
         <section>
-            <h2>1.1 Historique et Contexte</h2>
+            <h2 id="sub-1">1.1 Historique et Contexte</h2>
             <p>Le terme <strong>DevOps</strong> est une contraction de <em>Development</em> (développement) et <em>Operations</em> (exploitation). Il désigne un ensemble de pratiques, de méthodes et d'outils visant à améliorer la collaboration entre les équipes de développement logiciel et les équipes d'exploitation informatique.</p>
             <p>Avant DevOps, les organisations travaillaient en <strong>silos</strong> : les développeurs écrivaient du code et le transmettaient aux équipes opérationnelles qui se chargeaient de le déployer et de le maintenir en production. Cette approche générait de nombreux problèmes : conflits de responsabilité, délais de mise en production longs, instabilité des systèmes.</p>
             <hr class="section-divider">
         </section>
 
         <section>
-            <h2>1.2 Définition et Philosophie</h2>
+            <h2 id="sub-2">1.2 Définition et Philosophie</h2>
             <blockquote>
                 <strong>Définition :</strong> DevOps est une approche culturelle, organisationnelle et technique qui vise à unifier le développement logiciel (Dev) et l'administration des systèmes informatiques (Ops) afin de livrer des applications de manière <strong>continue</strong>, <strong>fiable</strong> et <strong>rapide</strong>.
             </blockquote>
@@ -50,7 +102,7 @@
         </section>
 
         <section>
-            <h2>1.3 Le Cycle de Vie DevOps (CALMS)</h2>
+            <h2 id="sub-3">1.3 Le Cycle de Vie DevOps (CALMS)</h2>
             <p>Le modèle <strong>CALMS</strong> résume les valeurs fondamentales du DevOps :</p>
             
             <div class="table-container">
@@ -89,7 +141,7 @@
         </section>
 
         <section>
-            <h2>1.4 Le Pipeline DevOps</h2>
+            <h2 id="sub-4">1.4 Le Pipeline DevOps</h2>
             <p>Le cycle de vie DevOps comprend les phases suivantes :</p>
             <ol>
                 <li><strong>Plan</strong> : définition des besoins et des objectifs.</li>
@@ -105,7 +157,7 @@
         </section>
 
         <section>
-            <h2>1.5 Avantages du DevOps</h2>
+            <h2 id="sub-5">1.5 Avantages du DevOps</h2>
             <ul>
                 <li>Réduction du délai de mise sur le marché (<em>time-to-market</em>).</li>
                 <li>Amélioration de la qualité logicielle.</li>
@@ -124,7 +176,7 @@
         </section>
 
         <section>
-            <h2>2.1 Introduction à Git</h2>
+            <h2 id="sub-6">2.1 Introduction à Git</h2>
             <p><strong>Git</strong> est un système de gestion de versions <em>distribué</em> créé par Linus Torvalds en 2005. Il permet de suivre les modifications du code source, de collaborer efficacement et de gérer plusieurs versions d'un projet simultanément.</p>
             <blockquote>
                 <strong>Dépôt (Repository) :</strong> répertoire versionné contenant l'ensemble du code source et l'historique complet des modifications.
@@ -133,7 +185,7 @@
         </section>
 
         <section>
-            <h2>2.2 Installation et Configuration initiale</h2>
+            <h2 id="sub-7">2.2 Installation et Configuration initiale</h2>
             <h4>Listing 2.1 – Installation de Git</h4>
             <pre><code class="language-bash"># Debian / Ubuntu
 sudo apt-get update && sudo apt-get install -y git
@@ -166,7 +218,7 @@ git config user.name</code></pre>
         </section>
 
         <section>
-            <h2>2.3 Commandes Fondamentales</h2>
+            <h2 id="sub-8">2.3 Commandes Fondamentales</h2>
             
             <h3>2.3.1 Initialisation et Clonage</h3>
             <h4>Listing 2.3 – Initialisation et clonage d'un dépôt</h4>
@@ -509,7 +561,7 @@ git push origin --delete v1.0.0</code></pre>
         </section>
 
         <section>
-            <h2>2.4 Stratégies de Branchement</h2>
+            <h2 id="sub-9">2.4 Stratégies de Branchement</h2>
             
             <h3>2.4.1 Git Flow</h3>
             <p>Git Flow est une stratégie de branchement populaire définissant un modèle strict de branches :</p>
@@ -611,7 +663,7 @@ git flow hotfix finish correction-critique</code></pre>
         </section>
 
         <section>
-            <h2>2.5 Fichier .gitignore</h2>
+            <h2 id="sub-10">2.5 Fichier .gitignore</h2>
             <p>Le fichier <code>.gitignore</code> liste les fichiers et répertoires que Git doit ignorer (fichiers de compilation, secrets, dépendances, fichiers d'IDE, etc.).</p>
             
             <h4>Listing 2.13 – Exemple de fichier .gitignore</h4>
@@ -658,7 +710,7 @@ git add -f fichier.log</code></pre>
         </section>
 
         <section>
-            <h2>3.1 Définition et Principes</h2>
+            <h2 id="sub-11">3.1 Définition et Principes</h2>
             <blockquote>
                 L'<strong>Intégration Continue</strong> (<em>Continuous Integration</em> ou <strong>CI</strong>) est une pratique de développement logicielle qui consiste à intégrer fréquemment les modifications de code au sein d'un dépôt partagé unique. Chaque intégration déclenche automatiquement une suite de <em>builds</em> et de tests afin de détecter et de corriger au plus tôt les régressions.
             </blockquote>
@@ -688,7 +740,7 @@ git add -f fichier.log</code></pre>
         </section>
 
         <section>
-            <h2>3.2 Jenkins</h2>
+            <h2 id="sub-12">3.2 Jenkins</h2>
             
             <h3>3.2.1 Présentation</h3>
             <blockquote>
@@ -1106,7 +1158,7 @@ env:
         </section>
 
         <section>
-            <h2>4.1 Définitions</h2>
+            <h2 id="sub-13">4.1 Définitions</h2>
             <blockquote>
                 <strong>Livraison Continue (Continuous Delivery) :</strong> extension de la CI qui garantit que le code peut être déployé en production à tout moment, après <strong>validation manuelle</strong>.
             </blockquote>
@@ -1117,7 +1169,7 @@ env:
         </section>
 
         <section>
-            <h2>4.2 Stratégies de Déploiement</h2>
+            <h2 id="sub-14">4.2 Stratégies de Déploiement</h2>
             
             <h3>4.2.1 Blue-Green Deployment</h3>
             <p>Deux environnements de production totalement identiques et isolés coexistent : l'environnement <strong>Blue</strong> (qui héberge la version actuelle en direct) et l'environnement <strong>Green</strong> (qui héberge la nouvelle version).</p>
@@ -1157,7 +1209,7 @@ env:
         <h1 id="chap-5" style="display: flex; align-items: center; gap: 15px;"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="logo" style="height: 48px; width: auto;" /> Chapitre 5 — Conteneurisation avec Docker</h1>
     </header>
 <hr class="section-divider">
-    <h2>5.1 Introduction</h2>
+    <h2 id="sub-15">5.1 Introduction</h2>
     <blockquote><strong>Conteneur :</strong> unité d'exécution légère et isolée qui regroupe une application et toutes ses dépendances (bibliothèques, configuration, code) dans un environnement standardisé et portable.</blockquote>
     <p><strong>Docker</strong> est la plateforme de conteneurisation la plus utilisée. Elle repose sur les fonctionnalités du noyau Linux : <em>namespaces</em> (isolation) et <em>cgroups</em> (limitation des ressources).</p>
 
@@ -1220,7 +1272,7 @@ env:
         <text x="525" y="280" font-size="14" fill="#fdfbf7" text-anchor="middle" font-weight="bold">Infrastructure</text>
     </svg>
 <hr class="section-divider">
-    <h2>5.2 Installation de Docker</h2>
+    <h2 id="sub-16">5.2 Installation de Docker</h2>
     <h4>Listing 5.1 – Installation de Docker sur Ubuntu</h4>
 <pre><code class="language-bash"># Supprimer les anciennes versions
 sudo apt-get remove -y docker docker-engine docker.io containerd runc
@@ -1268,7 +1320,7 @@ sudo usermod -aG docker $USER
 newgrp docker
 </code></pre>
 <hr class="section-divider">
-    <h2>5.3 Gestion des Images</h2>
+    <h2 id="sub-17">5.3 Gestion des Images</h2>
     <h4>Listing 5.2 – Commandes de gestion des images Docker</h4>
 <pre><code class="language-bash"># Rechercher une image sur Docker Hub
 docker search ubuntu
@@ -1320,7 +1372,7 @@ docker export mon-conteneur -o conteneur.tar
 docker import conteneur.tar mon-image:importee
 </code></pre>
 <hr class="section-divider">
-    <h2>5.4 Gestion des Conteneurs</h2>
+    <h2 id="sub-18">5.4 Gestion des Conteneurs</h2>
     <h4>Listing 5.3 – Commandes de gestion des conteneurs</h4>
 <pre><code class="language-bash"># Créer et démarrer un conteneur
 docker run ubuntu:22.04
@@ -1431,7 +1483,7 @@ docker top mon-nginx
 docker wait mon-nginx
 </code></pre>
 <hr class="section-divider">
-    <h2>5.5 Le Dockerfile</h2>
+    <h2 id="sub-19">5.5 Le Dockerfile</h2>
     <h4>Anatomie détaillée d'un Dockerfile</h4>
     <p>Un Dockerfile est un script de construction contenant des instructions successives. Chaque instruction crée une nouvelle "couche" (layer) dans l'image finale. L'ordre est critique pour optimiser le cache de construction.</p>
 
@@ -1563,7 +1615,7 @@ docker build --progress=plain -t monapp:latest .
 docker build --target builder -t monapp:build .
 </code></pre>
 <hr class="section-divider">
-    <h2>5.6 Réseaux Docker</h2>
+    <h2 id="sub-20">5.6 Réseaux Docker</h2>
     <h4>Listing 5.7 – Gestion des réseaux Docker</h4>
 <pre><code class="language-bash"># Lister les réseaux
 docker network ls
@@ -1600,7 +1652,7 @@ docker run -d \
     monapp:latest
 </code></pre>
 <hr class="section-divider">
-    <h2>5.7 Volumes Docker</h2>
+    <h2 id="sub-21">5.7 Volumes Docker</h2>
     <blockquote>
         <strong>Volume Docker :</strong> mécanisme essentiel permettant de <strong>persister les données</strong> générées par un conteneur (comme une base de données MySQL ou des fichiers uploadés). Par défaut, un conteneur est éphémère : s'il est détruit, ses données internes disparaissent. Un volume résout ce problème en stockant les données de manière isolée directement sur la machine hôte.
     </blockquote>
@@ -1645,7 +1697,7 @@ docker run -d \
     monapp:latest
 </code></pre>
 <hr class="section-divider">
-    <h2 style="display: flex; align-items: center; gap: 10px;">
+    <h2 id="sub-22" style="display: flex; align-items: center; gap: 10px;">
     <svg width="36" height="36" viewBox="0 0 36 36" fill="var(--accent-highlight)">
         <!-- Stacked containers representing Docker Compose -->
         <rect x="4" y="20" width="10" height="10" rx="2" />
@@ -1872,10 +1924,10 @@ docker compose -f docker-compose.yml \
         <h1 id="chap-6" style="display: flex; align-items: center; gap: 15px;"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kubernetes/kubernetes-plain.svg" alt="logo" style="height: 48px; width: auto;" /> Chapitre 6 — Orchestration avec Kubernetes</h1>
     </header>
 <hr class="section-divider">
-    <h2>6.1 Introduction</h2>
+    <h2 id="sub-23">6.1 Introduction</h2>
     <blockquote><strong>Kubernetes (K8s) :</strong> système d'orchestration de conteneurs open-source développé par Google. Il automatise le déploiement, la mise à l'échelle, la gestion de la haute disponibilité et les mises à jour des applications conteneurisées.</blockquote>
 <hr class="section-divider">
-    <h2>6.2 Architecture de Kubernetes</h2>
+    <h2 id="sub-24">6.2 Architecture de Kubernetes</h2>
     
     <div id="k8s-network" style="width: 100%; height: 500px; border: 1px dashed #4a3525; border-radius: 8px; background-color: rgba(74, 53, 37, 0.03); margin: 3rem 0; cursor: grab;"></div>
 
@@ -1938,7 +1990,7 @@ docker compose -f docker-compose.yml \
         </table>
     </div>
 <hr class="section-divider">
-    <h2>6.3 Installation et Configuration (kubectl)</h2>
+    <h2 id="sub-25">6.3 Installation et Configuration (kubectl)</h2>
     <h4>Listing 6.1 – Installation de kubectl</h4>
 <pre><code class="language-bash"># Linux
 curl -LO "https://dl.k8s.io/release/$(curl -L -s \
@@ -1979,7 +2031,7 @@ KUBECONFIG=~/.kube/config:~/.kube/config-prod \
     kubectl config view --flatten &gt; ~/.kube/config-merge
 </code></pre>
 <hr class="section-divider">
-    <h2>6.4 Ressources Fondamentales</h2>
+    <h2 id="sub-26">6.4 Ressources Fondamentales</h2>
     <h3>6.4.1 Namespace</h3>
     <h4>Listing 6.3 – Gestion des Namespaces</h4>
 <pre><code class="language-bash"># Lister les namespaces
@@ -2469,7 +2521,7 @@ spec:
               number: 80
 </code></pre>
 <hr class="section-divider">
-    <h2>6.5 Commandes Générales kubectl</h2>
+    <h2 id="sub-27">6.5 Commandes Générales kubectl</h2>
     <h4>Listing 6.14 – Commandes générales kubectl</h4>
 <pre><code class="language-bash"># Obtenir toutes les ressources d'un namespace
 kubectl get all -n mon-namespace
@@ -2526,7 +2578,7 @@ kubectl patch deployment monapp \
 kubectl edit deployment monapp
 </code></pre>
 <hr class="section-divider">
-    <h2>6.6 Helm – Gestionnaire de Paquets Kubernetes</h2>
+    <h2 id="sub-28">6.6 Helm – Gestionnaire de Paquets Kubernetes</h2>
     <blockquote>
         <strong>Helm :</strong> Souvent décrit comme le "apt" ou "npm" de Kubernetes. Au lieu de gérer manuellement des dizaines de fichiers YAML (Deployment, Service, ConfigMap, Ingress) pour une seule application complexe, Helm les regroupe dans un paquet standardisé appelé un <strong>Chart</strong>. Helm permet de déployer, de mettre à jour ou de supprimer toute une infrastructure d'un seul coup (ce qu'on appelle une <em>Release</em>), tout en personnalisant l'installation à la volée grâce à un fichier de variables (<code>values.yaml</code>).
     </blockquote>
@@ -2604,7 +2656,7 @@ helm template mon-nginx bitnami/nginx -f mes-valeurs.yaml
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/ansible/ansible-original.svg" alt="ansible" style="height: 48px; width: auto;" /> Chapitre 7 — Infrastructure as Code</h1>
     </header>
 <hr class="section-divider">
-    <h2>7.1 Introduction</h2>
+    <h2 id="sub-29">7.1 Introduction</h2>
     <blockquote><strong>Infrastructure as Code (IaC) :</strong> pratique consistant à décrire et à gérer l'infrastructure informatique (serveurs, réseaux, bases de données, etc.) sous forme de <strong>fichiers de configuration versionnables et automatisables</strong>, plutôt que par des interventions manuelles.</blockquote>
     <p><strong>Avantages de l'IaC :</strong></p>
     <ul>
@@ -2614,7 +2666,7 @@ helm template mon-nginx bitnami/nginx -f mes-valeurs.yaml
         <li>Réduction des erreurs humaines.</li>
         <li>Documentation vivante de l'infrastructure.</li>
 <hr class="section-divider">
-    <h2>7.2 Terraform</h2>
+    <h2 id="sub-30">7.2 Terraform</h2>
     <h3>7.2.1 Présentation</h3>
     <blockquote><strong>Terraform</strong>, développé par HashiCorp, est l'outil IaC le plus populaire. Il supporte des dizaines de fournisseurs cloud (AWS, Azure, GCP, etc.) et utilise le langage <strong>HCL</strong> (<em>HashiCorp Configuration Language</em>).</blockquote>
     <h3>7.2.2 Installation</h3>
@@ -2793,7 +2845,7 @@ resource "aws_instance" "serveur" {
 }</code></pre>
     </div>
 <hr class="section-divider">
-    <h2>7.3 Ansible</h2>
+    <h2 id="sub-31">7.3 Ansible</h2>
     <h3>7.3.1 Présentation</h3>
     <blockquote><strong>Ansible</strong> est un outil d'automatisation <em>agentless</em> (sans agent) qui permet de configurer des systèmes, de déployer des applications et d'orchestrer des tâches complexes. Il utilise <strong>SSH</strong> pour communiquer avec les machines cibles.</blockquote>
     <h3>7.3.2 Installation</h3>

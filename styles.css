@@ -269,7 +269,24 @@ hr.section-divider {
 }
 
 .toc li {
-    margin-bottom: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.toc-h1 {
+    font-weight: 700;
+    margin-top: 1rem;
+    color: var(--text-color);
+}
+
+.toc-sublist {
+    margin: 0.5rem 0 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.toc-h2 {
+    font-size: 0.95rem !important;
+    opacity: 0.7;
+    transition: all 0.3s ease;
 }
 
 .toc a {
