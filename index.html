@@ -1365,9 +1365,20 @@ env:
     </header>
 <hr class="section-divider">
     <h2 id="sub-15">5.1 Introduction</h2>
-    <blockquote><strong>Conteneur :</strong> unité d'exécution légère et isolée qui regroupe une application et toutes ses dépendances (bibliothèques, configuration, code) dans un environnement standardisé et portable.</blockquote>
-    <p><strong>Docker</strong> est la plateforme de conteneurisation la plus utilisée. Elle repose sur les fonctionnalités du noyau Linux : <em>namespaces</em> (isolation) et <em>cgroups</em> (limitation des ressources).</p>
+    <blockquote>
+        <strong>Conteneur :</strong> unité d'exécution légère et isolée qui regroupe une application et toutes ses dépendances (bibliothèques, configuration, code) dans un environnement standardisé et portable.
+    </blockquote>
+    
+    <div style="background: rgba(166, 38, 38, 0.05); border-left: 4px solid var(--accent-highlight); padding: 1.5rem; margin-bottom: 2rem; border-radius: 0 8px 8px 0;">
+        <h4 style="margin-top: 0; color: var(--accent-highlight);">Concept Clé : Image vs Conteneur</h4>
+        <p style="margin-bottom: 0.5rem;">Pour bien comprendre Docker, il est crucial de différencier ces deux concepts :</p>
+        <ul style="margin-bottom: 0; padding-left: 1.5rem;">
+            <li>Une <strong>Image</strong> est le <em>plan de construction</em> ou la recette (en lecture seule). Elle contient le code source, les bibliothèques et les dépendances.</li>
+            <li>Un <strong>Conteneur</strong> est la <em>maison construite</em> (l'instance en cours d'exécution). C'est le processus vivant. Vous pouvez lancer des dizaines de conteneurs identiques à partir d'une seule et même image !</li>
+        </ul>
+    </div>
 
+    <p><strong>Docker</strong> est la plateforme de conteneurisation la plus utilisée. Elle repose sur les fonctionnalités du noyau Linux : <em>namespaces</em> (isolation) et <em>cgroups</em> (limitation des ressources).</p>
     <svg viewBox="0 0 700 320" style="width: 100%; max-width: 700px; height: auto; margin: 3rem auto 2rem; display: block; font-family: 'Adwaita Sans', 'Google Sans', sans-serif;">
         <!-- Déploiement Classique -->
         <text x="175" y="30" font-size="18" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Déploiement Classique</text>
