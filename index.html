@@ -3,14 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevOps - Chapitre 1 : Introduction et Culture</title>
+    <title>DevOps Resume</title>
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <article class="content-wrapper">
+    <div class="layout-container">
+        <nav class="toc">
+            <h2>Sommaire</h2>
+            <ul id="toc-list">
+                <li><a href="#chap-1">Chapitre 1 — Introduction et Culture DevOps</a></li>
+                <li><a href="#chap-2">Chapitre 2 — Gestion de Versions et Collaboration avec Git</a></li>
+                <li><a href="#chap-3">Chapitre 3 : Intégration Continue (CI)</a></li>
+                <li><a href="#chap-4">Chapitre 4 — Livraison et Déploiement Continu (CD)</a></li>
+                <li><a href="#chap-5">Chapitre 5 — Conteneurisation avec Docker</a></li>
+                <li><a href="#chap-6">Chapitre 6 — Orchestration avec Kubernetes</a></li>
+                <li><a href="#chap-7">Chapitre 7 — Infrastructure as Code</a></li>
+            </ul>
+        </nav>
+        <article class="content-wrapper">
         <header>
-            <h1>Chapitre 1 — Introduction et Culture DevOps</h1>
+            <h1 id="chap-1">Chapitre 1 — Introduction et Culture DevOps</h1>
             <hr class="section-divider">
         </header>
 
@@ -105,7 +118,7 @@
 
         <section>
             <header>
-                <h1>Chapitre 2 — Gestion de Versions et Collaboration avec Git</h1>
+                <h1 id="chap-2">Chapitre 2 — Gestion de Versions et Collaboration avec Git</h1>
                 <hr class="section-divider">
             </header>
         </section>
@@ -534,7 +547,7 @@ git add -f fichier.log</code></pre>
 
         <section>
             <header>
-                <h1>Chapitre 3 : Intégration Continue (CI)</h1>
+                <h1 id="chap-3">Chapitre 3 : Intégration Continue (CI)</h1>
                 <hr class="section-divider">
             </header>
         </section>
@@ -982,7 +995,7 @@ env:
 
         <section>
             <header>
-                <h1>Chapitre 4 — Livraison et Déploiement Continu (CD)</h1>
+                <h1 id="chap-4">Chapitre 4 — Livraison et Déploiement Continu (CD)</h1>
                 <hr class="section-divider">
             </header>
         </section>
@@ -1036,7 +1049,7 @@ env:
         </section>
 <section>
     <header>
-        <h1>Chapitre 5 — Conteneurisation avec Docker</h1>
+        <h1 id="chap-5">Chapitre 5 — Conteneurisation avec Docker</h1>
     </header>
 <hr class="section-divider">
     <h2>5.1 Introduction</h2>
@@ -1633,7 +1646,7 @@ docker compose -f docker-compose.yml \
         </section>
 <section>
     <header>
-        <h1>Chapitre 6 — Orchestration avec Kubernetes</h1>
+        <h1 id="chap-6">Chapitre 6 — Orchestration avec Kubernetes</h1>
     </header>
 <hr class="section-divider">
     <h2>6.1 Introduction</h2>
@@ -2364,7 +2377,7 @@ helm template mon-nginx bitnami/nginx -f mes-valeurs.yaml
 
 <section>
     <header>
-        <h1>Chapitre 7 — Infrastructure as Code</h1>
+        <h1 id="chap-7">Chapitre 7 — Infrastructure as Code</h1>
     </header>
 <hr class="section-divider">
     <h2>7.1 Introduction</h2>
@@ -2646,6 +2659,7 @@ ansible-playbook playbook.yml \
 </section>
 
     </article>
+    </div>
 
     <!-- PrismJS pour la détection sémantique du code (commentaires, mots clés) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
@@ -2725,5 +2739,38 @@ ansible-playbook playbook.yml \
         }
       });
     </script>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const chapters = Array.from(document.querySelectorAll('h1[id^="chap-"]'));
+        const navLinks = document.querySelectorAll('.toc a');
+
+        function updateActiveChapter() {
+            let current = '';
+            const scrollPosition = window.scrollY;
+
+            chapters.forEach((chap) => {
+                if (chap.offsetTop - 150 <= scrollPosition) {
+                    current = chap.getAttribute('id');
+                }
+            });
+
+            if(!current && chapters.length > 0) {
+                current = chapters[0].getAttribute('id');
+            }
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveChapter);
+        updateActiveChapter();
+    });
+    </script>
 </body>
+
 </html>
