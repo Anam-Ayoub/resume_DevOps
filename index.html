@@ -2186,6 +2186,7 @@ docker compose -f docker-compose.yml \
     </div>
 <hr class="section-divider">
     <h2 id="sub-25">6.3 Installation et Configuration (kubectl)</h2>
+    <p><strong>kubectl</strong> (prononcé <em>kube-control</em> ou <em>kube-c-t-l</em>) est l'outil en ligne de commande officiel et indispensable pour interagir avec un cluster Kubernetes. Il agit comme votre télécommande : lorsque vous exécutez une commande <code>kubectl</code>, l'outil traduit votre demande en requêtes HTTP REST et les envoie à l'<strong>API Server</strong> (le cerveau du cluster) pour déployer des applications, inspecter des ressources ou lire des logs.</p>
     <h4>Listing 6.1 – Installation de kubectl</h4>
 <pre><code class="language-bash"># Linux
 curl -LO "https://dl.k8s.io/release/$(curl -L -s \
