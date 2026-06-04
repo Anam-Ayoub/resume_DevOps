@@ -6,7 +6,7 @@
     --accent-highlight: #a62626; /* Striking terracotta / crimson */
     
     --font-stack-headings: "Newsreader", "Georgia", serif;
-    --font-stack-body: "Adwaita Sans", sans-serif;
+    --font-stack-body: "Inter", sans-serif;
     --font-size-body: 1.05rem;
     --line-height-body: 1.65;
 }
