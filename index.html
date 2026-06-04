@@ -2111,6 +2111,16 @@ docker compose -f docker-compose.yml \
 <hr class="section-divider">
     <h2 id="sub-23">6.1 Introduction</h2>
     <blockquote><strong>Kubernetes (K8s) :</strong> système d'orchestration de conteneurs open-source développé par Google. Il automatise le déploiement, la mise à l'échelle, la gestion de la haute disponibilité et les mises à jour des applications conteneurisées.</blockquote>
+    
+    <div style="background: rgba(69, 123, 157, 0.05); border-left: 4px solid #457b9d; padding: 1.5rem; margin: 2rem 0; border-radius: 0 8px 8px 0;">
+        <h4 style="margin-top: 0; color: #457b9d;">Concept Clé : Les Namespaces (Espaces de noms)</h4>
+        <p style="margin-bottom: 0.5rem;">Un <strong>Namespace</strong> agit comme un "cluster virtuel" isolé à l'intérieur de votre cluster Kubernetes physique.</p>
+        <ul style="margin-bottom: 0; padding-left: 1.5rem;">
+            <li><strong>Organisation :</strong> Il permet de séparer logiquement les projets ou les environnements (ex: un namespace <code>dev</code>, un <code>staging</code>, et un <code>prod</code> tournant sur le même cluster).</li>
+            <li><strong>Limites (Quotas) :</strong> Vous pouvez brider la quantité de CPU et de RAM utilisable par chaque namespace pour éviter qu'une équipe ne monopolise les serveurs.</li>
+            <li><strong>Noms uniques :</strong> Deux applications peuvent s'appeler <code>mon-app</code>, à condition qu'elles soient dans des namespaces différents.</li>
+        </ul>
+    </div>
 <hr class="section-divider">
     <h2 id="sub-24">6.2 Architecture de Kubernetes</h2>
     
