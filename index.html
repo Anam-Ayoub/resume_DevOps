@@ -547,6 +547,38 @@ git push origin --delete v1.0.0</code></pre>
                 </table>
             </div>
 
+            <svg viewBox="0 0 650 220" style="width: 100%; max-width: 650px; height: auto; margin: 3rem auto 2rem; display: block;">
+                <!-- Base lines -->
+                <line x1="100" y1="50" x2="600" y2="50" stroke="#4a3525" stroke-width="4" />
+                <path d="M 120 50 C 150 50, 150 120, 180 120 L 600 120" stroke="#457b9d" stroke-width="4" fill="none" stroke-dasharray="6 6" />
+                <path d="M 220 120 C 250 120, 250 190, 280 190 L 380 190 C 410 190, 410 120, 440 120" stroke="#a62626" stroke-width="4" fill="none" stroke-dasharray="6 6" />
+                <path d="M 500 120 C 530 120, 530 50, 560 50" stroke="#457b9d" stroke-width="4" fill="none" stroke-dasharray="6 6" />
+                
+                <!-- Labels -->
+                <text x="80" y="55" font-family="'Adwaita Sans', 'Google Sans', sans-serif" font-size="14" fill="#1a1a1a" text-anchor="end" font-weight="bold">main</text>
+                <text x="80" y="125" font-family="'Adwaita Sans', 'Google Sans', sans-serif" font-size="14" fill="#457b9d" text-anchor="end" font-weight="bold">develop</text>
+                <text x="80" y="195" font-family="'Adwaita Sans', 'Google Sans', sans-serif" font-size="14" fill="#a62626" text-anchor="end" font-weight="bold">feature</text>
+                
+                <!-- Commits main -->
+                <circle cx="120" cy="50" r="8" fill="#fdfbf7" stroke="#4a3525" stroke-width="4" />
+                <text x="120" y="30" font-family="'Adwaita Sans', 'Google Sans', sans-serif" font-size="12" fill="#1a1a1a" text-anchor="middle">v1.0</text>
+                
+                <circle cx="560" cy="50" r="8" fill="#4a3525" stroke="#4a3525" stroke-width="4" />
+                <text x="560" y="30" font-family="'Adwaita Sans', 'Google Sans', sans-serif" font-size="12" fill="#1a1a1a" text-anchor="middle" font-weight="bold">v1.1</text>
+                
+                <!-- Commits develop -->
+                <circle cx="220" cy="120" r="8" fill="#fdfbf7" stroke="#457b9d" stroke-width="4" />
+                
+                <circle cx="440" cy="120" r="8" fill="#fdfbf7" stroke="#457b9d" stroke-width="4" />
+                <text x="440" y="145" font-family="'Adwaita Sans', 'Google Sans', sans-serif" font-size="12" fill="#457b9d" text-anchor="middle">merge feature</text>
+                
+                <circle cx="500" cy="120" r="8" fill="#fdfbf7" stroke="#457b9d" stroke-width="4" />
+                
+                <!-- Commits feature -->
+                <circle cx="280" cy="190" r="8" fill="#fdfbf7" stroke="#a62626" stroke-width="4" />
+                <circle cx="380" cy="190" r="8" fill="#fdfbf7" stroke="#a62626" stroke-width="4" />
+            </svg>
+
             <h4>Listing 2.12 – Git Flow avec l'outil git-flow</h4>
             <pre><code class="language-bash"># Installer git-flow
 sudo apt-get install git-flow
