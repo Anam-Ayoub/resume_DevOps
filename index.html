@@ -193,6 +193,7 @@ git clone --depth 1 https://github.com/utilisateur/depot.git</code></pre>
             <hr class="section-divider">
 
             <h3>2.3.2 Suivre les Fichiers (Staging)</h3>
+            <blockquote><strong>Zone de transit (Staging Area) :</strong> Espace intermédiaire où les fichiers modifiés sont préparés avant d'être validés. Elle permet de grouper logiquement vos modifications (par exemple via <code>git add</code>).</blockquote>
             <h4>Listing 2.4 – Zone de transit (staging area)</h4>
             <pre><code class="language-bash"># Afficher l'état du dépôt
 git status
@@ -220,6 +221,7 @@ git reset HEAD fichier.txt</code></pre>
             <hr class="section-divider">
 
             <h3>2.3.3 Valider les Modifications (Commit)</h3>
+            <blockquote><strong>Commit :</strong> Validation permanente d'un ensemble de modifications avec un message descriptif. Chaque commit crée un point de sauvegarde immuable (un "snapshot") dans l'historique de votre projet.</blockquote>
             <h4>Listing 2.5 – Commandes de commit</h4>
             <pre><code class="language-bash"># Créer un commit avec un message
 git commit -m "feat: ajout de la fonctionnalité de connexion"
