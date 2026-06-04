@@ -965,7 +965,52 @@ node('linux') {
 } // Fin de l'allocation du nœud (node)</code></pre>
             </div>
 
-            <h3>3.2.5 Gestion des Credentials Jenkins</h3>
+            <h3>Comparatif : Pipeline Déclaratif vs Scripté</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Caractéristique</th>
+                            <th>Pipeline Déclaratif (Moderne)</th>
+                            <th>Pipeline Scripté (Groovy)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Syntaxe & Structure</strong></td>
+                            <td>Stricte et directive (blocs pré-définis : <code>pipeline</code>, <code>stages</code>)</td>
+                            <td>Libre et impérative (fonctions Groovy natives, bloc <code>node</code>)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Apprentissage</strong></td>
+                            <td>Facile et lisible, idéal pour les débutants DevOps</td>
+                            <td>Plus complexe, nécessite de connaître la programmation Groovy</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Gestion des erreurs</strong></td>
+                            <td>Native et structurée via les blocs <code>post</code> (success, failure)</td>
+                            <td>Manuelle via les instructions <code>try/catch/finally</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Flexibilité & Logique</strong></td>
+                            <td>Limitée par les directives existantes (difficile de faire des boucles dynamiques)</td>
+                            <td>Totale (boucles <code>for/while</code>, algorithmes complexes, requêtes API)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Validation du code</strong></td>
+                            <td>Vérifié intégralement au démarrage (erreur immédiate en cas de syntaxe invalide)</td>
+                            <td>Évalué au moment de l'exécution ligne par ligne (runtime)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cas d'usage idéal</strong></td>
+                            <td><strong>80% des projets</strong>. Workflows CI/CD classiques et maintenables.</td>
+                            <td>Pipelines très complexes avec logique conditionnelle avancée et dynamique.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 id="sub-X">3.2.5 Gestion des Credentials Jenkins</h3>
             <p>L'utilisation des différents types de secrets (credentials) gérés de manière sécurisée par Jenkins s'articule comme suit :</p>
             
             <div class="table-container">
