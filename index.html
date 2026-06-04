@@ -1262,6 +1262,27 @@ env:
             <h2 id="sub-14">4.2 Stratégies de Déploiement</h2>
             
             <h3>4.2.1 Blue-Green Deployment</h3>
+            <svg viewBox="0 0 600 150" style="width: 100%; max-width: 500px; height: auto; margin: 2rem auto; display: block; font-family: 'Inter', sans-serif;">
+                <rect x="250" y="10" width="100" height="30" rx="4" fill="#1a1a1a" />
+                <text x="300" y="30" font-size="12" fill="#fdfbf7" font-weight="bold" text-anchor="middle">Load Balancer</text>
+                
+                <rect x="100" y="90" width="160" height="50" rx="4" fill="rgba(69, 123, 157, 0.1)" stroke="#457b9d" stroke-width="2" />
+                <text x="180" y="115" font-size="14" fill="#1a1a1a" font-weight="bold" text-anchor="middle">Env. BLUE (V1)</text>
+                <text x="180" y="130" font-size="10" fill="#1a1a1a" text-anchor="middle">Idle / En attente</text>
+                
+                <rect x="340" y="90" width="160" height="50" rx="4" fill="rgba(42, 157, 143, 0.1)" stroke="#2a9d8f" stroke-width="2" />
+                <text x="420" y="115" font-size="14" fill="#1a1a1a" font-weight="bold" text-anchor="middle">Env. GREEN (V2)</text>
+                <text x="420" y="130" font-size="10" fill="#1a1a1a" text-anchor="middle">Production (100% Trafic)</text>
+                
+                <path d="M 280 40 L 180 90" stroke="#ccc" stroke-width="2" stroke-dasharray="4" fill="none" />
+                <path d="M 320 40 L 420 90" stroke="#2a9d8f" stroke-width="3" fill="none" marker-end="url(#arrowGreen)" />
+                
+                <defs>
+                    <marker id="arrowGreen" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L9,3 z" fill="#2a9d8f" />
+                    </marker>
+                </defs>
+            </svg>
             <p>Deux environnements de production totalement identiques et isolés coexistent : l'environnement <strong>Blue</strong> (qui héberge la version actuelle en direct) et l'environnement <strong>Green</strong> (qui héberge la nouvelle version).</p>
             <ul>
                 <li><strong>Fonctionnement :</strong> La nouvelle version est déployée et testée en toute sécurité sur "Green". Une fois validée, le routeur redirige instantanément 100% du trafic de Blue vers Green.</li>
@@ -1270,6 +1291,30 @@ env:
             </ul>
 
             <h3>4.2.2 Canary Deployment (Déploiement Canari)</h3>
+            <svg viewBox="0 0 600 150" style="width: 100%; max-width: 500px; height: auto; margin: 2rem auto; display: block; font-family: 'Inter', sans-serif;">
+                <rect x="250" y="10" width="100" height="30" rx="4" fill="#1a1a1a" />
+                <text x="300" y="30" font-size="12" fill="#fdfbf7" font-weight="bold" text-anchor="middle">Load Balancer</text>
+                
+                <rect x="100" y="90" width="160" height="50" rx="4" fill="rgba(69, 123, 157, 0.1)" stroke="#457b9d" stroke-width="2" />
+                <text x="180" y="115" font-size="14" fill="#1a1a1a" font-weight="bold" text-anchor="middle">Version 1</text>
+                <text x="180" y="130" font-size="12" fill="#1a1a1a" text-anchor="middle">95% du Trafic</text>
+                
+                <rect x="340" y="90" width="160" height="50" rx="4" fill="rgba(233, 196, 106, 0.2)" stroke="#e9c46a" stroke-width="2" />
+                <text x="420" y="115" font-size="14" fill="#1a1a1a" font-weight="bold" text-anchor="middle">Canari (V2)</text>
+                <text x="420" y="130" font-size="12" fill="#1a1a1a" text-anchor="middle">5% du Trafic</text>
+                
+                <path d="M 280 40 L 180 90" stroke="#457b9d" stroke-width="4" fill="none" marker-end="url(#arrowBlueC)" />
+                <path d="M 320 40 L 420 90" stroke="#e9c46a" stroke-width="2" fill="none" marker-end="url(#arrowYellowC)" />
+                
+                <defs>
+                    <marker id="arrowBlueC" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L9,3 z" fill="#457b9d" />
+                    </marker>
+                    <marker id="arrowYellowC" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L9,3 z" fill="#e9c46a" />
+                    </marker>
+                </defs>
+            </svg>
             <p>Inspirée des canaris utilisés dans les mines de charbon pour détecter les gaz toxiques, cette stratégie consiste à déployer la nouvelle version auprès d'un <strong>très petit sous-ensemble d'utilisateurs</strong> avant de la généraliser.</p>
             <ul>
                 <li><strong>Fonctionnement :</strong> La nouvelle version est déployée pour, par exemple, 5 % du trafic. Les équipes surveillent les métriques (erreurs, latence). Si tout est stable, la version est déployée à 25 %, puis 100 %.</li>
@@ -1278,6 +1323,26 @@ env:
             </ul>
 
             <h3>4.2.3 Rolling Update (Mise à jour progressive)</h3>
+            <svg viewBox="0 0 600 150" style="width: 100%; max-width: 500px; height: auto; margin: 2rem auto; display: block; font-family: 'Inter', sans-serif;">
+                <rect x="250" y="10" width="100" height="30" rx="4" fill="#1a1a1a" />
+                <text x="300" y="30" font-size="12" fill="#fdfbf7" font-weight="bold" text-anchor="middle">Load Balancer</text>
+                
+                <rect x="50" y="90" width="100" height="50" rx="4" fill="rgba(42, 157, 143, 0.1)" stroke="#2a9d8f" stroke-width="2" />
+                <text x="100" y="120" font-size="14" fill="#1a1a1a" font-weight="bold" text-anchor="middle">V2 (À jour)</text>
+
+                <rect x="180" y="90" width="100" height="50" rx="4" fill="rgba(42, 157, 143, 0.1)" stroke="#2a9d8f" stroke-width="2" />
+                <text x="230" y="120" font-size="14" fill="#1a1a1a" font-weight="bold" text-anchor="middle">V2 (À jour)</text>
+                
+                <rect x="310" y="90" width="100" height="50" rx="4" fill="rgba(233, 196, 106, 0.1)" stroke="#e9c46a" stroke-width="2" stroke-dasharray="4" />
+                <text x="360" y="120" font-size="12" fill="#1a1a1a" font-weight="bold" text-anchor="middle">En cours...</text>
+
+                <rect x="440" y="90" width="100" height="50" rx="4" fill="rgba(69, 123, 157, 0.1)" stroke="#457b9d" stroke-width="2" />
+                <text x="490" y="120" font-size="14" fill="#1a1a1a" font-weight="bold" text-anchor="middle">V1 (Ancien)</text>
+
+                <path d="M 300 40 L 100 90" stroke="#ccc" stroke-width="2" fill="none" />
+                <path d="M 300 40 L 230 90" stroke="#ccc" stroke-width="2" fill="none" />
+                <path d="M 300 40 L 490 90" stroke="#ccc" stroke-width="2" fill="none" />
+            </svg>
             <p>Plutôt que de remplacer toute l'application d'un coup ou d'avoir deux environnements complets, on met à jour les instances du serveur <strong>une par une (ou par petits groupes de noeuds)</strong>.</p>
             <ul>
                 <li><strong>Fonctionnement :</strong> Si on a 10 serveurs, le répartiteur de charge retire le Serveur 1, le met à jour avec la nouvelle version, le remet en ligne, puis passe au Serveur 2, etc., <strong>sans interruption de service globale</strong>.</li>
