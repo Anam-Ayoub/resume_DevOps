@@ -7,7 +7,7 @@
     
     --font-stack-headings: "Newsreader", "Georgia", serif;
     --font-stack-body: "Adwaita Sans", sans-serif;
-    --font-size-body: 1.2rem;
+    --font-size-body: 1.05rem;
     --line-height-body: 1.65;
 }
 
@@ -31,7 +31,7 @@ body {
 
 /* Layout */
 .content-wrapper {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
 }
@@ -46,7 +46,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-    font-size: 2.5rem;
+    font-size: 2.1rem;
     line-height: 1.2;
     text-align: center;
     color: var(--accent-secondary);
@@ -54,13 +54,13 @@ h1 {
 }
 
 h2 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     border-bottom: 2px solid var(--accent-secondary);
     padding-bottom: 0.3rem;
 }
 
 h3 {
-    font-size: 1.4rem;
+    font-size: 1.25rem;
     color: var(--accent-secondary);
 }
 
@@ -238,7 +238,7 @@ hr.section-divider {
 /* Sidebar Table of Contents */
 .layout-container {
     display: flex;
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
 }
 
@@ -318,7 +318,7 @@ hr.section-divider {
 .content-wrapper {
     flex-grow: 1;
     padding: 4rem;
-    max-width: 900px;
+    max-width: 1200px;
     box-sizing: border-box;
 }
 
