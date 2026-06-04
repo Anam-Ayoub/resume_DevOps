@@ -1010,6 +1010,41 @@ node('linux') {
                 </table>
             </div>
 
+            <div style="display: flex; gap: 2rem; margin: 2rem 0; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 300px; background: rgba(69, 123, 157, 0.05); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                    <h4 style="margin-top: 0; color: var(--accent-highlight);">Exemple : Pipeline Déclaratif</h4>
+                    <pre style="margin-bottom: 0;"><code class="language-groovy">pipeline {
+    agent any
+    stages {
+        stage('Test') {
+            steps {
+                sh 'npm test'
+            }
+        }
+    }
+    post {
+        failure {
+            echo 'Alerte : Échec des tests !'
+        }
+    }
+}</code></pre>
+                </div>
+                <div style="flex: 1; min-width: 300px; background: rgba(166, 38, 38, 0.05); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                    <h4 style="margin-top: 0; color: var(--accent-secondary);">Exemple : Pipeline Scripté</h4>
+                    <pre style="margin-bottom: 0;"><code class="language-groovy">node {
+    try {
+        stage('Test') {
+            sh 'npm test'
+        }
+    } catch (Exception e) {
+        echo 'Alerte : Échec des tests !'
+        currentBuild.result = 'FAILURE'
+        throw e
+    }
+}</code></pre>
+                </div>
+            </div>
+
             <h3 id="sub-X">3.2.5 Gestion des Credentials Jenkins</h3>
             <p>L'utilisation des différents types de secrets (credentials) gérés de manière sécurisée par Jenkins s'articule comme suit :</p>
             
