@@ -142,7 +142,68 @@
 
         <section>
             <h2 id="sub-4">1.4 Le Pipeline DevOps</h2>
-            <p>Le cycle de vie DevOps comprend les phases suivantes :</p>
+            <p>Le cycle de vie DevOps est un processus continu (souvent représenté par un symbole d'infini ♾️) qui comprend les 8 phases suivantes :</p>
+            
+            <svg viewBox="0 0 600 300" style="width: 100%; max-width: 650px; height: auto; margin: 3rem auto 2rem; display: block; font-family: 'Inter', sans-serif;">
+                <!-- Infinity Path (DEV - Blue) -->
+                <path d="M 300,150 C 220,50 100,50 100,150 C 100,250 220,250 300,150" stroke="#457b9d" stroke-width="12" fill="none" opacity="0.3" />
+                
+                <!-- Infinity Path (OPS - Green) -->
+                <path d="M 300,150 C 380,50 500,50 500,150 C 500,250 380,250 300,150" stroke="#2a9d8f" stroke-width="12" fill="none" opacity="0.3" />
+
+                <!-- DEV / OPS Text Background -->
+                <text x="150" y="158" font-size="44" font-weight="900" fill="#457b9d" opacity="0.1" text-anchor="middle">DEV</text>
+                <text x="450" y="158" font-size="44" font-weight="900" fill="#2a9d8f" opacity="0.1" text-anchor="middle">OPS</text>
+
+                <!-- 1. PLAN -->
+                <g transform="translate(190, 80)">
+                    <circle cx="0" cy="0" r="28" fill="#457b9d" />
+                    <text x="0" y="4" font-size="11" font-weight="bold" fill="#fff" text-anchor="middle">PLAN</text>
+                </g>
+
+                <!-- 2. CODE -->
+                <g transform="translate(100, 150)">
+                    <circle cx="0" cy="0" r="28" fill="#457b9d" />
+                    <text x="0" y="4" font-size="11" font-weight="bold" fill="#fff" text-anchor="middle">CODE</text>
+                </g>
+
+                <!-- 3. BUILD -->
+                <g transform="translate(190, 220)">
+                    <circle cx="0" cy="0" r="28" fill="#457b9d" />
+                    <text x="0" y="4" font-size="11" font-weight="bold" fill="#fff" text-anchor="middle">BUILD</text>
+                </g>
+
+                <!-- 4. TEST -->
+                <g transform="translate(255, 185)">
+                    <circle cx="0" cy="0" r="28" fill="#457b9d" />
+                    <text x="0" y="4" font-size="11" font-weight="bold" fill="#fff" text-anchor="middle">TEST</text>
+                </g>
+
+                <!-- 5. RELEASE -->
+                <g transform="translate(410, 80)">
+                    <circle cx="0" cy="0" r="28" fill="#2a9d8f" />
+                    <text x="0" y="4" font-size="10" font-weight="bold" fill="#fff" text-anchor="middle">RELEASE</text>
+                </g>
+
+                <!-- 6. DEPLOY -->
+                <g transform="translate(500, 150)">
+                    <circle cx="0" cy="0" r="28" fill="#2a9d8f" />
+                    <text x="0" y="4" font-size="10" font-weight="bold" fill="#fff" text-anchor="middle">DEPLOY</text>
+                </g>
+
+                <!-- 7. OPERATE -->
+                <g transform="translate(410, 220)">
+                    <circle cx="0" cy="0" r="28" fill="#2a9d8f" />
+                    <text x="0" y="4" font-size="10" font-weight="bold" fill="#fff" text-anchor="middle">OPERATE</text>
+                </g>
+
+                <!-- 8. MONITOR -->
+                <g transform="translate(345, 185)">
+                    <circle cx="0" cy="0" r="28" fill="#2a9d8f" />
+                    <text x="0" y="4" font-size="10" font-weight="bold" fill="#fff" text-anchor="middle">MONITOR</text>
+                </g>
+            </svg>
+
             <ol>
                 <li><strong>Plan</strong> : définition des besoins et des objectifs.</li>
                 <li><strong>Code</strong> : développement du logiciel.</li>
