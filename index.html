@@ -134,7 +134,7 @@
 
         <section>
             <h2>2.2 Installation et Configuration initiale</h2>
-            <p><strong>Listing 2.1 – Installation de Git</strong></p>
+            <h4>Listing 2.1 – Installation de Git</h4>
             <pre><code class="language-bash"># Debian / Ubuntu
 sudo apt-get update && sudo apt-get install -y git
 
@@ -144,7 +144,7 @@ sudo yum install -y git
 # macOS (avec Homebrew)
 brew install git</code></pre>
 
-            <p><strong>Listing 2.2 – Configuration globale de Git</strong></p>
+            <h4>Listing 2.2 – Configuration globale de Git</h4>
             <pre><code class="language-bash"># Définir le nom d'utilisateur
 git config --global user.name "Prenom NOM"
 
@@ -169,7 +169,7 @@ git config user.name</code></pre>
             <h2>2.3 Commandes Fondamentales</h2>
             
             <h3>2.3.1 Initialisation et Clonage</h3>
-            <p><strong>Listing 2.3 – Initialisation et clonage d'un dépôt</strong></p>
+            <h4>Listing 2.3 – Initialisation et clonage d'un dépôt</h4>
             <pre><code class="language-bash"># Initialiser un nouveau dépôt local
 git init
 
@@ -193,7 +193,7 @@ git clone --depth 1 https://github.com/utilisateur/depot.git</code></pre>
             <hr class="section-divider">
 
             <h3>2.3.2 Suivre les Fichiers (Staging)</h3>
-            <p><strong>Listing 2.4 – Zone de transit (staging area)</strong></p>
+            <h4>Listing 2.4 – Zone de transit (staging area)</h4>
             <pre><code class="language-bash"># Afficher l'état du dépôt
 git status
 
@@ -220,7 +220,7 @@ git reset HEAD fichier.txt</code></pre>
             <hr class="section-divider">
 
             <h3>2.3.3 Valider les Modifications (Commit)</h3>
-            <p><strong>Listing 2.5 – Commandes de commit</strong></p>
+            <h4>Listing 2.5 – Commandes de commit</h4>
             <pre><code class="language-bash"># Créer un commit avec un message
 git commit -m "feat: ajout de la fonctionnalité de connexion"
 
@@ -238,7 +238,7 @@ git commit --allow-empty -m "trigger CI"</code></pre>
             <hr class="section-divider">
 
             <h3>2.3.4 Consulter l'Historique</h3>
-            <p><strong>Listing 2.6 – Consultation de l'historique</strong></p>
+            <h4>Listing 2.6 – Consultation de l'historique</h4>
             <pre><code class="language-bash"># Afficher l'historique des commits
 git log
 
@@ -268,7 +268,7 @@ git diff --staged</code></pre>
             <hr class="section-divider">
 
             <h3>2.3.5 Gestion des Branches</h3>
-            <p><strong>Listing 2.7 – Gestion des branches</strong></p>
+            <h4>Listing 2.7 – Gestion des branches</h4>
             <pre><code class="language-bash"># Lister les branches locales
 git branch
 
@@ -300,7 +300,7 @@ git push origin --delete feature/ma-fonctionnalite</code></pre>
             <hr class="section-divider">
 
             <h3>2.3.6 Fusion et Rebase</h3>
-            <p><strong>Listing 2.8 – Fusion de branches</strong></p>
+            <h4>Listing 2.8 – Fusion de branches</h4>
             <pre><code class="language-bash"># Fusionner une branche dans la branche courante
 git merge feature/ma-fonctionnalite
 
@@ -324,7 +324,7 @@ git cherry-pick &lt;hash-commit&gt;</code></pre>
             <hr class="section-divider">
 
             <h3>2.3.7 Interaction avec le Dépôt Distant</h3>
-            <p><strong>Listing 2.9 – Commandes distantes (remote)</strong></p>
+            <h4>Listing 2.9 – Commandes distantes (remote)</h4>
             <pre><code class="language-bash"># Afficher les dépôts distants
 git remote -v
 
@@ -360,7 +360,7 @@ git push --tags</code></pre>
             <hr class="section-divider">
 
             <h3>2.3.8 Annuler des Modifications</h3>
-            <p><strong>Listing 2.10 – Annulation et restauration</strong></p>
+            <h4>Listing 2.10 – Annulation et restauration</h4>
             <pre><code class="language-bash"># Annuler les modifications d'un fichier (non staged)
 git restore fichier.txt
 
@@ -405,7 +405,7 @@ git stash clear</code></pre>
             <hr class="section-divider">
 
             <h3>2.3.9 Étiquettes (Tags)</h3>
-            <p><strong>Listing 2.11 – Gestion des tags</strong></p>
+            <h4>Listing 2.11 – Gestion des tags</h4>
             <pre><code class="language-bash"># Créer un tag léger
 git tag v1.0.0
 
@@ -474,7 +474,7 @@ git push origin --delete v1.0.0</code></pre>
                 </table>
             </div>
 
-            <p><strong>Listing 2.12 – Git Flow avec l'outil git-flow</strong></p>
+            <h4>Listing 2.12 – Git Flow avec l'outil git-flow</h4>
             <pre><code class="language-bash"># Installer git-flow
 sudo apt-get install git-flow
 
@@ -509,7 +509,7 @@ git flow hotfix finish correction-critique</code></pre>
             <h2>2.5 Fichier .gitignore</h2>
             <p>Le fichier <code>.gitignore</code> liste les fichiers et répertoires que Git doit ignorer (fichiers de compilation, secrets, dépendances, fichiers d'IDE, etc.).</p>
             
-            <p><strong>Listing 2.13 – Exemple de fichier .gitignore</strong></p>
+            <h4>Listing 2.13 – Exemple de fichier .gitignore</h4>
             <pre><code class="language-gitignore"># Fichiers de compilation Java
 *.class
 *.jar
