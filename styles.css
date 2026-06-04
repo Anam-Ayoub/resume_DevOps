@@ -305,7 +305,7 @@ hr.section-divider {
     box-sizing: border-box;
 }
 
-/* Responsive */
+/* Responsive Layout */
 @media (max-width: 1100px) {
     .layout-container {
         flex-direction: column;
@@ -314,12 +314,79 @@ hr.section-divider {
         position: relative;
         width: 100%;
         height: auto;
+        max-height: 40vh;
         border-right: none;
-        border-bottom: 1px dashed var(--border-color);
+        border-bottom: 2px dashed var(--accent-secondary);
         padding: 2rem;
         top: 0;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        z-index: 100;
     }
     .content-wrapper {
         padding: 2rem;
+        max-width: 100%;
+    }
+}
+
+/* Mobile Screens */
+@media (max-width: 768px) {
+    body {
+        padding: 0;
+        font-size: 1.1rem;
+    }
+    
+    .toc {
+        padding: 1.5rem 1rem;
+        max-height: 35vh;
+    }
+
+    .toc h2 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+    }
+    
+    .content-wrapper {
+        padding: 1.5rem 1rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+        flex-wrap: wrap; /* Allow logos to wrap if needed */
+        line-height: 1.2;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.3rem;
+    }
+
+    /* Resize logos for smaller screens */
+    h1 img {
+        height: 32px !important;
+    }
+
+    /* Let code blocks stretch to screen edges on mobile */
+    pre[class*="language-"] {
+        padding: 1rem;
+        font-size: 0.9rem;
+        margin-left: -1rem !important;
+        margin-right: -1rem !important;
+        border-radius: 0 !important;
+        border-left: none !important;
+        border-right: none !important;
+    }
+    
+    .anatomie-step {
+        padding: 1rem;
+        margin-left: -0.5rem;
+        margin-right: -0.5rem;
+    }
+
+    blockquote {
+        padding: 1rem;
+        margin: 1.5rem 0;
     }
 }
