@@ -222,6 +222,19 @@ git reset HEAD fichier.txt</code></pre>
 
             <h3>2.3.3 Valider les Modifications (Commit)</h3>
             <blockquote><strong>Commit :</strong> Validation permanente d'un ensemble de modifications avec un message descriptif. Chaque commit crée un point de sauvegarde immuable (un "snapshot") dans l'historique de votre projet.</blockquote>
+
+            <svg viewBox="0 0 600 120" style="width: 100%; max-width: 600px; height: auto; margin: 2rem auto; display: block;">
+                <line x1="50" y1="50" x2="550" y2="50" stroke="#4a3525" stroke-width="4" />
+                
+                <circle cx="100" cy="50" r="8" fill="#fdfbf7" stroke="#4a3525" stroke-width="4" />
+                <text x="100" y="85" font-family="'Adwaita Sans', 'Google Sans', sans-serif" font-size="16" fill="#1a1a1a" text-anchor="middle">Commit 1</text>
+                
+                <circle cx="300" cy="50" r="8" fill="#fdfbf7" stroke="#4a3525" stroke-width="4" />
+                <text x="300" y="85" font-family="'Adwaita Sans', 'Google Sans', sans-serif" font-size="16" fill="#1a1a1a" text-anchor="middle">Commit 2</text>
+                
+                <circle cx="500" cy="50" r="8" fill="#4a3525" stroke="#4a3525" stroke-width="4" />
+                <text x="500" y="85" font-family="'Adwaita Sans', 'Google Sans', sans-serif" font-size="16" fill="#1a1a1a" text-anchor="middle" font-weight="bold">Commit 3 (HEAD)</text>
+            </svg>
             <h4>Listing 2.5 – Commandes de commit</h4>
             <pre><code class="language-bash"># Créer un commit avec un message
 git commit -m "feat: ajout de la fonctionnalité de connexion"
@@ -271,6 +284,31 @@ git diff --staged</code></pre>
 
             <h3>2.3.5 Gestion des Branches</h3>
             <blockquote><strong>Branche (Branch) :</strong> Une ligne de développement indépendante. Elle permet de travailler sur de nouvelles fonctionnalités ou de corriger des bugs de manière isolée sans affecter la ligne principale du projet (généralement nommée <code>main</code>).</blockquote>
+
+            <svg viewBox="0 0 600 160" style="width: 100%; max-width: 600px; height: auto; margin: 2rem auto; display: block;">
+                <!-- Main branch line -->
+                <line x1="50" y1="110" x2="550" y2="110" stroke="#4a3525" stroke-width="4" />
+                
+                <!-- Feature branch line -->
+                <path d="M 250 110 C 300 110, 300 40, 350 40 L 550 40" stroke="#a62626" stroke-width="4" fill="none" stroke-dasharray="6 6" />
+                
+                <!-- Main Commits -->
+                <circle cx="100" cy="110" r="8" fill="#fdfbf7" stroke="#4a3525" stroke-width="4" />
+                <text x="100" y="145" font-family="'Adwaita Sans', 'Google Sans', sans-serif" font-size="16" fill="#1a1a1a" text-anchor="middle">C1</text>
+                
+                <circle cx="250" cy="110" r="8" fill="#fdfbf7" stroke="#4a3525" stroke-width="4" />
+                <text x="250" y="145" font-family="'Adwaita Sans', 'Google Sans', sans-serif" font-size="16" fill="#1a1a1a" text-anchor="middle">C2</text>
+                
+                <circle cx="500" cy="110" r="8" fill="#fdfbf7" stroke="#4a3525" stroke-width="4" />
+                <text x="500" y="145" font-family="'Adwaita Sans', 'Google Sans', sans-serif" font-size="16" fill="#1a1a1a" text-anchor="middle" font-weight="bold">main</text>
+                
+                <!-- Branch Commits -->
+                <circle cx="400" cy="40" r="8" fill="#fdfbf7" stroke="#a62626" stroke-width="4" />
+                <text x="400" y="25" font-family="'Adwaita Sans', 'Google Sans', sans-serif" font-size="16" fill="#a62626" text-anchor="middle">F1</text>
+                
+                <circle cx="500" cy="40" r="8" fill="#a62626" stroke="#a62626" stroke-width="4" />
+                <text x="500" y="25" font-family="'Adwaita Sans', 'Google Sans', sans-serif" font-size="16" fill="#a62626" text-anchor="middle" font-weight="bold">feature</text>
+            </svg>
             <h4>Listing 2.7 – Gestion des branches</h4>
             <pre><code class="language-bash"># Lister les branches locales
 git branch
@@ -304,6 +342,35 @@ git push origin --delete feature/ma-fonctionnalite</code></pre>
 
             <h3>2.3.6 Fusion et Rebase</h3>
             <blockquote><strong>Fusion (Merge) :</strong> L'action d'intégrer l'historique et les modifications d'une branche dans une autre. Par exemple, après avoir terminé une tâche sur une branche de travail, vous la fusionnez dans la branche principale pour assembler le code.</blockquote>
+
+            <svg viewBox="0 0 600 160" style="width: 100%; max-width: 600px; height: auto; margin: 2rem auto; display: block;">
+                <!-- Main branch line -->
+                <line x1="50" y1="110" x2="550" y2="110" stroke="#4a3525" stroke-width="4" />
+                
+                <!-- Feature branch line -->
+                <path d="M 150 110 C 200 110, 200 40, 250 40 L 400 40 C 450 40, 450 110, 500 110" stroke="#a62626" stroke-width="4" fill="none" stroke-dasharray="6 6" />
+                
+                <!-- Main Commits -->
+                <circle cx="50" cy="110" r="8" fill="#fdfbf7" stroke="#4a3525" stroke-width="4" />
+                <text x="50" y="145" font-family="'Adwaita Sans', 'Google Sans', sans-serif" font-size="16" fill="#1a1a1a" text-anchor="middle">C1</text>
+                
+                <circle cx="150" cy="110" r="8" fill="#fdfbf7" stroke="#4a3525" stroke-width="4" />
+                <text x="150" y="145" font-family="'Adwaita Sans', 'Google Sans', sans-serif" font-size="16" fill="#1a1a1a" text-anchor="middle">C2</text>
+                
+                <circle cx="350" cy="110" r="8" fill="#fdfbf7" stroke="#4a3525" stroke-width="4" />
+                <text x="350" y="145" font-family="'Adwaita Sans', 'Google Sans', sans-serif" font-size="16" fill="#1a1a1a" text-anchor="middle">C3</text>
+                
+                <!-- Merge Commit -->
+                <circle cx="500" cy="110" r="8" fill="#4a3525" stroke="#4a3525" stroke-width="4" />
+                <text x="500" y="145" font-family="'Adwaita Sans', 'Google Sans', sans-serif" font-size="16" fill="#1a1a1a" text-anchor="middle" font-weight="bold">Merge (C4)</text>
+                
+                <!-- Branch Commits -->
+                <circle cx="280" cy="40" r="8" fill="#fdfbf7" stroke="#a62626" stroke-width="4" />
+                <text x="280" y="25" font-family="'Adwaita Sans', 'Google Sans', sans-serif" font-size="16" fill="#a62626" text-anchor="middle">F1</text>
+                
+                <circle cx="400" cy="40" r="8" fill="#fdfbf7" stroke="#a62626" stroke-width="4" />
+                <text x="400" y="25" font-family="'Adwaita Sans', 'Google Sans', sans-serif" font-size="16" fill="#a62626" text-anchor="middle">F2</text>
+            </svg>
             <h4>Listing 2.8 – Fusion de branches</h4>
             <pre><code class="language-bash"># Fusionner une branche dans la branche courante
 git merge feature/ma-fonctionnalite
