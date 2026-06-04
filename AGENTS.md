@@ -48,3 +48,12 @@ You must build the UI around a modern, editorial reading experience reminiscent 
   - **Secondary Accents / Borders:** Rich walnut brown (`#4a3525` or `#5c4a3c`)
 
   - **Highlights / Active Elements / Callouts:** Striking clean terracotta or deep crimson red (`#a62626` or `#b81d24`)
+
+
+# Dynamic Updates & Pedagogical Patterns
+
+- **Fonts:** Replaced Google Sans with Adwaita Sans for body text.
+- **Code Blocks:** `font-weight` set to medium (500) for better readability on parchment background.
+- **Code Comments:** PrismJS integrated. Comments inside code blocks are specifically styled as translucent italics (`opacity: 0.6`).
+- **Anatomie Pattern:** Complex code files (Jenkinsfile, Dockerfile, docker-compose, K8s Pods/Deployments) are broken down into logical steps using `<div class="anatomie-step theme-X">`. Each theme uses a distinct CSS border/heading color.
+- **Blockquotes:** Used extensively to define core concepts (Volumes, PV/PVC, ConfigMap, Secret) directly before their associated code listings.

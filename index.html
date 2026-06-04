@@ -102,6 +102,2628 @@
             </ul>
             <hr class="section-divider">
         </section>
+
+        <section>
+            <header>
+                <h1>Chapitre 2 — Gestion de Versions et Collaboration avec Git</h1>
+                <hr class="section-divider">
+            </header>
+        </section>
+
+        <section>
+            <h2>2.1 Introduction à Git</h2>
+            <p><strong>Git</strong> est un système de gestion de versions <em>distribué</em> créé par Linus Torvalds en 2005. Il permet de suivre les modifications du code source, de collaborer efficacement et de gérer plusieurs versions d'un projet simultanément.</p>
+            <blockquote>
+                <strong>Dépôt (Repository) :</strong> répertoire versionné contenant l'ensemble du code source et l'historique complet des modifications.
+            </blockquote>
+            <hr class="section-divider">
+        </section>
+
+        <section>
+            <h2>2.2 Installation et Configuration initiale</h2>
+            <p><strong>Listing 2.1 – Installation de Git</strong></p>
+            <pre><code class="language-bash"># Debian / Ubuntu
+sudo apt-get update && sudo apt-get install -y git
+
+# CentOS / RHEL
+sudo yum install -y git
+
+# macOS (avec Homebrew)
+brew install git</code></pre>
+
+            <p><strong>Listing 2.2 – Configuration globale de Git</strong></p>
+            <pre><code class="language-bash"># Définir le nom d'utilisateur
+git config --global user.name "Prenom NOM"
+
+# Définir l'adresse email
+git config --global user.email "prenom.nom@exemple.com"
+
+# Définir l'éditeur par défaut
+git config --global core.editor vim
+
+# Définir la branche principale par défaut
+git config --global init.defaultBranch main
+
+# Afficher la configuration actuelle
+git config --list
+
+# Afficher un paramètre spécifique
+git config user.name</code></pre>
+            <hr class="section-divider">
+        </section>
+
+        <section>
+            <h2>2.3 Commandes Fondamentales</h2>
+            
+            <h3>2.3.1 Initialisation et Clonage</h3>
+            <p><strong>Listing 2.3 – Initialisation et clonage d'un dépôt</strong></p>
+            <pre><code class="language-bash"># Initialiser un nouveau dépôt local
+git init
+
+# Initialiser un dépôt avec un nom de répertoire
+git init mon-projet
+
+# Cloner un dépôt distant (HTTPS)
+git clone https://github.com/utilisateur/depot.git
+
+# Cloner avec SSH
+git clone git@github.com:utilisateur/depot.git
+
+# Cloner dans un répertoire spécifique
+git clone https://github.com/utilisateur/depot.git mon-dossier
+
+# Cloner une branche spécifique
+git clone -b develop https://github.com/utilisateur/depot.git
+
+# Cloner sans l'historique complet (shallow clone)
+git clone --depth 1 https://github.com/utilisateur/depot.git</code></pre>
+            <hr class="section-divider">
+
+            <h3>2.3.2 Suivre les Fichiers (Staging)</h3>
+            <p><strong>Listing 2.4 – Zone de transit (staging area)</strong></p>
+            <pre><code class="language-bash"># Afficher l'état du dépôt
+git status
+
+# Afficher l'état en format court
+git status -s
+
+# Ajouter un fichier spécifique à la zone de transit
+git add fichier.txt
+
+# Ajouter tous les fichiers modifiés
+git add .
+
+# Ajouter tous les fichiers d'une extension
+git add *.java
+
+# Ajouter de manière interactive (sélectif)
+git add -p
+
+# Retirer un fichier de la zone de transit
+git restore --staged fichier.txt
+
+# Ancienne syntaxe équivalente
+git reset HEAD fichier.txt</code></pre>
+            <hr class="section-divider">
+
+            <h3>2.3.3 Valider les Modifications (Commit)</h3>
+            <p><strong>Listing 2.5 – Commandes de commit</strong></p>
+            <pre><code class="language-bash"># Créer un commit avec un message
+git commit -m "feat: ajout de la fonctionnalité de connexion"
+
+# Ajouter et committer en une seule commande
+git commit -am "fix: correction du bug d'authentification"
+
+# Amender le dernier commit (message ou contenu)
+git commit --amend -m "feat: nouveau message"
+
+# Amender sans changer le message
+git commit --amend --no-edit
+
+# Commit vide (utile pour CI)
+git commit --allow-empty -m "trigger CI"</code></pre>
+            <hr class="section-divider">
+
+            <h3>2.3.4 Consulter l'Historique</h3>
+            <p><strong>Listing 2.6 – Consultation de l'historique</strong></p>
+            <pre><code class="language-bash"># Afficher l'historique des commits
+git log
+
+# Afficher l'historique en une ligne par commit
+git log --oneline
+
+# Afficher avec graphe des branches
+git log --oneline --graph --all
+
+# Afficher les n derniers commits
+git log -n 5
+
+# Filtrer par auteur
+git log --author="AATTOURI"
+
+# Filtrer par date
+git log --since="2024-01-01" --until="2024-12-31"
+
+# Afficher les modifications d'un commit
+git show &lt;hash-commit&gt;
+
+# Afficher les différences non committées
+git diff
+
+# Afficher les différences entre la zone de transit et le dernier commit
+git diff --staged</code></pre>
+            <hr class="section-divider">
+
+            <h3>2.3.5 Gestion des Branches</h3>
+            <p><strong>Listing 2.7 – Gestion des branches</strong></p>
+            <pre><code class="language-bash"># Lister les branches locales
+git branch
+
+# Lister toutes les branches (locales et distantes)
+git branch -a
+
+# Créer une nouvelle branche
+git branch feature/ma-fonctionnalite
+
+# Basculer sur une branche existante
+git checkout develop
+git switch develop          # nouvelle syntaxe recommandée
+
+# Créer et basculer sur une nouvelle branche
+git checkout -b feature/ma-fonctionnalite
+git switch -c feature/ma-fonctionnalite   # nouvelle syntaxe
+
+# Renommer une branche
+git branch -m ancien-nom nouveau-nom
+
+# Supprimer une branche locale
+git branch -d feature/ma-fonctionnalite
+
+# Forcer la suppression d'une branche non mergée
+git branch -D feature/ma-fonctionnalite
+
+# Supprimer une branche distante
+git push origin --delete feature/ma-fonctionnalite</code></pre>
+            <hr class="section-divider">
+
+            <h3>2.3.6 Fusion et Rebase</h3>
+            <p><strong>Listing 2.8 – Fusion de branches</strong></p>
+            <pre><code class="language-bash"># Fusionner une branche dans la branche courante
+git merge feature/ma-fonctionnalite
+
+# Fusion sans fast-forward (conserve l'historique)
+git merge --no-ff feature/ma-fonctionnalite
+
+# Rebaser la branche courante sur main
+git rebase main
+
+# Rebaser interactivement les 3 derniers commits
+git rebase -i HEAD~3
+
+# Abandonner un rebase en cours
+git rebase --abort
+
+# Continuer après résolution de conflit
+git rebase --continue
+
+# Cherry-pick : appliquer un commit spécifique
+git cherry-pick &lt;hash-commit&gt;</code></pre>
+            <hr class="section-divider">
+
+            <h3>2.3.7 Interaction avec le Dépôt Distant</h3>
+            <p><strong>Listing 2.9 – Commandes distantes (remote)</strong></p>
+            <pre><code class="language-bash"># Afficher les dépôts distants
+git remote -v
+
+# Ajouter un dépôt distant
+git remote add origin https://github.com/utilisateur/depot.git
+
+# Modifier l'URL d'un dépôt distant
+git remote set-url origin git@github.com:utilisateur/depot.git
+
+# Supprimer un dépôt distant
+git remote remove origin
+
+# Récupérer les modifications sans merger
+git fetch origin
+
+# Récupérer toutes les branches distantes
+git fetch --all
+
+# Tirer (fetch + merge) la branche courante
+git pull
+
+# Tirer avec rebase
+git pull --rebase
+
+# Pousser la branche courante vers le dépôt distant
+git push origin main
+
+# Pousser et configurer le suivi
+git push -u origin feature/ma-fonctionnalite
+
+# Pousser tous les tags
+git push --tags</code></pre>
+            <hr class="section-divider">
+
+            <h3>2.3.8 Annuler des Modifications</h3>
+            <p><strong>Listing 2.10 – Annulation et restauration</strong></p>
+            <pre><code class="language-bash"># Annuler les modifications d'un fichier (non staged)
+git restore fichier.txt
+
+# Réinitialiser la zone de transit
+git restore --staged fichier.txt
+
+# Revenir à un commit précédent (soft : conserve les modifications)
+git reset --soft HEAD~1
+
+# Revenir à un commit précédent (mixed : défaut)
+git reset HEAD~1
+
+# Revenir à un commit précédent (hard : perd les modifications)
+git reset --hard HEAD~1
+
+# Créer un commit annulant un commit précédent
+git revert &lt;hash-commit&gt;
+
+# Mettre de côté des modifications temporairement
+git stash
+
+# Mettre de côté avec un nom
+git stash push -m "travail en cours sur feature X"
+
+# Lister les stash
+git stash list
+
+# Appliquer le dernier stash
+git stash apply
+
+# Appliquer un stash spécifique
+git stash apply stash@{2}
+
+# Appliquer et supprimer le dernier stash
+git stash pop
+
+# Supprimer un stash
+git stash drop stash@{0}
+
+# Supprimer tous les stash
+git stash clear</code></pre>
+            <hr class="section-divider">
+
+            <h3>2.3.9 Étiquettes (Tags)</h3>
+            <p><strong>Listing 2.11 – Gestion des tags</strong></p>
+            <pre><code class="language-bash"># Créer un tag léger
+git tag v1.0.0
+
+# Créer un tag annoté (recommandé)
+git tag -a v1.0.0 -m "Version 1.0.0 stable"
+
+# Tagger un commit spécifique
+git tag -a v0.9.0 &lt;hash-commit&gt;
+
+# Lister les tags
+git tag
+
+# Afficher les détails d'un tag
+git show v1.0.0
+
+# Pousser un tag spécifique
+git push origin v1.0.0
+
+# Pousser tous les tags
+git push origin --tags
+
+# Supprimer un tag local
+git tag -d v1.0.0
+
+# Supprimer un tag distant
+git push origin --delete v1.0.0</code></pre>
+            <hr class="section-divider">
+        </section>
+
+        <section>
+            <h2>2.4 Stratégies de Branchement</h2>
+            
+            <h3>2.4.1 Git Flow</h3>
+            <p>Git Flow est une stratégie de branchement populaire définissant un modèle strict de branches :</p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Branche</th>
+                            <th>Rôle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>main</code></td>
+                            <td>Code de production stable</td>
+                        </tr>
+                        <tr>
+                            <td><code>develop</code></td>
+                            <td>Branche d'intégration principale</td>
+                        </tr>
+                        <tr>
+                            <td><code>feature/*</code></td>
+                            <td>Nouvelles fonctionnalités</td>
+                        </tr>
+                        <tr>
+                            <td><code>release/*</code></td>
+                            <td>Préparation à la mise en production</td>
+                        </tr>
+                        <tr>
+                            <td><code>hotfix/*</code></td>
+                            <td>Corrections urgentes en production</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p><strong>Listing 2.12 – Git Flow avec l'outil git-flow</strong></p>
+            <pre><code class="language-bash"># Installer git-flow
+sudo apt-get install git-flow
+
+# Initialiser git-flow dans un dépôt existant
+git flow init
+
+# Démarrer une nouvelle fonctionnalité
+git flow feature start ma-fonctionnalite
+
+# Terminer une fonctionnalité
+git flow feature finish ma-fonctionnalite
+
+# Démarrer une release
+git flow release start 1.2.0
+
+# Terminer une release
+git flow release finish 1.2.0
+
+# Démarrer un hotfix
+git flow hotfix start correction-critique
+
+# Terminer un hotfix
+git flow hotfix finish correction-critique</code></pre>
+            <hr class="section-divider">
+
+            <h3>2.4.2 Trunk-Based Development</h3>
+            <p>Dans cette approche, tous les développeurs committent directement sur une branche unique (<code>main</code> ou <code>trunk</code>). Les fonctionnalités non finies sont masquées par des <strong>feature flags</strong>.</p>
+            <hr class="section-divider">
+        </section>
+
+        <section>
+            <h2>2.5 Fichier .gitignore</h2>
+            <p>Le fichier <code>.gitignore</code> liste les fichiers et répertoires que Git doit ignorer (fichiers de compilation, secrets, dépendances, fichiers d'IDE, etc.).</p>
+            
+            <p><strong>Listing 2.13 – Exemple de fichier .gitignore</strong></p>
+            <pre><code class="language-gitignore"># Fichiers de compilation Java
+*.class
+*.jar
+target/
+
+# Environnements virtuels Python
+venv/
+__pycache__/
+*.pyc
+
+# Variables d'environnement
+.env
+.env.local
+
+# Fichiers de l'IDE
+.idea/
+.vscode/
+*.swp
+
+# Système d'exploitation
+.DS_Store
+Thumbs.db
+
+# Dépendances Node.js
+node_modules/
+npm-debug.log</code></pre>
+
+            <pre><code class="language-bash"># Vérifier quels fichiers seront ignorés
+git check-ignore -v fichier.txt
+
+# Forcer l'ajout d'un fichier ignoré
+git add -f fichier.log</code></pre>
+            <hr class="section-divider">
+        </section>
+
+        <section>
+            <header>
+                <h1>Chapitre 3 : Intégration Continue (CI)</h1>
+                <hr class="section-divider">
+            </header>
+        </section>
+
+        <section>
+            <h2>3.1 Définition et Principes</h2>
+            <blockquote>
+                L'<strong>Intégration Continue</strong> (<em>Continuous Integration</em> ou <strong>CI</strong>) est une pratique de développement logicielle qui consiste à intégrer fréquemment les modifications de code au sein d'un dépôt partagé unique. Chaque intégration déclenche automatiquement une suite de <em>builds</em> et de tests afin de détecter et de corriger au plus tôt les régressions.
+            </blockquote>
+            <p>La mise en œuvre de la <strong>CI</strong> repose sur huit principes fondamentaux décrits dans le tableau suivant :</p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="text-align: center;">N°</th>
+                            <th style="text-align: left;">Principes fondamentaux de l'Intégration Continue</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td style="text-align: center;"><strong>1</strong></td><td>Maintenir un dépôt de code unique et partagé.</td></tr>
+                        <tr><td style="text-align: center;"><strong>2</strong></td><td>Automatiser la phase de construction (<em>build</em>).</td></tr>
+                        <tr><td style="text-align: center;"><strong>3</strong></td><td>Rendre la construction auto-testable.</td></tr>
+                        <tr><td style="text-align: center;"><strong>4</strong></td><td>Intégrer quotidiennement les modifications de code.</td></tr>
+                        <tr><td style="text-align: center;"><strong>5</strong></td><td>Assurer un <em>build</em> rapide (durée inférieure à 10 minutes).</td></tr>
+                        <tr><td style="text-align: center;"><strong>6</strong></td><td>Exécuter les tests dans un environnement identique à la production.</td></tr>
+                        <tr><td style="text-align: center;"><strong>7</strong></td><td>Assurer la transparence en rendant les résultats accessibles à tous.</td></tr>
+                        <tr><td style="text-align: center;"><strong>8</strong></td><td>Automatiser le processus de déploiement.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr class="section-divider">
+        </section>
+
+        <section>
+            <h2>3.2 Jenkins</h2>
+            
+            <h3>3.2.1 Présentation</h3>
+            <blockquote>
+                <strong>Jenkins</strong> est un serveur d'automatisation <em>open-source</em> développé en <em>Java</em>, s'imposant comme le standard incontournable pour concevoir des pipelines <strong>CI/CD</strong>. Son immense écosystème de <em>plugins</em> lui permet de s'interfacer nativement avec des technologies clés telles que <strong>Git</strong>, <strong>Docker</strong>, <strong>Kubernetes</strong> ou encore <strong>Slack</strong>.
+            </blockquote>
+            
+            <h3>3.2.2 Installation de Jenkins</h3>
+            <h4>Installation de Jenkins sur Ubuntu</h4>
+            <pre><code class="language-bash"># Installer Java (prerequis)
+sudo apt-get update
+sudo apt-get install -y openjdk-17-jdk
+
+# Ajouter la cle GPG de Jenkins
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+
+# Ajouter le depot Jenkins
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+# Installer Jenkins
+sudo apt-get update
+sudo apt-get install -y jenkins
+
+# Demarrer et activer Jenkins
+sudo systemctl start jenkins
+sudo systemctl enable jenkins
+
+# Verifier le statut
+sudo systemctl status jenkins
+
+# Recuperer le mot de passe initial
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword</code></pre>
+
+            <h4>Installation de Jenkins via Docker</h4>
+            <pre><code class="language-bash"># Lancer Jenkins dans un conteneur Docker
+docker run -d --name jenkins -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts-jdk17
+
+# Recuperer le mot de passe initial
+docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword</code></pre>
+
+            <h3>3.2.3 Gestion de Jenkins via CLI</h3>
+            <h4>Jenkins CLI</h4>
+            <pre><code class="language-bash"># Telecharger le client CLI
+wget http://localhost:8080/jnlpJars/jenkins-cli.jar
+
+# Se connecter au serveur Jenkins
+java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:mon-mot-de-passe help
+
+# Lister les jobs
+java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:token list-jobs
+
+# Declencher un build
+java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:token build mon-job
+
+# Activer/desactiver un job
+java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:token disable-job mon-job
+java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:token enable-job mon-job
+
+# Supprimer un job
+java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:token delete-job mon-job
+
+# Installer un plugin
+java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:token install-plugin git
+
+# Recharger la configuration
+java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:token reload-configuration
+
+# Redemarrer Jenkins
+java -jar jenkins-cli.jar -s http://localhost:8080 -auth admin:token restart</code></pre>
+
+            <h3>3.2.4 Jenkinsfile – Pipeline Déclaratif vs Scripted</h3>
+            <p>Le Jenkinsfile est un fichier textuel positionné à la racine du dépôt de code. Il concrétise l'approche de Pipeline as Code en décrivant l'intégralité du processus de livraison. Jenkins propose deux syntaxes pour écrire ces pipelines :</p>
+            
+            <blockquote>
+                <strong>1. Pipeline Déclaratif (Recommandé) :</strong> Introduit une structure stricte et lisible (blocs <code>pipeline</code>, <code>stages</code>, <code>steps</code>). Il limite la complexité pour garantir une maintenance facile et permet à Jenkins de valider la syntaxe avant l'exécution. C'est l'approche standard moderne.<br><br>
+                <strong>2. Pipeline Scripted (Groovy) :</strong> L'approche historique, basée sur des scripts Groovy purs. Elle offre une flexibilité absolue (boucles complexes, logique impérative) mais au prix d'une lisibilité réduite et d'une maintenance plus complexe.
+            </blockquote>
+            
+            <p><em>Note : L'exemple déclaratif ci-dessous est volontairement complet et détaillé (tests, SonarQube, Docker, Kubernetes, notifications) car il représente un standard industriel (Gold Standard) pour un pipeline de production du monde réel. Il couvre la grande majorité des cas d'usage professionnels.</em></p>
+            
+            <h4>Anatomie détaillée d'un Jenkinsfile Déclaratif</h4>
+            <p>Pour bien comprendre le pipeline déclaratif, voici une explication bloc par bloc. Certains blocs sont <strong>obligatoires</strong> (la syntaxe même de Jenkins), tandis que le contenu des étapes (steps) est <strong>spécifique à votre projet</strong>.</p>
+
+            <div class="anatomie-step theme-1">
+                <h5>1. Le conteneur principal et l'Agent (Syntaxe Obligatoire)</h5>
+            <p>Le bloc <code>pipeline</code> doit toujours englober tout le fichier. L'instruction <code>agent</code> est requise car elle indique à Jenkins <em>où</em> exécuter le pipeline.</p>
+            <pre><code class="language-groovy">pipeline {
+    // OBLIGATOIRE : 'agent any' exécute le pipeline sur n'importe quel nœud disponible.
+    agent any
+    
+    /* SCÉNARIO PROJET : 
+       Si votre projet nécessite un environnement précis sans polluer le serveur,
+       vous pouvez forcer l'exécution dans un conteneur Docker spécifique :
+       agent { docker { image 'node:18-alpine' } } 
+    */</code></pre>
+            </div>
+
+            <div class="anatomie-step theme-1">
+                <h5>2. Configuration de l'environnement (Optionnel mais recommandé)</h5>
+            <p>Ce bloc définit les variables globales et les options d'exécution du pipeline.</p>
+            <pre><code class="language-groovy">    environment {
+        // OPTIONNEL : Variables d'environnement injectées dans tout le pipeline.
+        APP_VERSION = '1.0.0'
+        DOCKER_IMAGE = "monapp:${APP_VERSION}"
+        
+        /* SCÉNARIO PROJET :
+           Pour un projet Java : MAVEN_HOME = tool 'Maven-3.9'
+           Pour un projet JS   : NODE_ENV = 'production' 
+        */
+    }
+
+    options {
+        // OPTIONNEL : Bonnes pratiques pour la stabilité du serveur
+        timeout(time: 30, unit: 'MINUTES') // Évite qu'un job bloqué tourne à l'infini
+        disableConcurrentBuilds()          // Empêche deux builds de tourner en même temps
+    }</code></pre>
+            </div>
+
+            <div class="anatomie-step theme-1">
+                <h5>3. Les Étapes / Stages (Syntaxe Obligatoire)</h5>
+            <p>C'est le cœur du pipeline. La hiérarchie <code>stages</code> &gt; <code>stage</code> &gt; <code>steps</code> doit <strong>toujours</strong> être respectée. Cependant, les commandes exécutées (les <code>sh</code>) dépendent totalement de votre code.</p>
+            <pre><code class="language-groovy">    stages {
+        stage('Checkout') {
+            steps {
+                // Étape quasi-universelle : récupérer le code source depuis Git
+                git branch: 'main', url: 'https://github.com/utilisateur/depot.git'
+            }
+        }
+
+        stage('Build & Tests') {
+            steps {
+                /* SCÉNARIO PROJET : C'est ici que le code diffère selon le langage !
+                   - Projet Java/Maven : sh "mvn clean package"
+                   - Projet Node.js    : sh "npm install && npm run test"
+                   - Projet Python     : sh "pip install -r req.txt && pytest"
+                   - Projet Go         : sh "go build && go test ./..."
+                */
+                sh "mvn clean package" // Exemple pour Java
+            }
+        }
+
+        stage('Deploiement (Conditionnel)') {
+            // OPTIONNEL : 'when' permet d'exécuter un stage uniquement sous certaines conditions
+            when {
+                branch 'main' // Ne s'exécute que sur la branche principale
+            }
+            steps {
+                sh "kubectl apply -f k8s/production/"
+            }
+        }
+    }</code></pre>
+            </div>
+
+            <div class="anatomie-step theme-1">
+                <h5>4. Actions Post-Exécution (Optionnel)</h5>
+            <p>Le bloc <code>post</code> permet d'exécuter des actions à la fin du pipeline, en fonction du statut final de celui-ci (succès, échec, ou toujours).</p>
+            <pre><code class="language-groovy">    post {
+        success {
+            // Exécuté uniquement si tous les stages ont réussi
+            slackSend channel: '#devops', message: "Build REUSSI !"
+        }
+        failure {
+            // Exécuté en cas d'erreur dans le pipeline
+            emailext to: 'equipe@exemple.com', subject: "ECHEC du build"
+        }
+        always {
+            // OBLIGATOIRE EN PRATIQUE : Toujours nettoyer l'espace de travail
+            // pour éviter que le disque du serveur Jenkins ne sature.
+            cleanWs()
+        }
+    }
+} // Fin du bloc obligatoire 'pipeline'</code></pre>
+            </div>
+
+            <h4>Anatomie d'un Pipeline Scripted (Groovy)</h4>
+            <p>Contrairement au pipeline déclaratif, l'approche Scripted est beaucoup plus libre et ressemble à un script de programmation classique. Voici comment il se décompose :</p>
+
+            <div class="anatomie-step theme-2">
+                <h5>1. Allocation du Nœud (Syntaxe Obligatoire)</h5>
+            <p>Le bloc <code>node</code> est le point d'entrée. Il demande à Jenkins d'allouer une machine (un agent) et un espace de travail pour exécuter le code.</p>
+            <pre><code class="language-groovy">// OBLIGATOIRE : 'node' alloue un agent pour exécuter le script.
+// On peut spécifier un label (ex: 'linux', 'windows') ou laisser vide node() pour n'importe quel agent.
+node('linux') {
+    
+    // OPTIONNEL : Déclaration de variables globales en Groovy pur
+    // SCÉNARIO PROJET : Récupération du chemin d'un outil (comme Maven) configuré dans Jenkins
+    def mavenHome = tool 'Maven-3.9'</code></pre>
+            </div>
+
+            <div class="anatomie-step theme-2">
+                <h5>2. Étapes et Logique (Totalement Flexible)</h5>
+            <p>Dans un script Groovy, les <code>stages</code> sont purement visuels dans l'interface Jenkins. Vous n'avez pas besoin de blocs <code>steps</code>, et vous gérez vous-même toute la logique impérative (boucles, try/catch, if/else).</p>
+            <pre><code class="language-groovy">    stage('Checkout') {
+        // OBLIGATOIRE (pratique) : Récupérer le code source depuis le gestionnaire de versions
+        checkout scm
+    }
+
+    stage('Build & Tests') {
+        /* SCÉNARIO PROJET : Logique métier et gestion manuelle des erreurs
+           Comme nous sommes en Groovy pur, il n'y a pas de bloc magique 'post { failure { ... } }'.
+           Nous devons utiliser un bon vieux try/catch de programmation pour intercepter les plantages.
+        */
+        try {
+            // Commande spécifique au projet (Ex: Maven pour Java)
+            // Pour Node.js, ce serait : sh "npm install && npm test"
+            sh "${mavenHome}/bin/mvn clean package" 
+        } catch (Exception e) {
+            // GESTION MANUELLE : On marque explicitement le build en échec
+            currentBuild.result = 'FAILURE'
+            error "Le build a echoue : ${e.message}"
+        }
+    }
+
+    stage('Deploiement Conditionnel') {
+        /* SCÉNARIO PROJET : Logique conditionnelle manuelle
+           Contrairement au déclaratif qui utilise 'when { branch "main" }',
+           ici nous utilisons une simple instruction 'if' native à Groovy.
+        */
+        if (env.BRANCH_NAME == 'main') {
+            sh 'kubectl apply -f k8s/production/'
+        }
+    }
+} // Fin de l'allocation du nœud (node)</code></pre>
+            </div>
+
+            <h3>3.2.5 Gestion des Credentials Jenkins</h3>
+            <p>L'utilisation des différents types de secrets (credentials) gérés de manière sécurisée par Jenkins s'articule comme suit :</p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type de Secret</th>
+                            <th>Description et Syntaxe Contextuelle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>Username / Password</code></td><td>Injecte séparément un nom d'utilisateur et un mot de passe sous forme de variables</td></tr>
+                        <tr><td><code>Secret Text</code></td><td>Utilisé généralement pour stocker un jeton d'API (API token) ou une clé de sécurité brute</td></tr>
+                        <tr><td><code>Fichier Secret</code></td><td>Permet de manipuler un fichier confidentiel (ex: configuration kubeconfig) via son chemin local temporaire</td></tr>
+                        <tr><td><code>SSH Private Key</code></td><td>Injecte une clé privée SSH et un identifiant utilisateur associé pour s'authentifier à distance</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>Anatomie de l'Injection de Credentials</h4>
+            <p>Dans Jenkins, on n'écrit <strong>jamais</strong> de mots de passe ou de clés en clair dans un code source. La bonne pratique impose d'utiliser la fonction <code>withCredentials</code> qui injecte temporairement et de manière masquée les secrets le temps d'un bloc d'exécution.</p>
+
+            <div class="anatomie-step theme-3">
+                <h5>1. Type : Utilisateur & Mot de passe (Username/Password)</h5>
+            <p>Idéal pour se connecter à un registre Docker, une base de données, ou une API standard.</p>
+            <pre><code class="language-groovy">// SYNTAXE OBLIGATOIRE : La fonction 'withCredentials' et le binding 'usernamePassword'
+withCredentials([usernamePassword(
+    credentialsId: 'docker-hub-id', // ID exact tel que configuré dans l'interface Jenkins
+    usernameVariable: 'USER',       // Variable injectée contenant l'utilisateur
+    passwordVariable: 'PASS'        // Variable injectée contenant le mot de passe
+)]) {
+    /* SCÉNARIO PROJET : Connexion automatisée à Docker Hub pour pousser une image.
+       Jenkins remplacera automatiquement la valeur par des astérisques (***) dans les logs
+       si elle devait être affichée par erreur.
+    */
+    sh "echo ${PASS} | docker login -u ${USER} --password-stdin"
+}</code></pre>
+            </div>
+
+            <div class="anatomie-step theme-3">
+                <h5>2. Type : Texte Secret (Secret Text)</h5>
+            <p>Utilisé pour des chaînes de caractères uniques, comme un jeton d'API (Token Slack, SonarQube, AWS Access Key).</p>
+            <pre><code class="language-groovy">// SYNTAXE OBLIGATOIRE : Le binding 'string'
+withCredentials([string(
+    credentialsId: 'api-token', 
+    variable: 'TOKEN'
+)]) {
+    // SCÉNARIO PROJET : Authentification HTTP sécurisée via un Bearer Token
+    sh "curl -H 'Authorization: Bearer ${TOKEN}' https://api.exemple.com/data"
+}</code></pre>
+            </div>
+
+            <div class="anatomie-step theme-3">
+                <h5>3. Type : Fichier Secret (Secret File)</h5>
+            <p>Permet d'injecter un fichier complet (ex: certificat <code>.pem</code>, configuration <code>kubeconfig</code>). Jenkins copie le fichier temporairement sur l'agent et s'assure de le supprimer à la fin du bloc.</p>
+            <pre><code class="language-groovy">// SYNTAXE OBLIGATOIRE : Le binding 'file'
+withCredentials([file(
+    credentialsId: 'k8s-config', 
+    variable: 'KUBECONFIG_PATH' // La variable contiendra le chemin local du fichier temporaire
+)]) {
+    // SCÉNARIO PROJET : Authentification Kubernetes pour déclencher un déploiement
+    sh "kubectl --kubeconfig=${KUBECONFIG_PATH} apply -f deployment.yaml"
+}</code></pre>
+            </div>
+
+            <div class="anatomie-step theme-3">
+                <h5>4. Type : Clé Privée SSH (SSH Private Key)</h5>
+            <p>Indispensable pour se connecter en SSH à un serveur de production ou pour cloner un dépôt Git privé.</p>
+            <pre><code class="language-groovy">// SYNTAXE OBLIGATOIRE : Le binding 'sshUserPrivateKey'
+withCredentials([sshUserPrivateKey(
+    credentialsId: 'prod-ssh-key',
+    keyFileVariable: 'SSH_KEY',   // Chemin vers le fichier de la clé privée
+    usernameVariable: 'SSH_USER'  // L'utilisateur associé (ex: ubuntu, root)
+)]) {
+    // SCÉNARIO PROJET : Exécuter un script d'installation sur une VM distante
+    sh "ssh -i ${SSH_KEY} ${SSH_USER}@serveur.exemple.com '/opt/scripts/deploy.sh'"
+}</code></pre>
+            </div>
+
+            <h3>3.2.6 GitHub Actions – Alternative à Jenkins</h3>
+            <p>GitHub Actions est une alternative native à Jenkins intégrée à l'écosystème GitHub. Elle s'appuie sur une description declarative au format YAML pour automatiser les workflows de livraison logicielle.</p>
+            
+            <h4>Anatomie détaillée d'un Workflow GitHub Actions</h4>
+            <p>Contrairement à Jenkins qui utilise Groovy, GitHub Actions utilise la syntaxe YAML. Ce fichier doit obligatoirement être placé dans le dossier <code>.github/workflows/</code> de votre dépôt.</p>
+
+            <div class="anatomie-step theme-4">
+                <h5>1. Déclencheurs (Triggers) - Syntaxe Obligatoire</h5>
+            <p>Le bloc <code>on:</code> définit <em>quand</em> le pipeline doit s'exécuter.</p>
+            <pre><code class="language-yaml"># OBLIGATOIRE : Nom du workflow affiché dans l'interface GitHub
+name: Pipeline CI/CD
+
+# OBLIGATOIRE : Événements qui déclenchent le workflow
+on:
+  # SCÉNARIO PROJET : Déclenchement automatique lors d'un push sur 'main' ou 'develop'
+  push:
+    branches: [main, develop]
+  # SCÉNARIO PROJET : Exécuter les tests avant d'accepter une fusion (Pull Request)
+  pull_request:
+    branches: [main]
+
+# OPTIONNEL : Variables d'environnement partagées entre tous les jobs
+env:
+  DOCKER_IMAGE: monapp</code></pre>
+            </div>
+
+            <div class="anatomie-step theme-4">
+                <h5>2. Configuration du Job (Job Setup)</h5>
+            <p>Les <code>jobs</code> s'exécutent par défaut en parallèle. Chaque job doit déclarer sur quelle machine (runner) il tourne via <code>runs-on</code>.</p>
+            <pre><code class="language-yaml">jobs:
+  # OBLIGATOIRE : ID du premier job
+  build-and-test:
+    # OBLIGATOIRE : L'environnement d'exécution (runner)
+    # L'alternative serait 'windows-latest' ou 'macos-latest' selon vos besoins
+    runs-on: ubuntu-latest
+    
+    # OBLIGATOIRE : La liste séquentielle des étapes pour ce job
+    steps:
+      # Étape universelle : Récupérer le code source
+      - name: Checkout du code
+        uses: actions/checkout@v4</code></pre>
+            </div>
+
+            <div class="anatomie-step theme-4">
+                <h5>3. Les Actions (Uses) et Commandes (Run)</h5>
+            <p>Dans GitHub Actions, on utilise massivement des <strong>Actions pré-fabriquées</strong> (mot-clé <code>uses</code>) pour éviter de réécrire des scripts complexes, ou bien des commandes natives avec <code>run</code>.</p>
+            <pre><code class="language-yaml">      # SCÉNARIO PROJET : Action pré-fabriquée pour configurer l'environnement Java
+      # Pour Node.js, ce serait : uses: actions/setup-node@v4
+      - name: Configuration de Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # OPTIONNEL MAIS RECOMMANDÉ : Mettre en cache les dépendances pour accélérer les builds futurs
+      - name: Cache Maven
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+
+      # SCÉNARIO PROJET : Commande d'exécution métier spécifique au projet
+      - name: Build et tests
+        run: mvn clean verify
+
+      # OPTIONNEL : Archiver les rapports générés par les tests pour consultation
+      - name: Publication des resultats de tests
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: target/surefire-reports/</code></pre>
+            </div>
+
+            <div class="anatomie-step theme-4">
+                <h5>4. Dépendances entre Jobs et Authentification</h5>
+            <p>On utilise <code>needs</code> pour forcer un job à attendre la fin d'un autre, et la syntaxe <code>${{ secrets... }}</code> pour injecter des credentials stockés en toute sécurité dans l'interface GitHub.</p>
+            <pre><code class="language-yaml">  # Deuxième job (Docker)
+  docker:
+    # OBLIGATOIRE POUR LA SÉQUENCE : Attend que le job 'build-and-test' réussisse
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    
+    # CONDITION DE DÉPLOIEMENT : S'exécute UNIQUEMENT sur la branche 'main'
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      # INJECTION DE SECRETS : Connexion au registre sans exposer les mots de passe
+      - name: Login Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # DÉPLOIEMENT : Création et envoi de l'image Docker finale
+      - name: Build et Push de l'image
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:latest</code></pre>
+            </div>
+            <hr class="section-divider">
+        </section>
+
+        <section>
+            <header>
+                <h1>Chapitre 4 — Livraison et Déploiement Continu (CD)</h1>
+                <hr class="section-divider">
+            </header>
+        </section>
+
+        <section>
+            <h2>4.1 Définitions</h2>
+            <blockquote>
+                <strong>Livraison Continue (Continuous Delivery) :</strong> extension de la CI qui garantit que le code peut être déployé en production à tout moment, après <strong>validation manuelle</strong>.
+            </blockquote>
+            <blockquote>
+                <strong>Déploiement Continu (Continuous Deployment) :</strong> extension de la livraison continue où chaque modification validée par les tests est <strong>automatiquement</strong> déployée en production, sans intervention humaine.
+            </blockquote>
+            <hr class="section-divider">
+        </section>
+
+        <section>
+            <h2>4.2 Stratégies de Déploiement</h2>
+            
+            <h3>4.2.1 Blue-Green Deployment</h3>
+            <p>Deux environnements de production totalement identiques et isolés coexistent : l'environnement <strong>Blue</strong> (qui héberge la version actuelle en direct) et l'environnement <strong>Green</strong> (qui héberge la nouvelle version).</p>
+            <ul>
+                <li><strong>Fonctionnement :</strong> La nouvelle version est déployée et testée en toute sécurité sur "Green". Une fois validée, le routeur redirige instantanément 100% du trafic de Blue vers Green.</li>
+                <li><strong>Avantage principal :</strong> Zéro temps d'arrêt (Zero Downtime) et retour en arrière (Rollback) instantané en cas de problème (il suffit de rediriger le trafic vers Blue).</li>
+                <li><strong>Cas d'usage idéal :</strong> Applications critiques nécessitant une disponibilité totale et où l'infrastructure permet de doubler temporairement les ressources.</li>
+            </ul>
+
+            <h3>4.2.2 Canary Deployment (Déploiement Canari)</h3>
+            <p>Inspirée des canaris utilisés dans les mines de charbon pour détecter les gaz toxiques, cette stratégie consiste à déployer la nouvelle version auprès d'un <strong>très petit sous-ensemble d'utilisateurs</strong> avant de la généraliser.</p>
+            <ul>
+                <li><strong>Fonctionnement :</strong> La nouvelle version est déployée pour, par exemple, 5 % du trafic. Les équipes surveillent les métriques (erreurs, latence). Si tout est stable, la version est déployée à 25 %, puis 100 %.</li>
+                <li><strong>Avantage principal :</strong> Minimise massivement le rayon d'impact d'un bug critique en production. Seuls quelques utilisateurs seront affectés.</li>
+                <li><strong>Cas d'usage idéal :</strong> Lancement de nouvelles fonctionnalités majeures avec un fort risque de régression technique ou d'expérience utilisateur.</li>
+            </ul>
+
+            <h3>4.2.3 Rolling Update (Mise à jour progressive)</h3>
+            <p>Plutôt que de remplacer toute l'application d'un coup ou d'avoir deux environnements complets, on met à jour les instances du serveur <strong>une par une (ou par petits groupes de noeuds)</strong>.</p>
+            <ul>
+                <li><strong>Fonctionnement :</strong> Si on a 10 serveurs, le répartiteur de charge retire le Serveur 1, le met à jour avec la nouvelle version, le remet en ligne, puis passe au Serveur 2, etc., <strong>sans interruption de service globale</strong>.</li>
+                <li><strong>Avantage principal :</strong> Ne nécessite pas le double d'infrastructure (contrairement au Blue-Green) tout en assurant une haute disponibilité.</li>
+                <li><strong>Cas d'usage idéal :</strong> Applications standard hébergées sur Kubernetes ou dans des groupes d'auto-scaling Cloud (AWS ASG), où les mises à jour progressives sont gérées nativement.</li>
+            </ul>
+
+            <h3>4.2.4 Feature Flags (Drapeaux de Fonctionnalités)</h3>
+            <p>Cette approche découple complètement le déploiement du code de la "libération" (release) de la fonctionnalité. Le code est poussé en production, mais la fonctionnalité est masquée par des <strong>indicateurs configurables (variables)</strong>.</p>
+            <ul>
+                <li><strong>Fonctionnement :</strong> Une simple condition <code>if (featureEnabled("nouveau_panier"))</code> englobe le nouveau code. La variable peut être activée depuis une interface d'administration pour certains utilisateurs cibles, sans redéployer.</li>
+                <li><strong>Avantage principal :</strong> Permet de tester en production avec de vrais utilisateurs, de faire de l'A/B testing, et de désactiver instantanément une fonctionnalité défectueuse sans toucher au pipeline CI/CD.</li>
+                <li><strong>Cas d'usage idéal :</strong> Développement en mode "Trunk-Based" et tests de nouvelles interfaces (A/B testing) ou fonctionnalités non terminées en production.</li>
+            </ul>
+            <hr class="section-divider">
+        </section>
+<section>
+    <header>
+        <h1>Chapitre 5 — Conteneurisation avec Docker</h1>
+    </header>
+<hr class="section-divider">
+    <h2>5.1 Introduction</h2>
+    <blockquote><strong>Conteneur :</strong> unité d'exécution légère et isolée qui regroupe une application et toutes ses dépendances (bibliothèques, configuration, code) dans un environnement standardisé et portable.</blockquote>
+    <p><strong>Docker</strong> est la plateforme de conteneurisation la plus utilisée. Elle repose sur les fonctionnalités du noyau Linux : <em>namespaces</em> (isolation) et <em>cgroups</em> (limitation des ressources).</p>
+<hr class="section-divider">
+    <h2>5.2 Installation de Docker</h2>
+    <h4>Listing 5.1 – Installation de Docker sur Ubuntu</h4>
+<pre><code class="language-bash"># Supprimer les anciennes versions
+sudo apt-get remove -y docker docker-engine docker.io containerd runc
+
+# Installer les dépendances
+sudo apt-get update
+sudo apt-get install -y \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release
+
+# Ajouter la clé GPG officielle de Docker
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
+    sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+# Ajouter le dépôt Docker
+echo \
+    "deb [arch=$(dpkg --print-architecture) \
+    signed-by=/etc/apt/keyrings/docker.gpg] \
+    https://download.docker.com/linux/ubuntu \
+    $(lsb_release -cs) stable" | \
+    sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+
+# Installer Docker Engine
+sudo apt-get update
+sudo apt-get install -y \
+    docker-ce \
+    docker-ce-cli \
+    containerd.io \
+    docker-buildx-plugin \
+    docker-compose-plugin
+
+# Démarrer Docker
+sudo systemctl start docker
+sudo systemctl enable docker
+
+# Vérifier l'installation
+docker version
+docker info
+
+# Ajouter l'utilisateur au groupe docker (éviter sudo)
+sudo usermod -aG docker $USER
+newgrp docker
+</code></pre>
+<hr class="section-divider">
+    <h2>5.3 Gestion des Images</h2>
+    <h4>Listing 5.2 – Commandes de gestion des images Docker</h4>
+<pre><code class="language-bash"># Rechercher une image sur Docker Hub
+docker search ubuntu
+
+# Télécharger une image
+docker pull ubuntu:22.04
+docker pull nginx:latest
+docker pull python:3.11-slim
+
+# Lister les images locales
+docker images
+docker image ls
+
+# Lister toutes les images (inclus les intermédiaires)
+docker image ls -a
+
+# Afficher les détails d'une image
+docker image inspect ubuntu:22.04
+
+# Afficher l'historique d'une image
+docker image history ubuntu:22.04
+
+# Supprimer une image
+docker image rm ubuntu:22.04
+docker rmi ubuntu:22.04
+
+# Supprimer les images non utilisées
+docker image prune
+
+# Supprimer toutes les images non utilisées (y compris taguées)
+docker image prune -a
+
+# Taguer une image
+docker tag monapp:latest mon-registry.exemple.com/monapp:v1.0.0
+
+# Pousser une image vers un registre
+docker push mon-registry.exemple.com/monapp:v1.0.0
+
+# Sauvegarder une image dans un fichier tar
+docker save -o monapp.tar monapp:latest
+
+# Charger une image depuis un fichier tar
+docker load -i monapp.tar
+
+# Exporter le système de fichiers d'un conteneur
+docker export mon-conteneur -o conteneur.tar
+
+# Importer comme image
+docker import conteneur.tar mon-image:importee
+</code></pre>
+<hr class="section-divider">
+    <h2>5.4 Gestion des Conteneurs</h2>
+    <h4>Listing 5.3 – Commandes de gestion des conteneurs</h4>
+<pre><code class="language-bash"># Créer et démarrer un conteneur
+docker run ubuntu:22.04
+
+# Démarrer un conteneur en mode interactif
+docker run -it ubuntu:22.04 /bin/bash
+
+# Démarrer en arrière-plan (detached)
+docker run -d --name mon-nginx nginx:latest
+
+# Démarrer avec mappage de ports
+docker run -d -p 8080:80 --name mon-nginx nginx:latest
+
+# Démarrer avec variables d'environnement
+docker run -d \
+    -e MYSQL_ROOT_PASSWORD=secret \
+    -e MYSQL_DATABASE=mabase \
+    --name mon-mysql \
+    mysql:8.0
+
+# Démarrer avec volume monté
+docker run -d \
+    -v /chemin/hote:/chemin/conteneur \
+    --name mon-app \
+    monapp:latest
+
+# Démarrer avec limites de ressources
+docker run -d \
+    --memory="512m" \
+    --cpus="1.5" \
+    --name mon-app \
+    monapp:latest
+
+# Démarrer avec politique de redémarrage
+docker run -d \
+    --restart unless-stopped \
+    --name mon-app \
+    monapp:latest
+
+# Lister les conteneurs en cours d'exécution
+docker ps
+docker container ls
+
+# Lister tous les conteneurs (arrêtés inclus)
+docker ps -a
+
+# Afficher les statistiques en temps réel
+docker stats
+
+# Afficher les statistiques d'un seul conteneur
+docker stats mon-nginx
+
+# Inspecter un conteneur
+docker inspect mon-nginx
+
+# Afficher les logs d'un conteneur
+docker logs mon-nginx
+
+# Suivre les logs en temps réel
+docker logs -f mon-nginx
+
+# Afficher les 100 dernières lignes
+docker logs --tail 100 mon-nginx
+
+# Exécuter une commande dans un conteneur en cours d'exécution
+docker exec -it mon-nginx /bin/bash
+docker exec mon-nginx ls /var/www/html
+
+# Copier des fichiers entre l'hôte et un conteneur
+docker cp fichier.txt mon-nginx:/var/www/html/
+docker cp mon-nginx:/var/log/nginx/access.log .
+
+# Arrêter un conteneur (SIGTERM, puis SIGKILL après 10s)
+docker stop mon-nginx
+
+# Forcer l'arrêt immédiatement (SIGKILL)
+docker kill mon-nginx
+
+# Démarrer un conteneur arrêté
+docker start mon-nginx
+
+# Redémarrer un conteneur
+docker restart mon-nginx
+
+# Mettre en pause / reprendre
+docker pause mon-nginx
+docker unpause mon-nginx
+
+# Supprimer un conteneur (il doit être arrêté)
+docker rm mon-nginx
+
+# Supprimer un conteneur en cours d'exécution
+docker rm -f mon-nginx
+
+# Supprimer tous les conteneurs arrêtés
+docker container prune
+
+# Renommer un conteneur
+docker rename mon-nginx nouveau-nom
+
+# Afficher les ports exposés
+docker port mon-nginx
+
+# Afficher les processus dans un conteneur
+docker top mon-nginx
+
+# Attendre qu'un conteneur s'arrête
+docker wait mon-nginx
+</code></pre>
+<hr class="section-divider">
+    <h2>5.5 Le Dockerfile</h2>
+    <h4>Anatomie détaillée d'un Dockerfile</h4>
+    <p>Un Dockerfile est un script de construction contenant des instructions successives. Chaque instruction crée une nouvelle "couche" (layer) dans l'image finale. L'ordre est critique pour optimiser le cache de construction.</p>
+
+    <div class="anatomie-step theme-5">
+        <h5>1. La Base et les Métadonnées (Syntaxe Obligatoire)</h5>
+        <p>Tout Dockerfile doit obligatoirement commencer par l'instruction <code>FROM</code> qui définit le système de départ (généralement une image officielle allégée).</p>
+        <pre><code class="language-docker"># OBLIGATOIRE : Définit l'image de base (ici Python 3.11 allégé)
+FROM python:3.11-slim AS base
+
+# OPTIONNEL : Ajoute des métadonnées informatives
+LABEL maintainer="aattouri@exemple.com"
+LABEL version="1.0"</code></pre>
+    </div>
+
+    <div class="anatomie-step theme-5">
+        <h5>2. Configuration de l'Environnement</h5>
+        <p>On définit le dossier de travail et les variables nécessaires pour le système.</p>
+        <pre><code class="language-docker"># OBLIGATOIRE EN PRATIQUE : Définit le répertoire où les commandes s'exécuteront
+WORKDIR /app
+
+# OPTIONNEL : Arguments utilisables UNIQUEMENT pendant le 'docker build'
+ARG APP_VERSION=1.0.0
+
+# OBLIGATOIRE SELON PROJET : Variables d'environnement persistantes (au runtime)
+ENV APP_VERSION=${APP_VERSION}
+ENV PYTHONUNBUFFERED=1</code></pre>
+    </div>
+
+    <div class="anatomie-step theme-5">
+        <h5>3. Installation des Dépendances (Optimisation du Cache)</h5>
+        <p>Pour ne pas tout réinstaller à chaque changement de code, on copie <em>d'abord</em> les fichiers de dépendances, on installe, puis on copie le reste.</p>
+        <pre><code class="language-docker"># OBLIGATOIRE : Installer les paquets système Linux nécessaires
+RUN apt-get update && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# OPTIMISATION CACHE : On copie uniquement les dépendances en premier
+COPY requirements.txt .
+
+# RUN : On exécute l'installation des dépendances Python
+RUN pip install --no-cache-dir -r requirements.txt</code></pre>
+    </div>
+
+    <div class="anatomie-step theme-5">
+        <h5>4. Code Source et Sécurité</h5>
+        <p>On importe le code applicatif et on bascule sur un utilisateur restreint.</p>
+        <pre><code class="language-docker"># OBLIGATOIRE : Copier le code source de l'application
+COPY src/ ./src/
+
+# BONNE PRATIQUE DE SÉCURITÉ : Ne jamais exécuter l'application en tant que 'root'
+RUN adduser --system --group appuser
+USER appuser</code></pre>
+    </div>
+
+    <div class="anatomie-step theme-5">
+        <h5>5. Exécution et Exposition</h5>
+        <p>Instructions finales qui contrôlent le comportement du conteneur lors de son démarrage effectif.</p>
+        <pre><code class="language-docker"># OPTIONNEL (Documentatif) : Indique le port sur lequel l'application écoute
+EXPOSE 8080
+
+# OPTIONNEL : Déclare un dossier destiné à être monté en volume externe
+VOLUME ["/app/logs"]
+
+# BONNE PRATIQUE : Permet au routeur de savoir si l'application a planté
+HEALTHCHECK --interval=30s --timeout=5s CMD curl -f http://localhost:8080/health || exit 1
+
+# OBLIGATOIRE : L'exécutable principal du conteneur
+ENTRYPOINT ["python", "-m", "gunicorn"]
+
+# OPTIONNEL : Les arguments par défaut passés à ENTRYPOINT
+CMD ["--bind", "0.0.0.0:8080", "app:application"]</code></pre>
+    </div>
+    <h4>Listing 5.5 – Multi-stage Build (bonne pratique)</h4>
+<pre><code class="language-docker"># Stage 1 : Build
+FROM maven:3.9-openjdk-17 AS builder
+WORKDIR /build
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# Stage 2 : Production (image finale légère)
+FROM openjdk:17-jre-slim AS production
+WORKDIR /app
+
+# Créer un utilisateur non-root
+RUN addgroup --system --gid 1001 appgroup \
+    &amp;&amp; adduser --system --uid 1001 --gid 1001 appuser
+
+# Copier uniquement le JAR depuis le stage de build
+COPY --from=builder /build/target/monapp.jar app.jar
+
+USER appuser
+EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=5s \
+    CMD wget -qO- http://localhost:8080/actuator/health || exit 1
+
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+</code></pre>
+    <h3>5.5.1 Construction d'Images</h3>
+    <h4>Listing 5.6 – Commandes de build Docker</h4>
+<pre><code class="language-bash"># Construire une image depuis le Dockerfile courant
+docker build -t monapp:latest .
+
+# Spécifier un Dockerfile alternatif
+docker build -f Dockerfile.prod -t monapp:prod .
+
+# Passer des arguments de build
+docker build \
+    --build-arg APP_VERSION=2.0.0 \
+    --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
+    -t monapp:2.0.0 .
+
+# Construire sans cache
+docker build --no-cache -t monapp:latest .
+
+# Spécifier la plateforme cible
+docker build --platform linux/amd64 -t monapp:latest .
+
+# Build multi-plateforme avec BuildKit
+docker buildx build \
+    --platform linux/amd64,linux/arm64 \
+    -t monapp:latest \
+    --push .
+
+# Afficher les étapes de build
+docker build --progress=plain -t monapp:latest .
+
+# Cibler un stage spécifique (multi-stage)
+docker build --target builder -t monapp:build .
+</code></pre>
+<hr class="section-divider">
+    <h2>5.6 Réseaux Docker</h2>
+    <h4>Listing 5.7 – Gestion des réseaux Docker</h4>
+<pre><code class="language-bash"># Lister les réseaux
+docker network ls
+
+# Inspecter un réseau
+docker network inspect bridge
+
+# Créer un réseau personnalisé
+docker network create mon-reseau
+
+# Créer un réseau avec sous-réseau spécifique
+docker network create \
+    --driver bridge \
+    --subnet 192.168.10.0/24 \
+    --gateway 192.168.10.1 \
+    mon-reseau-custom
+
+# Connecter un conteneur à un réseau
+docker network connect mon-reseau mon-conteneur
+
+# Déconnecter un conteneur d'un réseau
+docker network disconnect mon-reseau mon-conteneur
+
+# Supprimer un réseau
+docker network rm mon-reseau
+
+# Supprimer tous les réseaux non utilisés
+docker network prune
+
+# Démarrer un conteneur sur un réseau spécifique
+docker run -d \
+    --network mon-reseau \
+    --name mon-app \
+    monapp:latest
+</code></pre>
+<hr class="section-divider">
+    <h2>5.7 Volumes Docker</h2>
+    <blockquote>
+        <strong>Volume Docker :</strong> mécanisme essentiel permettant de <strong>persister les données</strong> générées par un conteneur (comme une base de données MySQL ou des fichiers uploadés). Par défaut, un conteneur est éphémère : s'il est détruit, ses données internes disparaissent. Un volume résout ce problème en stockant les données de manière isolée directement sur la machine hôte.
+    </blockquote>
+    <h4>Listing 5.8 – Gestion des volumes Docker</h4>
+<pre><code class="language-bash"># Lister les volumes
+docker volume ls
+
+# Créer un volume nommé
+docker volume create mes-donnees
+
+# Inspecter un volume
+docker volume inspect mes-donnees
+
+# Supprimer un volume
+docker volume rm mes-donnees
+
+# Supprimer les volumes non utilisés
+docker volume prune
+
+# Monter un volume nommé
+docker run -d \
+    -v mes-donnees:/var/lib/mysql \
+    --name mon-mysql \
+    mysql:8.0
+
+# Monter un répertoire de l'hôte (bind mount)
+docker run -d \
+    -v /home/user/data:/app/data \
+    --name mon-app \
+    monapp:latest
+
+# Monter en lecture seule
+docker run -d \
+    -v /home/user/config:/app/config:ro \
+    --name mon-app \
+    monapp:latest
+
+# Volume temporaire en mémoire (tmpfs)
+docker run -d \
+    --tmpfs /app/temp:size=100m \
+    --name mon-app \
+    monapp:latest
+</code></pre>
+<hr class="section-divider">
+    <h2>5.8 Docker Compose</h2>
+    <p>Docker Compose permet de définir et de gérer des <strong>applications multi-conteneurs</strong> via un fichier de configuration déclaratif.</p>
+    <h4>Anatomie détaillée d'un fichier docker-compose.yml</h4>
+    <p>Le fichier Compose est un manifeste YAML qui orchestre plusieurs conteneurs pour qu'ils fonctionnent ensemble (Base de données, Cache, Serveur Web, Application). Il se divise en 3 sections principales : <code>networks</code>, <code>volumes</code>, et <code>services</code>.</p>
+
+    <div class="anatomie-step theme-6">
+        <h5>1. Topologie (Réseaux et Volumes Globaux)</h5>
+        <p>Avant de définir les conteneurs, on déclare les réseaux virtuels pour les faire communiquer de manière isolée, et les volumes pour stocker leurs données de façon permanente.</p>
+        <pre><code class="language-yaml">version: '3.9' # Indique la version de la syntaxe YAML (optionnel dans les versions récentes)
+
+networks:
+  frontend:
+    driver: bridge # Réseau "public" (accessible depuis l'hôte)
+  backend:
+    driver: bridge
+    internal: true # Réseau "privé" (totalement isolé de l'hôte, idéal pour sécuriser une BDD)
+
+volumes:
+  db-data:     # Déclare un volume global pour la base de données
+  redis-data:  # Déclare un volume pour le cache
+  app-logs:    # Déclare un volume pour les journaux d'application</code></pre>
+    </div>
+
+    <div class="anatomie-step theme-6">
+        <h5>2. Services d'Infrastructure (Base de données & Cache)</h5>
+        <p>On définit les composants back-end. On utilise des images officielles pré-construites (<code>postgres</code>, <code>redis</code>) et on y connecte les volumes globaux créés précédemment.</p>
+        <pre><code class="language-yaml">services:
+  db: # Nom du service (sera utilisé comme nom d'hôte sur le réseau interne)
+    image: postgres:15-alpine
+    container_name: postgres
+    restart: unless-stopped # Redémarre automatiquement sauf si on l'arrête manuellement
+    environment:
+      POSTGRES_DB: mabase
+      POSTGRES_USER: ${DB_USER:-admin} # Utilise une variable d'environnement, ou 'admin' par défaut
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD requis} # Échoue si la variable n'existe pas
+    volumes:
+      - db-data:/var/lib/postgresql/data # Montage du volume global 'db-data'
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro # Bind Mount local en lecture seule (ro)
+    networks:
+      - backend # Connecté UNIQUEMENT au réseau privé
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER}"]
+      interval: 10s # Vérifie toutes les 10s si la BDD est prête à accepter des connexions
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD} # Surcharge la commande de l'image
+    volumes:
+      - redis-data:/data
+    networks:
+      - backend</code></pre>
+    </div>
+
+    <div class="anatomie-step theme-6">
+        <h5>3. Le Service Applicatif (Code Métier)</h5>
+        <p>Contrairement à la BDD qui télécharge une image existante, l'application métier est construite à la volée (<code>build</code>) à partir du code source local.</p>
+        <pre><code class="language-yaml">  app:
+    build:
+      context: . # Cherche le 'Dockerfile' dans le dossier courant
+      args:
+        APP_VERSION: ${APP_VERSION:-1.0.0}
+    image: monapp:${APP_VERSION:-latest} # Nomme l'image une fois qu'elle est construite
+    restart: unless-stopped
+    environment:
+      # L'application communique avec la BDD en utilisant le nom du service 'db' !
+      DATABASE_URL: postgresql://admin:${DB_PASSWORD}@db:5432/mabase
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+    ports:
+      - "8080:8080" # Mappe le port 8080 du conteneur sur le port 8080 de l'hôte
+    depends_on:
+      db:
+        condition: service_healthy # Attend intelligemment que la BDD soit PRÊTE (pas juste démarrée)
+      redis:
+        condition: service_healthy
+    networks:
+      - frontend # Connecté aux DEUX réseaux pour faire le pont entre Nginx et la BDD
+      - backend
+    deploy:
+      resources:
+        limits: # Empêche l'application de consommer toute la RAM du serveur
+          cpus: '1'
+          memory: 512M</code></pre>
+    </div>
+
+    <div class="anatomie-step theme-6">
+        <h5>4. Le Proxy Inverse (Point d'entrée public)</h5>
+        <p>C'est la seule brique véritablement exposée au monde extérieur. Elle reçoit les requêtes HTTP/HTTPS et les redirige vers l'application.</p>
+        <pre><code class="language-yaml">  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"   # HTTP
+      - "443:443" # HTTPS
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro # Importe la configuration Nginx locale
+      - ./nginx/ssl:/etc/nginx/ssl:ro               # Importe les certificats SSL locaux
+    depends_on:
+      - app # S'assure que l'application démarre avant le proxy
+    networks:
+      - frontend # Connecté UNIQUEMENT au réseau public</code></pre>
+    </div>
+    <h4>Listing 5.10 – Commandes Docker Compose</h4>
+<pre><code class="language-bash"># Démarrer tous les services (arrière-plan)
+docker compose up -d
+
+# Démarrer en reconstruisant les images
+docker compose up -d --build
+
+# Démarrer un service spécifique
+docker compose up -d app
+
+# Arrêter tous les services
+docker compose down
+
+# Arrêter et supprimer les volumes
+docker compose down -v
+
+# Lister les conteneurs du projet
+docker compose ps
+
+# Afficher les logs de tous les services
+docker compose logs
+
+# Suivre les logs d'un service spécifique
+docker compose logs -f app
+
+# Exécuter une commande dans un service
+docker compose exec app /bin/bash
+docker compose exec db psql -U admin -d mabase
+
+# Mettre à l'échelle un service
+docker compose scale app=3
+
+# Afficher les processus
+docker compose top
+
+# Afficher la configuration fusionnée
+docker compose config
+
+# Valider le fichier compose
+docker compose config --quiet
+
+# Redémarrer un service spécifique
+docker compose restart app
+
+# Reconstruire les images sans démarrer
+docker compose build
+
+# Tirer les dernières images
+docker compose pull
+
+# Supprimer les conteneurs arrêtés
+docker compose rm
+
+# Afficher les différentes versions de la configuration
+docker compose -f docker-compose.yml \
+    -f docker-compose.override.yml \
+    config
+</code></pre>
+<hr class="section-divider">
+        </section>
+<section>
+    <header>
+        <h1>Chapitre 6 — Orchestration avec Kubernetes</h1>
+    </header>
+<hr class="section-divider">
+    <h2>6.1 Introduction</h2>
+    <blockquote><strong>Kubernetes (K8s) :</strong> système d'orchestration de conteneurs open-source développé par Google. Il automatise le déploiement, la mise à l'échelle, la gestion de la haute disponibilité et les mises à jour des applications conteneurisées.</blockquote>
+<hr class="section-divider">
+    <h2>6.2 Architecture de Kubernetes</h2>
+    
+    <div id="k8s-network" style="width: 100%; height: 500px; border: 1px dashed #4a3525; border-radius: 8px; background-color: rgba(74, 53, 37, 0.03); margin: 3rem 0; cursor: grab;"></div>
+
+    <h3>6.2.1 Composants du Plan de Contrôle (Control Plane)</h3>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Composant</th>
+                    <th>Rôle</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>kube-apiserver</code></td>
+                    <td>Point d'entrée de toutes les requêtes API</td>
+                </tr>
+                <tr>
+                    <td><code>etcd</code></td>
+                    <td>Base de données clé-valeur stockant l'état du cluster</td>
+                </tr>
+                <tr>
+                    <td><code>kube-scheduler</code></td>
+                    <td>Affecte les Pods aux nœuds workers</td>
+                </tr>
+                <tr>
+                    <td><code>kube-controller-manager</code></td>
+                    <td>Gère les boucles de contrôle (ReplicaSet, etc.)</td>
+                </tr>
+                <tr>
+                    <td><code>cloud-controller-manager</code></td>
+                    <td>Interface avec le fournisseur cloud</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <h3>6.2.2 Composants des Nœuds Workers</h3>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Composant</th>
+                    <th>Rôle</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>kubelet</code></td>
+                    <td>Agent qui s'assure que les conteneurs s'exécutent dans un Pod</td>
+                </tr>
+                <tr>
+                    <td><code>kube-proxy</code></td>
+                    <td>Maintient les règles réseau sur les nœuds</td>
+                </tr>
+                <tr>
+                    <td><code>Container Runtime</code></td>
+                    <td>Docker, containerd ou CRI-O</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+<hr class="section-divider">
+    <h2>6.3 Installation et Configuration (kubectl)</h2>
+    <h4>Listing 6.1 – Installation de kubectl</h4>
+<pre><code class="language-bash"># Linux
+curl -LO "https://dl.k8s.io/release/$(curl -L -s \
+    https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+# Vérifier l'installation
+kubectl version --client
+
+# Configurer la complétion bash
+echo 'source &lt;(kubectl completion bash)' &gt;&gt; ~/.bashrc
+source ~/.bashrc
+
+# Alias recommandés
+alias k='kubectl'
+alias kgp='kubectl get pods'
+alias kgs='kubectl get services'
+alias kgd='kubectl get deployments'
+</code></pre>
+    <h4>Listing 6.2 – Gestion de la configuration (kubeconfig)</h4>
+<pre><code class="language-bash"># Afficher la configuration courante
+kubectl config view
+
+# Afficher le contexte actif
+kubectl config current-context
+
+# Lister les contextes disponibles
+kubectl config get-contexts
+
+# Changer de contexte
+kubectl config use-context mon-cluster-prod
+
+# Définir le namespace par défaut pour un contexte
+kubectl config set-context --current --namespace=mon-namespace
+
+# Fusionner plusieurs kubeconfig
+KUBECONFIG=~/.kube/config:~/.kube/config-prod \
+    kubectl config view --flatten &gt; ~/.kube/config-merge
+</code></pre>
+<hr class="section-divider">
+    <h2>6.4 Ressources Fondamentales</h2>
+    <h3>6.4.1 Namespace</h3>
+    <h4>Listing 6.3 – Gestion des Namespaces</h4>
+<pre><code class="language-bash"># Lister les namespaces
+kubectl get namespaces
+kubectl get ns
+
+# Créer un namespace
+kubectl create namespace dev
+kubectl create namespace staging
+kubectl create namespace production
+
+# Supprimer un namespace (et toutes ses ressources)
+kubectl delete namespace dev
+
+# Déployer dans un namespace spécifique
+kubectl apply -f deployment.yaml -n staging
+
+# Travailler dans un namespace spécifique
+kubectl -n staging get pods
+</code></pre>
+<hr class="section-divider">
+    <h3>6.4.2 Pod</h3>
+    <h4>Anatomie détaillée d'un Manifeste de Pod</h4>
+    <p>Un Pod est la plus petite unité déployable dans Kubernetes. Ce fichier YAML décrit la configuration exacte du ou des conteneurs à lancer, les ressources qui leur sont allouées, et les méthodes pour vérifier leur bon fonctionnement.</p>
+
+    <div class="anatomie-step theme-7">
+        <h5>1. En-tête et Métadonnées</h5>
+        <p>On définit le type d'objet Kubernetes que l'on veut créer, ainsi que ses informations d'identification (nom, espace de travail, étiquettes de regroupement).</p>
+        <pre><code class="language-yaml">apiVersion: v1 # Version de l'API Kubernetes utilisée
+kind: Pod      # Le type de ressource à créer
+metadata:
+  name: mon-pod          # Nom unique du Pod
+  namespace: default     # Isolation logique (espace de travail)
+  labels:                # Paires clé-valeur pour identifier/filtrer ce Pod plus tard
+    app: monapp
+    version: "1.0"</code></pre>
+    </div>
+
+    <div class="anatomie-step theme-7">
+        <h5>2. Définition du Conteneur et de l'Environnement</h5>
+        <p>La section <code>spec</code> décrit l'état désiré du Pod. On y définit l'image Docker à utiliser, les ports ouverts, et les variables d'environnement injectées.</p>
+        <pre><code class="language-yaml">spec:
+  containers:
+  - name: monapp           # Nom du conteneur dans le Pod
+    image: monapp:1.0.0    # Image Docker à télécharger
+    ports:
+    - containerPort: 8080  # Port interne sur lequel l'application écoute
+    env:
+    - name: APP_ENV
+      value: "production"  # Variable d'environnement en clair
+    - name: DB_PASSWORD
+      valueFrom:
+        secretKeyRef:      # Récupère le mot de passe depuis un objet "Secret" sécurisé
+          name: db-secret
+          key: password</code></pre>
+    </div>
+
+    <div class="anatomie-step theme-7">
+        <h5>3. Gestion des Ressources (CPU & RAM)</h5>
+        <p>Crucial pour la stabilité du cluster. On définit le minimum garanti pour que le Pod démarre (<code>requests</code>) et le maximum autorisé pour éviter qu'il ne sature le nœud (<code>limits</code>).</p>
+        <pre><code class="language-yaml">    resources:
+      requests:          # Ce qui est GARANTI (utilisé par le scheduler pour placer le Pod)
+        memory: "128Mi"  # 128 Mégaoctets
+        cpu: "250m"      # 250 millicores (1/4 de processeur)
+      limits:            # Le plafond MAX (le conteneur sera tué s'il dépasse la RAM)
+        memory: "512Mi"
+        cpu: "1000m"     # 1 cœur complet</code></pre>
+    </div>
+
+    <div class="anatomie-step theme-7">
+        <h5>4. Sondes de Santé (Probes)</h5>
+        <p>Kubernetes vérifie automatiquement si l'application fonctionne bien grâce à ces requêtes réseau régulières.</p>
+        <pre><code class="language-yaml">    livenessProbe:       # Vérifie si l'app est "vivante" (la tue et la redémarre si elle plante)
+      httpGet:
+        path: /health
+        port: 8080
+      initialDelaySeconds: 30 # Attend 30s après le démarrage avant de commencer à tester
+      periodSeconds: 10       # Refait le test toutes les 10s
+    
+    readinessProbe:      # Vérifie si l'app est "prête" à recevoir du trafic utilisateur
+      httpGet:
+        path: /ready
+        port: 8080
+      initialDelaySeconds: 5
+      periodSeconds: 5
+      
+  restartPolicy: Always  # Politique de redémarrage (Toujours redémarrer en cas d'arrêt)</code></pre>
+    </div>
+    <h4>Listing 6.5 – Commandes de gestion des Pods</h4>
+<pre><code class="language-bash"># Lister les pods dans le namespace courant
+kubectl get pods
+kubectl get pods -o wide           # avec IP et nœud
+kubectl get pods --all-namespaces  # tous les namespaces
+kubectl get pods -n mon-namespace
+
+# Créer un pod à partir d'un manifeste
+kubectl apply -f pod.yaml
+
+# Décrire un pod (événements, configuration)
+kubectl describe pod mon-pod
+
+# Afficher les logs d'un pod
+kubectl logs mon-pod
+
+# Logs d'un conteneur spécifique dans un pod multi-conteneurs
+kubectl logs mon-pod -c nom-conteneur
+
+# Suivre les logs en temps réel
+kubectl logs -f mon-pod
+
+# Logs des 100 dernières lignes
+kubectl logs --tail=100 mon-pod
+
+# Exécuter une commande dans un pod
+kubectl exec -it mon-pod -- /bin/bash
+kubectl exec mon-pod -- ls /app
+
+# Copier des fichiers
+kubectl cp mon-pod:/app/logs/app.log ./app.log
+kubectl cp ./config.yaml mon-pod:/app/config/
+
+# Supprimer un pod
+kubectl delete pod mon-pod
+
+# Supprimer à partir du manifeste
+kubectl delete -f pod.yaml
+
+# Forcer la suppression
+kubectl delete pod mon-pod --force --grace-period=0
+
+# Afficher les ressources consommées
+kubectl top pod mon-pod
+
+# Relancer un pod (supprime et recrée)
+kubectl rollout restart deployment mon-deployment
+</code></pre>
+<hr class="section-divider">
+    <h3>6.4.3 Deployment</h3>
+    <h4>Anatomie détaillée d'un Manifeste de Deployment</h4>
+    <p>Un <em>Deployment</em> est un contrôleur de haut niveau qui gère un ensemble de Pods identiques. Il s'assure qu'un nombre précis de réplicas tourne en permanence, et orchestre les mises à jour sans aucune coupure de service (Zéro-Downtime).</p>
+
+    <div class="anatomie-step theme-7">
+        <h5>1. En-tête du Contrôleur</h5>
+        <p>Définit l'identité du Deployment lui-même au sein du cluster.</p>
+        <pre><code class="language-yaml">apiVersion: apps/v1 # Utilise l'API 'apps' plutôt que la v1 classique
+kind: Deployment
+metadata:
+  name: monapp           # Le nom du Deployment
+  namespace: production  # Déployé dans l'espace 'production'
+  labels:
+    app: monapp</code></pre>
+    </div>
+
+    <div class="anatomie-step theme-7">
+        <h5>2. Stratégie de Scale et Rolling Update</h5>
+        <p>C'est ici que la magie de Kubernetes opère. On définit COMBIEN de Pods on veut, QUELS Pods sont sous notre contrôle, et COMMENT appliquer la nouvelle version (ici, un par un).</p>
+        <pre><code class="language-yaml">spec:
+  replicas: 3 # OBLIGATOIRE : On exige que 3 instances du Pod tournent en permanence
+  selector:
+    matchLabels:
+      app: monapp # Le contrôleur "adopte" tous les Pods qui ont cette étiquette
+  strategy:
+    type: RollingUpdate # Mise à jour progressive au lieu de tout éteindre d'un coup
+    rollingUpdate:
+      maxSurge: 1       # Autorise la création de 1 Pod supplémentaire (4 max) pendant la maj
+      maxUnavailable: 0 # Interdit d'avoir moins de 3 Pods en bonne santé pendant la maj</code></pre>
+    </div>
+
+    <div class="anatomie-step theme-7">
+        <h5>3. Le Moule du Pod (Template)</h5>
+        <p>Le Deployment va utiliser ce modèle pour générer ses 3 réplicas. C'est exactement la même syntaxe qu'un fichier Pod classique, imbriquée ici.</p>
+        <pre><code class="language-yaml">  template:
+    metadata:
+      labels:
+        app: monapp    # CRITIQUE : Cette étiquette doit correspondre au 'selector' ci-dessus !
+        version: "2.0"
+    spec:
+      containers:
+      - name: monapp
+        image: monapp:2.0.0
+        ports:
+        - containerPort: 8080</code></pre>
+    </div>
+
+    <div class="anatomie-step theme-7">
+        <h5>4. Haute Disponibilité via l'Anti-Affinité</h5>
+        <p>Une configuration avancée demandant à l'orchestrateur de disperser physiquement les Pods sur différents serveurs (Nœuds) pour survivre à une panne matérielle locale.</p>
+        <pre><code class="language-yaml">      affinity:
+        podAntiAffinity: # Règles pour éloigner les Pods les uns des autres
+          preferredDuringSchedulingIgnoredDuringExecution: # Une "préférence" (pas une obligation stricte)
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - monapp
+              # Demande au scheduler de ne pas placer deux Pods 'monapp' sur le même serveur (hostname)
+              topologyKey: kubernetes.io/hostname</code></pre>
+    </div>
+
+    <div class="anatomie-step theme-7">
+        <h5>5. Robustesse et Arrêt Gracieux</h5>
+        <p>On s'assure que le Pod a les ressources nécessaires et qu'il ne coupe pas brutalement les requêtes clients lorsqu'il est détruit (lors d'un scaling down par exemple).</p>
+        <pre><code class="language-yaml">        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "2000m"
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8080
+          initialDelaySeconds: 60
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8080
+      # Laisse 30 secondes au processus pour s'arrêter proprement au lieu d'un SIGKILL immédiat
+      terminationGracePeriodSeconds: 30</code></pre>
+    </div>
+    <h4>Listing 6.7 – Commandes de gestion des Deployments</h4>
+<pre><code class="language-bash"># Lister les deployments
+kubectl get deployments
+kubectl get deploy -n production
+
+# Créer/mettre à jour un deployment
+kubectl apply -f deployment.yaml
+
+# Décrire un deployment
+kubectl describe deployment monapp
+
+# Mettre à jour l'image d'un deployment
+kubectl set image deployment/monapp monapp=monapp:3.0.0
+
+# Mettre à l'échelle (scaling)
+kubectl scale deployment monapp --replicas=5
+
+# Autoscaling horizontal
+kubectl autoscale deployment monapp \
+    --min=2 --max=10 --cpu-percent=70
+
+# Voir l'historique des rollouts
+kubectl rollout history deployment monapp
+
+# Voir les détails d'une révision spécifique
+kubectl rollout history deployment monapp --revision=2
+
+# Vérifier le statut d'un rollout
+kubectl rollout status deployment monapp
+
+# Annuler le dernier rollout
+kubectl rollout undo deployment monapp
+
+# Revenir à une révision spécifique
+kubectl rollout undo deployment monapp --to-revision=3
+
+# Mettre en pause un rollout
+kubectl rollout pause deployment monapp
+
+# Reprendre un rollout en pause
+kubectl rollout resume deployment monapp
+
+# Supprimer un deployment
+kubectl delete deployment monapp
+</code></pre>
+<hr class="section-divider">
+    <h3>6.4.4 Service</h3>
+    <h4>Listing 6.8 – Types de Services Kubernetes</h4>
+<pre><code class="language-yaml"># Service ClusterIP (interne au cluster)
+apiVersion: v1
+kind: Service
+metadata:
+  name: monapp-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: monapp
+  ports:
+  - port: 80
+    targetPort: 8080
+
+---
+# Service NodePort (accessible depuis l'extérieur via nœud)
+apiVersion: v1
+kind: Service
+metadata:
+  name: monapp-nodeport
+spec:
+  type: NodePort
+  selector:
+    app: monapp
+  ports:
+  - port: 80
+    targetPort: 8080
+    nodePort: 30080  # Port sur le nœud (30000-32767)
+
+---
+# Service LoadBalancer (cloud provider)
+apiVersion: v1
+kind: Service
+metadata:
+  name: monapp-lb
+spec:
+  type: LoadBalancer
+  selector:
+    app: monapp
+  ports:
+  - port: 80
+    targetPort: 8080
+</code></pre>
+    <h4>Listing 6.9 – Commandes de gestion des Services</h4>
+<pre><code class="language-bash"># Lister les services
+kubectl get services
+kubectl get svc
+
+# Créer un service à partir d'un manifeste
+kubectl apply -f service.yaml
+
+# Exposer un deployment comme service
+kubectl expose deployment monapp \
+    --type=ClusterIP \
+    --port=80 \
+    --target-port=8080
+
+# Décrire un service
+kubectl describe service monapp-svc
+
+# Accéder à un service via port-forward (développement)
+kubectl port-forward service/monapp-svc 8080:80
+kubectl port-forward pod/mon-pod 9090:8080
+
+# Supprimer un service
+kubectl delete service monapp-svc
+</code></pre>
+<hr class="section-divider">
+    <h3>6.4.5 ConfigMap et Secret</h3>
+    <blockquote>
+        <strong>ConfigMap & Secret :</strong> Mécanismes essentiels permettant de <strong>découpler la configuration</strong> (variables, fichiers de conf) du code source de l'application et de l'image Docker. <br><br>
+        • Un <strong>ConfigMap</strong> stocke des données non confidentielles en clair (ex: URL d'une API, niveau de log).<br>
+        • Un <strong>Secret</strong> est conçu pour stocker des données sensibles (mots de passe, certificats SSL, tokens) encodées pour plus de sécurité. Ils sont ensuite injectés dans les Pods en tant que variables d'environnement ou fichiers.
+    </blockquote>
+    <h4>Listing 6.10 – Gestion des ConfigMaps et Secrets</h4>
+<pre><code class="language-bash"># Créer un ConfigMap depuis des valeurs
+kubectl create configmap app-config \
+    --from-literal=APP_ENV=production \
+    --from-literal=LOG_LEVEL=INFO
+
+# Créer un ConfigMap depuis un fichier
+kubectl create configmap nginx-config \
+    --from-file=nginx.conf
+
+# Créer un ConfigMap depuis un répertoire
+kubectl create configmap app-configs \
+    --from-file=./configs/
+
+# Lister les ConfigMaps
+kubectl get configmaps
+kubectl get cm
+
+# Afficher le contenu d'un ConfigMap
+kubectl describe configmap app-config
+kubectl get configmap app-config -o yaml
+
+# Créer un Secret opaque
+kubectl create secret generic db-secret \
+    --from-literal=username=admin \
+    --from-literal=password=MonMotDePasse123!
+
+# Créer un Secret depuis un fichier
+kubectl create secret generic tls-secret \
+    --from-file=tls.crt=./certs/server.crt \
+    --from-file=tls.key=./certs/server.key
+
+# Secret de type TLS
+kubectl create secret tls mon-tls \
+    --cert=./certs/server.crt \
+    --key=./certs/server.key
+
+# Secret de type Docker Registry
+kubectl create secret docker-registry regcred \
+    --docker-server=registry.exemple.com \
+    --docker-username=mon-user \
+    --docker-password=mon-mdp \
+    --docker-email=contact@exemple.com
+
+# Lister les secrets
+kubectl get secrets
+
+# Décoder un secret (base64)
+kubectl get secret db-secret -o jsonpath='{.data.password}' | base64 -d
+
+# Supprimer un ConfigMap / Secret
+kubectl delete configmap app-config
+kubectl delete secret db-secret
+</code></pre>
+<hr class="section-divider">
+    <h3>6.4.6 PersistentVolume et PersistentVolumeClaim</h3>
+    <blockquote>
+        <strong>Persistance des données :</strong> Dans Kubernetes, les Pods sont par nature éphémères (ils peuvent être détruits et recréés sur d'autres nœuds). Pour conserver des données de manière permanente (comme une base de données), K8s sépare l'infrastructure de la demande via deux ressources :<br><br>
+        • <strong>PersistentVolume (PV) :</strong> L'espace de stockage physique réel (disque dur local, volume AWS EBS, NFS) provisionné par l'administrateur du cluster.<br>
+        • <strong>PersistentVolumeClaim (PVC) :</strong> Une "demande" de stockage faite par l'application (ex: "J'ai besoin de 5Go en lecture/écriture"). Kubernetes trouve automatiquement un PV correspondant et le "lie" au PVC pour que le Pod puisse l'utiliser.
+    </blockquote>
+    <h4>Listing 6.11 – PersistentVolume et PersistentVolumeClaim</h4>
+<pre><code class="language-yaml"># PersistentVolume (PV)
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mon-pv
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: standard
+  hostPath:
+    path: /mnt/data
+
+---
+# PersistentVolumeClaim (PVC)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mon-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: standard
+</code></pre>
+    <h4>Listing 6.12 – Commandes PV et PVC</h4>
+<pre><code class="language-bash"># Lister les PersistentVolumes
+kubectl get pv
+
+# Lister les PersistentVolumeClaims
+kubectl get pvc
+
+# Décrire un PVC
+kubectl describe pvc mon-pvc
+
+# Supprimer un PVC
+kubectl delete pvc mon-pvc
+</code></pre>
+<hr class="section-divider">
+    <h3>6.4.7 Ingress</h3>
+    <blockquote>
+        <strong>Ingress :</strong> Un <em>Ingress</em> est le point d'entrée public de votre cluster Kubernetes. Contrairement à un simple service <code>LoadBalancer</code> qui nécessite une IP publique par application, l'Ingress agit comme un routeur intelligent (souvent basé sur Nginx). Il permet d'héberger plusieurs noms de domaine sur une seule IP, de configurer le routage basé sur l'URL (ex: <code>/api</code> vers le backend, <code>/</code> vers le frontend), et de gérer centralement les certificats de sécurité SSL/HTTPS.
+    </blockquote>
+    <h4>Listing 6.13 – Manifeste Ingress</h4>
+<pre><code class="language-yaml">apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mon-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - app.exemple.com
+    secretName: mon-tls
+  rules:
+  - host: app.exemple.com
+    http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: api-service
+            port:
+              number: 80
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-service
+            port:
+              number: 80
+</code></pre>
+<hr class="section-divider">
+    <h2>6.5 Commandes Générales kubectl</h2>
+    <h4>Listing 6.14 – Commandes générales kubectl</h4>
+<pre><code class="language-bash"># Obtenir toutes les ressources d'un namespace
+kubectl get all -n mon-namespace
+
+# Appliquer des modifications (create ou update)
+kubectl apply -f manifeste.yaml
+
+# Appliquer tous les manifestes d'un répertoire
+kubectl apply -f ./k8s/
+
+# Voir les différences avant application
+kubectl diff -f manifeste.yaml
+
+# Supprimer des ressources
+kubectl delete -f manifeste.yaml
+
+# Obtenir des ressources au format JSON/YAML
+kubectl get deployment monapp -o yaml
+kubectl get pods -o json
+
+# Filtrer avec jsonpath
+kubectl get pods -o jsonpath='{.items[*].metadata.name}'
+
+# Filtrer avec custom-columns
+kubectl get pods \
+    -o custom-columns=NOM:.metadata.name,STATUT:.status.phase
+
+# Filtrer par label
+kubectl get pods -l app=monapp
+kubectl get pods -l 'env in (prod,staging)'
+
+# Étiqueter une ressource
+kubectl label pod mon-pod environment=production
+
+# Annoter une ressource
+kubectl annotate pod mon-pod \
+    description="Pod de production critique"
+
+# Voir les événements du cluster
+kubectl get events --sort-by='.lastTimestamp'
+kubectl get events -n mon-namespace
+
+# Afficher les ressources consommées par les nœuds
+kubectl top nodes
+
+# Afficher les ressources consommées par les pods
+kubectl top pods
+
+# Appliquer un correctif (patch)
+kubectl patch deployment monapp \
+    -p '{"spec":{"replicas":5}}'
+
+# Éditer une ressource directement
+kubectl edit deployment monapp
+</code></pre>
+<hr class="section-divider">
+    <h2>6.6 Helm – Gestionnaire de Paquets Kubernetes</h2>
+    <blockquote>
+        <strong>Helm :</strong> Souvent décrit comme le "apt" ou "npm" de Kubernetes. Au lieu de gérer manuellement des dizaines de fichiers YAML (Deployment, Service, ConfigMap, Ingress) pour une seule application complexe, Helm les regroupe dans un paquet standardisé appelé un <strong>Chart</strong>. Helm permet de déployer, de mettre à jour ou de supprimer toute une infrastructure d'un seul coup (ce qu'on appelle une <em>Release</em>), tout en personnalisant l'installation à la volée grâce à un fichier de variables (<code>values.yaml</code>).
+    </blockquote>
+    <h4>Listing 6.15 – Commandes Helm essentielles</h4>
+<pre><code class="language-bash"># Installer Helm
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+# Vérifier la version
+helm version
+
+# Ajouter un dépôt de charts
+helm repo add stable https://charts.helm.sh/stable
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+# Mettre à jour les dépôts
+helm repo update
+
+# Lister les dépôts
+helm repo list
+
+# Rechercher un chart
+helm search repo nginx
+
+# Afficher les valeurs par défaut d'un chart
+helm show values bitnami/nginx
+
+# Installer un chart
+helm install mon-nginx bitnami/nginx
+
+# Installer avec des valeurs personnalisées
+helm install mon-nginx bitnami/nginx \
+    --set service.type=NodePort \
+    --set replicaCount=2 \
+    -n production --create-namespace
+
+# Installer avec un fichier de valeurs
+helm install mon-nginx bitnami/nginx \
+    -f mes-valeurs.yaml
+
+# Mettre à jour un déploiement Helm
+helm upgrade mon-nginx bitnami/nginx --set replicaCount=3
+
+# Installer ou mettre à jour (upsert)
+helm upgrade --install mon-nginx bitnami/nginx \
+    -f mes-valeurs.yaml
+
+# Lister les releases
+helm list
+helm ls -n production
+
+# Voir l'historique d'une release
+helm history mon-nginx
+
+# Revenir à une version précédente
+helm rollback mon-nginx 1
+
+# Désinstaller une release
+helm uninstall mon-nginx
+
+# Créer un nouveau chart
+helm create mon-chart
+
+# Valider un chart
+helm lint mon-chart/
+
+# Générer le YAML sans déployer (debug)
+helm template mon-nginx bitnami/nginx -f mes-valeurs.yaml
+</code></pre>
+<hr class="section-divider">
+</section>
+
+<section>
+    <header>
+        <h1>Chapitre 7 — Infrastructure as Code</h1>
+    </header>
+<hr class="section-divider">
+    <h2>7.1 Introduction</h2>
+    <blockquote><strong>Infrastructure as Code (IaC) :</strong> pratique consistant à décrire et à gérer l'infrastructure informatique (serveurs, réseaux, bases de données, etc.) sous forme de <strong>fichiers de configuration versionnables et automatisables</strong>, plutôt que par des interventions manuelles.</blockquote>
+    <p><strong>Avantages de l'IaC :</strong></p>
+    <ul>
+        <li>Reproductibilité et cohérence entre les environnements.</li>
+        <li>Versionnage et traçabilité des modifications.</li>
+        <li>Automatisation et rapidité de provisionnement.</li>
+        <li>Réduction des erreurs humaines.</li>
+        <li>Documentation vivante de l'infrastructure.</li>
+<hr class="section-divider">
+    <h2>7.2 Terraform</h2>
+    <h3>7.2.1 Présentation</h3>
+    <blockquote><strong>Terraform</strong>, développé par HashiCorp, est l'outil IaC le plus populaire. Il supporte des dizaines de fournisseurs cloud (AWS, Azure, GCP, etc.) et utilise le langage <strong>HCL</strong> (<em>HashiCorp Configuration Language</em>).</blockquote>
+    <h3>7.2.2 Installation</h3>
+    <h4>Listing 7.1 – Installation de Terraform</h4>
+<pre><code class="language-bash"># Méthode 1 : via le gestionnaire de paquets HashiCorp
+wget -O- https://apt.releases.hashicorp.com/gpg | \
+    sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
+    https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
+    sudo tee /etc/apt/sources.list.d/hashicorp.list
+
+sudo apt-get update &amp;&amp; sudo apt-get install -y terraform
+
+# Vérifier l'installation
+terraform version
+
+# Complétion bash
+terraform -install-autocomplete
+</code></pre>
+    <h3>7.2.3 Commandes Terraform</h3>
+    <h4>Listing 7.2 – Cycle de vie Terraform</h4>
+<pre><code class="language-bash"># Initialiser le répertoire de travail
+terraform init
+
+# Initialiser avec mise à jour des providers
+terraform init -upgrade
+
+# Formater le code HCL
+terraform fmt
+
+# Formater récursivement
+terraform fmt -recursive
+
+# Valider la syntaxe
+terraform validate
+
+# Planifier les modifications (dry-run)
+terraform plan
+
+# Sauvegarder le plan dans un fichier
+terraform plan -out=monplan.tfplan
+
+# Appliquer les modifications
+terraform apply
+
+# Appliquer un plan sauvegardé
+terraform apply monplan.tfplan
+
+# Appliquer sans confirmation
+terraform apply -auto-approve
+
+# Passer des variables
+terraform apply -var="region=eu-west-1" -var="instance_count=3"
+
+# Appliquer avec fichier de variables
+terraform apply -var-file="prod.tfvars"
+
+# Détruire l'infrastructure
+terraform destroy
+
+# Détruire sans confirmation
+terraform destroy -auto-approve
+
+# Détruire une ressource spécifique
+terraform destroy -target=aws_instance.mon_serveur
+
+# Afficher l'état actuel
+terraform show
+
+# Lister les ressources dans l'état
+terraform state list
+
+# Afficher une ressource spécifique dans l'état
+terraform state show aws_instance.mon_serveur
+
+# Déplacer une ressource dans l'état
+terraform state mv aws_instance.ancien aws_instance.nouveau
+
+# Retirer une ressource de l'état (sans la supprimer)
+terraform state rm aws_instance.mon_serveur
+
+# Importer une ressource existante
+terraform import aws_instance.mon_serveur i-0123456789abcdef0
+
+# Afficher les outputs
+terraform output
+terraform output nom_du_output
+
+# Graphe de dépendances
+terraform graph | dot -Tsvg &gt; graph.svg
+
+# Verrouiller/déverrouiller l'état
+terraform force-unlock LOCK_ID
+
+# Mettre à jour les modules
+terraform get -update
+
+# Tester les expressions
+terraform console
+</code></pre>
+    <h3>7.2.4 Exemple de Configuration Terraform</h3>
+    <h4>Anatomie détaillée d'une Configuration Terraform</h4>
+    <p>Ce fichier <code>main.tf</code> déclare l'infrastructure souhaitée sur AWS. Terraform se chargera de calculer le différentiel et d'appliquer les changements via les API Cloud.</p>
+
+    <div class="anatomie-step theme-8">
+        <h5>1. Configuration Terraform & Provider</h5>
+        <p>On définit la version de Terraform requise, les fournisseurs cloud utilisés, et l'endroit où stocker l'état (le fichier <code>tfstate</code>).</p>
+        <pre><code class="language-hcl">terraform {
+  required_version = ">= 1.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+  backend "s3" {           # Le "backend" définit où est stocké l'état (tfstate)
+    bucket = "mon-tfstate" # Utilisation d'un bucket AWS S3 pour le stockage distant partagé
+    key    = "production/terraform.tfstate"
+    region = "eu-west-1"
+  }
+}
+
+provider "aws" {
+  region = var.region
+  default_tags {           # Tags par défaut appliqués automatiquement à TOUTES les ressources
+    tags = {
+      Environment = var.environment
+      ManagedBy   = "Terraform"
+    }
+  }
+}</code></pre>
+    </div>
+
+    <div class="anatomie-step theme-8">
+        <h5>2. Déclaration des Variables</h5>
+        <p>Les variables permettent de rendre le code réutilisable pour différents environnements (dev, staging, prod).</p>
+        <pre><code class="language-hcl">variable "region" {
+  type    = string         # Type de la variable (chaîne de caractères)
+  default = "eu-west-1"    # Valeur par défaut si non spécifiée par l'utilisateur
+}
+
+variable "environment" {
+  type = string            # Pas de 'default' : l'utilisateur DOIT fournir cette valeur !
+}
+
+variable "instance_count" {
+  type    = number
+  default = 2              # Par défaut, on déploiera 2 serveurs
+}</code></pre>
+    </div>
+
+    <div class="anatomie-step theme-8">
+        <h5>3. Définition des Ressources</h5>
+        <p>Le cœur du code : les composants d'infrastructure réels à créer (Réseau, Serveurs, etc.).</p>
+        <pre><code class="language-hcl">resource "aws_vpc" "principal" { # Type de ressource (VPC AWS) et nom local ("principal")
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_hostnames = true
+  tags = { Name = "vpc-${var.environment}" } # Interpolation : injecte la variable environment
+}
+
+resource "aws_instance" "serveur" {
+  count         = var.instance_count      # Boucle "count" : créera autant de serveurs que spécifié
+  ami           = data.aws_ami.ubuntu.id  # Récupère l'ID de l'image dynamique via un bloc "data"
+  instance_type = "t3.micro"              # Taille du serveur (CPU/RAM)
+  subnet_id     = aws_subnet.public.id
+  tags = { Name = "serveur-${var.environment}-${count.index}" } # count.index ajoute 0, 1, 2...
+}</code></pre>
+    </div>
+
+    <div class="anatomie-step theme-8">
+        <h5>4. Sorties (Outputs)</h5>
+        <p>Les informations utiles retournées par Terraform une fois l'infrastructure déployée.</p>
+        <pre><code class="language-hcl">output "instance_ips" {
+  value = aws_instance.serveur[*].public_ip # Le [*] boucle et récupère la liste des IPs de TOUS les serveurs
+}</code></pre>
+    </div>
+<hr class="section-divider">
+    <h2>7.3 Ansible</h2>
+    <h3>7.3.1 Présentation</h3>
+    <blockquote><strong>Ansible</strong> est un outil d'automatisation <em>agentless</em> (sans agent) qui permet de configurer des systèmes, de déployer des applications et d'orchestrer des tâches complexes. Il utilise <strong>SSH</strong> pour communiquer avec les machines cibles.</blockquote>
+    <h3>7.3.2 Installation</h3>
+    <h4>Listing 7.4 – Installation d'Ansible</h4>
+<pre><code class="language-bash"># Ubuntu / Debian
+sudo apt-get update
+sudo apt-get install -y software-properties-common
+sudo add-apt-repository --yes --update ppa:ansible/ansible
+sudo apt-get install -y ansible
+
+# Via pip
+pip install ansible --break-system-packages
+
+# Vérifier l'installation
+ansible --version
+</code></pre>
+    <h3>7.3.3 Commandes Ansible</h3>
+    <h4>Listing 7.5 – Commandes Ansible</h4>
+<pre><code class="language-bash"># Tester la connectivité (ping)
+ansible all -i inventaire.ini -m ping
+ansible webservers -i inventaire.ini -m ping
+
+# Exécuter une commande ad-hoc
+ansible all -i inventaire.ini -m command -a "uptime"
+ansible all -i inventaire.ini -m shell -a "df -h"
+ansible webservers -i inventaire.ini -m service \
+    -a "name=nginx state=restarted" --become
+
+# Copier un fichier
+ansible all -i inventaire.ini -m copy \
+    -a "src=fichier.conf dest=/etc/app/fichier.conf"
+
+# Installer un paquet
+ansible all -i inventaire.ini -m apt \
+    -a "name=nginx state=present" --become
+
+# Exécuter un playbook
+ansible-playbook -i inventaire.ini playbook.yml
+
+# Exécuter en mode dry-run (check)
+ansible-playbook -i inventaire.ini playbook.yml --check
+
+# Afficher les différences
+ansible-playbook -i inventaire.ini playbook.yml --diff
+
+# Limiter l'exécution à un groupe
+ansible-playbook -i inventaire.ini playbook.yml \
+    --limit webservers
+
+# Passer des variables extra
+ansible-playbook -i inventaire.ini playbook.yml \
+    -e "env=production version=2.0.0"
+
+# Afficher les tâches disponibles
+ansible-playbook playbook.yml --list-tasks
+
+# Afficher les hôtes cibles
+ansible-playbook playbook.yml --list-hosts
+
+# Exécuter avec plus de verbosité
+ansible-playbook -i inventaire.ini playbook.yml -v
+ansible-playbook -i inventaire.ini playbook.yml -vvv
+
+# Vérifier la syntaxe d'un playbook
+ansible-playbook playbook.yml --syntax-check
+
+# Gestion des rôles (Galaxy)
+ansible-galaxy role install geerlingguy.nginx
+ansible-galaxy collection install community.docker
+ansible-galaxy list
+
+# Initialiser un nouveau rôle
+ansible-galaxy role init mon-role
+
+# Chiffrer un fichier avec Vault
+ansible-vault encrypt secrets.yml
+ansible-vault decrypt secrets.yml
+ansible-vault view secrets.yml
+ansible-vault edit secrets.yml
+
+# Exécuter avec Vault
+ansible-playbook playbook.yml --ask-vault-pass
+ansible-playbook playbook.yml \
+    --vault-password-file ~/.vault_pass
+</code></pre>
+<hr class="section-divider">
+</section>
+
     </article>
+
+    <!-- PrismJS pour la détection sémantique du code (commentaires, mots clés) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-groovy.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-docker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-hcl.min.js"></script>
+
+    <!-- Vis.js pour l'infographie Kubernetes -->
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function() {
+        var nodes = new vis.DataSet([
+          { id: 'api', label: 'kube-apiserver\n(Point d\'entrée)', group: 'api', level: 0 },
+          { id: 'etcd', label: 'etcd\n(Base de données)', group: 'control', level: 1 },
+          { id: 'sched', label: 'kube-scheduler\n(Affecte les Pods)', group: 'control', level: 1 },
+          { id: 'cm', label: 'kube-controller-manager\n(Boucles)', group: 'control', level: 1 },
+          { id: 'ccm', label: 'cloud-controller-manager', group: 'control', level: 1 },
+          
+          { id: 'kubelet', label: 'kubelet\n(Agent local)', group: 'worker', level: 2 },
+          { id: 'proxy', label: 'kube-proxy\n(Réseau)', group: 'worker', level: 2 },
+          { id: 'runtime', label: 'Container Runtime\n(ex: containerd)', group: 'worker', level: 3 },
+          { id: 'pod1', label: 'Pod 1', group: 'pod', level: 4 },
+          { id: 'pod2', label: 'Pod 2', group: 'pod', level: 4 }
+        ]);
+
+        var edges = new vis.DataSet([
+          { from: 'api', to: 'etcd' },
+          { from: 'api', to: 'sched' },
+          { from: 'api', to: 'cm' },
+          { from: 'api', to: 'ccm' },
+          
+          { from: 'api', to: 'kubelet', label: ' Orchestre', arrows: 'to' },
+          { from: 'api', to: 'proxy', label: ' Configure', arrows: 'to', dashes: true },
+          
+          { from: 'kubelet', to: 'runtime' },
+          { from: 'runtime', to: 'pod1' },
+          { from: 'runtime', to: 'pod2' }
+        ]);
+
+        var container = document.getElementById('k8s-network');
+        if(container) {
+            var data = { nodes: nodes, edges: edges };
+            var options = {
+              nodes: {
+                shape: 'box',
+                margin: 12,
+                font: { face: '"Adwaita Sans", "Google Sans", sans-serif', color: '#fdfbf7', size: 14, multi: true },
+                borderWidth: 2,
+                shadow: { enabled: true, color: 'rgba(0,0,0,0.1)', size: 5, x: 2, y: 2 }
+              },
+              edges: {
+                width: 2,
+                color: { color: '#4a3525', highlight: '#a62626' },
+                font: { align: 'middle', face: '"Adwaita Sans", sans-serif', size: 12, background: '#fdfbf7' },
+                smooth: { type: 'cubicBezier', forceDirection: 'horizontal' }
+              },
+              groups: {
+                api: { color: { background: '#a62626', border: '#4a3525' } },
+                control: { color: { background: '#5e548e', border: '#4a3525' } },
+                worker: { color: { background: '#457b9d', border: '#4a3525' } },
+                pod: { color: { background: '#e09f3e', border: '#4a3525' }, font: { color: '#1a1a1a' }, shape: 'ellipse' }
+              },
+              layout: {
+                hierarchical: {
+                  direction: 'LR',
+                  sortMethod: 'directed',
+                  nodeSpacing: 100,
+                  levelSeparation: 220
+                }
+              },
+              physics: false,
+              interaction: { dragNodes: true, zoomView: false, dragView: true }
+            };
+            new vis.Network(container, data, options);
+        }
+      });
+    </script>
 </body>
 </html>

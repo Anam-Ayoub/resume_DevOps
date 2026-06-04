@@ -6,7 +6,7 @@
     --accent-highlight: #a62626; /* Striking terracotta / crimson */
     
     --font-stack-headings: "Newsreader", "Georgia", serif;
-    --font-stack-body: "Google Sans", sans-serif;
+    --font-stack-body: "Adwaita Sans", sans-serif;
     --font-size-body: 1.2rem;
     --line-height-body: 1.65;
 }
@@ -137,6 +137,79 @@ tbody tr:last-child td {
     border-bottom: none;
 }
 
+
+/* Anatomie Steps */
+.anatomie-step {
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    background-color: #fdfbf7;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    border-left: 5px solid;
+}
+
+.theme-1 { border-left-color: var(--accent-highlight); } /* Terracotta / Crimson */
+.theme-2 { border-left-color: #3a5a40; } /* Forest Green */
+.theme-3 { border-left-color: #293241; } /* Slate Navy */
+.theme-4 { border-left-color: #e09f3e; } /* Ochre */
+.theme-5 { border-left-color: #457b9d; } /* Docker Blue */
+.theme-6 { border-left-color: #5e548e; } /* Indigo Compose */
+.theme-7 { border-left-color: #326ce5; } /* K8s Blue */
+
+.anatomie-step h5 {
+    margin-top: 0;
+    font-size: 1.15rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.8rem;
+}
+
+.theme-1 h5 { color: var(--accent-highlight); }
+.theme-2 h5 { color: #3a5a40; }
+.theme-3 h5 { color: #293241; }
+.theme-4 h5 { color: #e09f3e; }
+.theme-5 h5 { color: #457b9d; }
+.theme-6 h5 { color: #5e548e; }
+.theme-7 h5 { color: #326ce5; }
+
+/* Code Blocks */
+pre {
+    background-color: #e8e2d2; /* Slightly darker parchment */
+    border: 1px solid rgba(74, 53, 37, 0.15);
+    border-radius: 6px;
+    padding: 1.25rem;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
+}
+
+code {
+    font-family: "Consolas", "Monaco", "Courier New", monospace;
+    font-size: 0.95rem;
+    font-weight: 500; /* Medium weight, pas trop gras */
+}
+
+pre code {
+    color: var(--text-primary);
+}
+
+/* Style des commentaires dans le code (gérés par PrismJS) */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    font-style: italic;
+    opacity: 0.6; /* Translucide */
+}
+
+p code, li code, td code {
+    background-color: #e8e2d2;
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: var(--accent-highlight);
+}
+
 /* Dividers */
 hr.section-divider {
     border: 0;
@@ -158,3 +231,6 @@ hr.section-divider {
         font-size: 1.15rem; /* slightly smaller on mobile */
     }
 }
+
+.theme-8 { border-left-color: #844FBA; } /* Terraform Purple */
+.theme-8 h5 { color: #844FBA; }

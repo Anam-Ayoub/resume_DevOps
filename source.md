@@ -1529,5 +1529,979 @@ docker compose -f docker-compose.yml \
 
 ---
 
+# Chapitre 6 — Orchestration avec Kubernetes
+
+---
+
+## 6.1 Introduction
+
+> **Kubernetes (K8s) :** système d'orchestration de conteneurs open-source développé par Google. Il automatise le déploiement, la mise à l'échelle, la gestion de la haute disponibilité et les mises à jour des applications conteneurisées.
+
+---
+
+## 6.2 Architecture de Kubernetes
+
+### 6.2.1 Composants du Plan de Contrôle (Control Plane)
+
+| Composant | Rôle |
+|-----------|------|
+| `kube-apiserver` | Point d'entrée de toutes les requêtes API |
+| `etcd` | Base de données clé-valeur stockant l'état du cluster |
+| `kube-scheduler` | Affecte les Pods aux nœuds workers |
+| `kube-controller-manager` | Gère les boucles de contrôle (ReplicaSet, etc.) |
+| `cloud-controller-manager` | Interface avec le fournisseur cloud |
+
+### 6.2.2 Composants des Nœuds Workers
+
+| Composant | Rôle |
+|-----------|------|
+| `kubelet` | Agent qui s'assure que les conteneurs s'exécutent dans un Pod |
+| `kube-proxy` | Maintient les règles réseau sur les nœuds |
+| `Container Runtime` | Docker, containerd ou CRI-O |
+
+---
+
+## 6.3 Installation et Configuration (kubectl)
+
+**Listing 6.1 – Installation de kubectl**
+```bash
+# Linux
+curl -LO "https://dl.k8s.io/release/$(curl -L -s \
+    https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+# Vérifier l'installation
+kubectl version --client
+
+# Configurer la complétion bash
+echo 'source <(kubectl completion bash)' >> ~/.bashrc
+source ~/.bashrc
+
+# Alias recommandés
+alias k='kubectl'
+alias kgp='kubectl get pods'
+alias kgs='kubectl get services'
+alias kgd='kubectl get deployments'
+```
+
+**Listing 6.2 – Gestion de la configuration (kubeconfig)**
+```bash
+# Afficher la configuration courante
+kubectl config view
+
+# Afficher le contexte actif
+kubectl config current-context
+
+# Lister les contextes disponibles
+kubectl config get-contexts
+
+# Changer de contexte
+kubectl config use-context mon-cluster-prod
+
+# Définir le namespace par défaut pour un contexte
+kubectl config set-context --current --namespace=mon-namespace
+
+# Fusionner plusieurs kubeconfig
+KUBECONFIG=~/.kube/config:~/.kube/config-prod \
+    kubectl config view --flatten > ~/.kube/config-merge
+```
+
+---
+
+## 6.4 Ressources Fondamentales
+
+### 6.4.1 Namespace
+
+**Listing 6.3 – Gestion des Namespaces**
+```bash
+# Lister les namespaces
+kubectl get namespaces
+kubectl get ns
+
+# Créer un namespace
+kubectl create namespace dev
+kubectl create namespace staging
+kubectl create namespace production
+
+# Supprimer un namespace (et toutes ses ressources)
+kubectl delete namespace dev
+
+# Déployer dans un namespace spécifique
+kubectl apply -f deployment.yaml -n staging
+
+# Travailler dans un namespace spécifique
+kubectl -n staging get pods
+```
+
+---
+
+### 6.4.2 Pod
+
+**Listing 6.4 – Manifeste d'un Pod**
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mon-pod
+  namespace: default
+  labels:
+    app: monapp
+    version: "1.0"
+spec:
+  containers:
+  - name: monapp
+    image: monapp:1.0.0
+    ports:
+    - containerPort: 8080
+    env:
+    - name: APP_ENV
+      value: "production"
+    - name: DB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: db-secret
+          key: password
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "250m"
+      limits:
+        memory: "512Mi"
+        cpu: "1000m"
+    livenessProbe:
+      httpGet:
+        path: /health
+        port: 8080
+      initialDelaySeconds: 30
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 8080
+      initialDelaySeconds: 5
+      periodSeconds: 5
+  restartPolicy: Always
+```
+
+**Listing 6.5 – Commandes de gestion des Pods**
+```bash
+# Lister les pods dans le namespace courant
+kubectl get pods
+kubectl get pods -o wide           # avec IP et nœud
+kubectl get pods --all-namespaces  # tous les namespaces
+kubectl get pods -n mon-namespace
+
+# Créer un pod à partir d'un manifeste
+kubectl apply -f pod.yaml
+
+# Décrire un pod (événements, configuration)
+kubectl describe pod mon-pod
+
+# Afficher les logs d'un pod
+kubectl logs mon-pod
+
+# Logs d'un conteneur spécifique dans un pod multi-conteneurs
+kubectl logs mon-pod -c nom-conteneur
+
+# Suivre les logs en temps réel
+kubectl logs -f mon-pod
+
+# Logs des 100 dernières lignes
+kubectl logs --tail=100 mon-pod
+
+# Exécuter une commande dans un pod
+kubectl exec -it mon-pod -- /bin/bash
+kubectl exec mon-pod -- ls /app
+
+# Copier des fichiers
+kubectl cp mon-pod:/app/logs/app.log ./app.log
+kubectl cp ./config.yaml mon-pod:/app/config/
+
+# Supprimer un pod
+kubectl delete pod mon-pod
+
+# Supprimer à partir du manifeste
+kubectl delete -f pod.yaml
+
+# Forcer la suppression
+kubectl delete pod mon-pod --force --grace-period=0
+
+# Afficher les ressources consommées
+kubectl top pod mon-pod
+
+# Relancer un pod (supprime et recrée)
+kubectl rollout restart deployment mon-deployment
+```
+
+---
+
+### 6.4.3 Deployment
+
+**Listing 6.6 – Manifeste d'un Deployment**
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monapp
+  namespace: production
+  labels:
+    app: monapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: monapp
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: monapp
+        version: "2.0"
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - monapp
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - name: monapp
+        image: monapp:2.0.0
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "2000m"
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 15
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+      terminationGracePeriodSeconds: 30
+```
+
+**Listing 6.7 – Commandes de gestion des Deployments**
+```bash
+# Lister les deployments
+kubectl get deployments
+kubectl get deploy -n production
+
+# Créer/mettre à jour un deployment
+kubectl apply -f deployment.yaml
+
+# Décrire un deployment
+kubectl describe deployment monapp
+
+# Mettre à jour l'image d'un deployment
+kubectl set image deployment/monapp monapp=monapp:3.0.0
+
+# Mettre à l'échelle (scaling)
+kubectl scale deployment monapp --replicas=5
+
+# Autoscaling horizontal
+kubectl autoscale deployment monapp \
+    --min=2 --max=10 --cpu-percent=70
+
+# Voir l'historique des rollouts
+kubectl rollout history deployment monapp
+
+# Voir les détails d'une révision spécifique
+kubectl rollout history deployment monapp --revision=2
+
+# Vérifier le statut d'un rollout
+kubectl rollout status deployment monapp
+
+# Annuler le dernier rollout
+kubectl rollout undo deployment monapp
+
+# Revenir à une révision spécifique
+kubectl rollout undo deployment monapp --to-revision=3
+
+# Mettre en pause un rollout
+kubectl rollout pause deployment monapp
+
+# Reprendre un rollout en pause
+kubectl rollout resume deployment monapp
+
+# Supprimer un deployment
+kubectl delete deployment monapp
+```
+
+---
+
+### 6.4.4 Service
+
+**Listing 6.8 – Types de Services Kubernetes**
+```yaml
+# Service ClusterIP (interne au cluster)
+apiVersion: v1
+kind: Service
+metadata:
+  name: monapp-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: monapp
+  ports:
+  - port: 80
+    targetPort: 8080
+
+---
+# Service NodePort (accessible depuis l'extérieur via nœud)
+apiVersion: v1
+kind: Service
+metadata:
+  name: monapp-nodeport
+spec:
+  type: NodePort
+  selector:
+    app: monapp
+  ports:
+  - port: 80
+    targetPort: 8080
+    nodePort: 30080  # Port sur le nœud (30000-32767)
+
+---
+# Service LoadBalancer (cloud provider)
+apiVersion: v1
+kind: Service
+metadata:
+  name: monapp-lb
+spec:
+  type: LoadBalancer
+  selector:
+    app: monapp
+  ports:
+  - port: 80
+    targetPort: 8080
+```
+
+**Listing 6.9 – Commandes de gestion des Services**
+```bash
+# Lister les services
+kubectl get services
+kubectl get svc
+
+# Créer un service à partir d'un manifeste
+kubectl apply -f service.yaml
+
+# Exposer un deployment comme service
+kubectl expose deployment monapp \
+    --type=ClusterIP \
+    --port=80 \
+    --target-port=8080
+
+# Décrire un service
+kubectl describe service monapp-svc
+
+# Accéder à un service via port-forward (développement)
+kubectl port-forward service/monapp-svc 8080:80
+kubectl port-forward pod/mon-pod 9090:8080
+
+# Supprimer un service
+kubectl delete service monapp-svc
+```
+
+---
+
+### 6.4.5 ConfigMap et Secret
+
+**Listing 6.10 – Gestion des ConfigMaps et Secrets**
+```bash
+# Créer un ConfigMap depuis des valeurs
+kubectl create configmap app-config \
+    --from-literal=APP_ENV=production \
+    --from-literal=LOG_LEVEL=INFO
+
+# Créer un ConfigMap depuis un fichier
+kubectl create configmap nginx-config \
+    --from-file=nginx.conf
+
+# Créer un ConfigMap depuis un répertoire
+kubectl create configmap app-configs \
+    --from-file=./configs/
+
+# Lister les ConfigMaps
+kubectl get configmaps
+kubectl get cm
+
+# Afficher le contenu d'un ConfigMap
+kubectl describe configmap app-config
+kubectl get configmap app-config -o yaml
+
+# Créer un Secret opaque
+kubectl create secret generic db-secret \
+    --from-literal=username=admin \
+    --from-literal=password=MonMotDePasse123!
+
+# Créer un Secret depuis un fichier
+kubectl create secret generic tls-secret \
+    --from-file=tls.crt=./certs/server.crt \
+    --from-file=tls.key=./certs/server.key
+
+# Secret de type TLS
+kubectl create secret tls mon-tls \
+    --cert=./certs/server.crt \
+    --key=./certs/server.key
+
+# Secret de type Docker Registry
+kubectl create secret docker-registry regcred \
+    --docker-server=registry.exemple.com \
+    --docker-username=mon-user \
+    --docker-password=mon-mdp \
+    --docker-email=contact@exemple.com
+
+# Lister les secrets
+kubectl get secrets
+
+# Décoder un secret (base64)
+kubectl get secret db-secret -o jsonpath='{.data.password}' | base64 -d
+
+# Supprimer un ConfigMap / Secret
+kubectl delete configmap app-config
+kubectl delete secret db-secret
+```
+
+---
+
+### 6.4.6 PersistentVolume et PersistentVolumeClaim
+
+**Listing 6.11 – PersistentVolume et PersistentVolumeClaim**
+```yaml
+# PersistentVolume (PV)
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mon-pv
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: standard
+  hostPath:
+    path: /mnt/data
+
+---
+# PersistentVolumeClaim (PVC)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mon-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: standard
+```
+
+**Listing 6.12 – Commandes PV et PVC**
+```bash
+# Lister les PersistentVolumes
+kubectl get pv
+
+# Lister les PersistentVolumeClaims
+kubectl get pvc
+
+# Décrire un PVC
+kubectl describe pvc mon-pvc
+
+# Supprimer un PVC
+kubectl delete pvc mon-pvc
+```
+
+---
+
+### 6.4.7 Ingress
+
+**Listing 6.13 – Manifeste Ingress**
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mon-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - app.exemple.com
+    secretName: mon-tls
+  rules:
+  - host: app.exemple.com
+    http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: api-service
+            port:
+              number: 80
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-service
+            port:
+              number: 80
+```
+
+---
+
+## 6.5 Commandes Générales kubectl
+
+**Listing 6.14 – Commandes générales kubectl**
+```bash
+# Obtenir toutes les ressources d'un namespace
+kubectl get all -n mon-namespace
+
+# Appliquer des modifications (create ou update)
+kubectl apply -f manifeste.yaml
+
+# Appliquer tous les manifestes d'un répertoire
+kubectl apply -f ./k8s/
+
+# Voir les différences avant application
+kubectl diff -f manifeste.yaml
+
+# Supprimer des ressources
+kubectl delete -f manifeste.yaml
+
+# Obtenir des ressources au format JSON/YAML
+kubectl get deployment monapp -o yaml
+kubectl get pods -o json
+
+# Filtrer avec jsonpath
+kubectl get pods -o jsonpath='{.items[*].metadata.name}'
+
+# Filtrer avec custom-columns
+kubectl get pods \
+    -o custom-columns=NOM:.metadata.name,STATUT:.status.phase
+
+# Filtrer par label
+kubectl get pods -l app=monapp
+kubectl get pods -l 'env in (prod,staging)'
+
+# Étiqueter une ressource
+kubectl label pod mon-pod environment=production
+
+# Annoter une ressource
+kubectl annotate pod mon-pod \
+    description="Pod de production critique"
+
+# Voir les événements du cluster
+kubectl get events --sort-by='.lastTimestamp'
+kubectl get events -n mon-namespace
+
+# Afficher les ressources consommées par les nœuds
+kubectl top nodes
+
+# Afficher les ressources consommées par les pods
+kubectl top pods
+
+# Appliquer un correctif (patch)
+kubectl patch deployment monapp \
+    -p '{"spec":{"replicas":5}}'
+
+# Éditer une ressource directement
+kubectl edit deployment monapp
+```
+
+---
+
+## 6.6 Helm – Gestionnaire de Paquets Kubernetes
+
+**Listing 6.15 – Commandes Helm essentielles**
+```bash
+# Installer Helm
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+# Vérifier la version
+helm version
+
+# Ajouter un dépôt de charts
+helm repo add stable https://charts.helm.sh/stable
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+# Mettre à jour les dépôts
+helm repo update
+
+# Lister les dépôts
+helm repo list
+
+# Rechercher un chart
+helm search repo nginx
+
+# Afficher les valeurs par défaut d'un chart
+helm show values bitnami/nginx
+
+# Installer un chart
+helm install mon-nginx bitnami/nginx
+
+# Installer avec des valeurs personnalisées
+helm install mon-nginx bitnami/nginx \
+    --set service.type=NodePort \
+    --set replicaCount=2 \
+    -n production --create-namespace
+
+# Installer avec un fichier de valeurs
+helm install mon-nginx bitnami/nginx \
+    -f mes-valeurs.yaml
+
+# Mettre à jour un déploiement Helm
+helm upgrade mon-nginx bitnami/nginx --set replicaCount=3
+
+# Installer ou mettre à jour (upsert)
+helm upgrade --install mon-nginx bitnami/nginx \
+    -f mes-valeurs.yaml
+
+# Lister les releases
+helm list
+helm ls -n production
+
+# Voir l'historique d'une release
+helm history mon-nginx
+
+# Revenir à une version précédente
+helm rollback mon-nginx 1
+
+# Désinstaller une release
+helm uninstall mon-nginx
+
+# Créer un nouveau chart
+helm create mon-chart
+
+# Valider un chart
+helm lint mon-chart/
+
+# Générer le YAML sans déployer (debug)
+helm template mon-nginx bitnami/nginx -f mes-valeurs.yaml
+```
+
+---
+
+# Chapitre 7 — Infrastructure as Code
+
+---
+
+## 7.1 Introduction
+
+> **Infrastructure as Code (IaC) :** pratique consistant à décrire et à gérer l'infrastructure informatique (serveurs, réseaux, bases de données, etc.) sous forme de **fichiers de configuration versionnables et automatisables**, plutôt que par des interventions manuelles.
+
+**Avantages de l'IaC :**
+
+- Reproductibilité et cohérence entre les environnements.
+- Versionnage et traçabilité des modifications.
+- Automatisation et rapidité de provisionnement.
+- Réduction des erreurs humaines.
+- Documentation vivante de l'infrastructure.
+
+---
+
+## 7.2 Terraform
+
+### 7.2.1 Présentation
+
+**Terraform**, développé par HashiCorp, est l'outil IaC le plus populaire. Il supporte des dizaines de fournisseurs cloud (AWS, Azure, GCP, etc.) et utilise le langage **HCL** (*HashiCorp Configuration Language*).
+
+### 7.2.2 Installation
+
+**Listing 7.1 – Installation de Terraform**
+```bash
+# Méthode 1 : via le gestionnaire de paquets HashiCorp
+wget -O- https://apt.releases.hashicorp.com/gpg | \
+    sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
+    https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
+    sudo tee /etc/apt/sources.list.d/hashicorp.list
+
+sudo apt-get update && sudo apt-get install -y terraform
+
+# Vérifier l'installation
+terraform version
+
+# Complétion bash
+terraform -install-autocomplete
+```
+
+### 7.2.3 Commandes Terraform
+
+**Listing 7.2 – Cycle de vie Terraform**
+```bash
+# Initialiser le répertoire de travail
+terraform init
+
+# Initialiser avec mise à jour des providers
+terraform init -upgrade
+
+# Formater le code HCL
+terraform fmt
+
+# Formater récursivement
+terraform fmt -recursive
+
+# Valider la syntaxe
+terraform validate
+
+# Planifier les modifications (dry-run)
+terraform plan
+
+# Sauvegarder le plan dans un fichier
+terraform plan -out=monplan.tfplan
+
+# Appliquer les modifications
+terraform apply
+
+# Appliquer un plan sauvegardé
+terraform apply monplan.tfplan
+
+# Appliquer sans confirmation
+terraform apply -auto-approve
+
+# Passer des variables
+terraform apply -var="region=eu-west-1" -var="instance_count=3"
+
+# Appliquer avec fichier de variables
+terraform apply -var-file="prod.tfvars"
+
+# Détruire l'infrastructure
+terraform destroy
+
+# Détruire sans confirmation
+terraform destroy -auto-approve
+
+# Détruire une ressource spécifique
+terraform destroy -target=aws_instance.mon_serveur
+
+# Afficher l'état actuel
+terraform show
+
+# Lister les ressources dans l'état
+terraform state list
+
+# Afficher une ressource spécifique dans l'état
+terraform state show aws_instance.mon_serveur
+
+# Déplacer une ressource dans l'état
+terraform state mv aws_instance.ancien aws_instance.nouveau
+
+# Retirer une ressource de l'état (sans la supprimer)
+terraform state rm aws_instance.mon_serveur
+
+# Importer une ressource existante
+terraform import aws_instance.mon_serveur i-0123456789abcdef0
+
+# Afficher les outputs
+terraform output
+terraform output nom_du_output
+
+# Graphe de dépendances
+terraform graph | dot -Tsvg > graph.svg
+
+# Verrouiller/déverrouiller l'état
+terraform force-unlock LOCK_ID
+
+# Mettre à jour les modules
+terraform get -update
+
+# Tester les expressions
+terraform console
+```
+
+### 7.2.4 Exemple de Configuration Terraform
+
+**Listing 7.3 – Exemple infrastructure AWS avec Terraform (main.tf)**
+```hcl
+# Configuration du provider
+terraform {
+  required_version = ">= 1.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+  backend "s3" {
+    bucket = "mon-tfstate"
+    key    = "production/terraform.tfstate"
+    region = "eu-west-1"
+  }
+}
+
+provider "aws" {
+  region = var.region
+  default_tags {
+    tags = {
+      Environment = var.environment
+      ManagedBy   = "Terraform"
+    }
+  }
+}
+
+# Variables
+variable "region" {
+  type    = string
+  default = "eu-west-1"
+}
+
+variable "environment" {
+  type = string
+}
+
+variable "instance_count" {
+  type    = number
+  default = 2
+}
+
+# Ressources
+resource "aws_vpc" "principal" {
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_hostnames = true
+  tags = { Name = "vpc-${var.environment}" }
+}
+
+resource "aws_instance" "serveur" {
+  count         = var.instance_count
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t3.micro"
+  subnet_id     = aws_subnet.public.id
+  tags = { Name = "serveur-${var.environment}-${count.index}" }
+}
+
+# Outputs
+output "instance_ips" {
+  value = aws_instance.serveur[*].public_ip
+}
+```
+
+---
+
+## 7.3 Ansible
+
+### 7.3.1 Présentation
+
+**Ansible** est un outil d'automatisation *agentless* (sans agent) qui permet de configurer des systèmes, de déployer des applications et d'orchestrer des tâches complexes. Il utilise **SSH** pour communiquer avec les machines cibles.
+
+### 7.3.2 Installation
+
+**Listing 7.4 – Installation d'Ansible**
+```bash
+# Ubuntu / Debian
+sudo apt-get update
+sudo apt-get install -y software-properties-common
+sudo add-apt-repository --yes --update ppa:ansible/ansible
+sudo apt-get install -y ansible
+
+# Via pip
+pip install ansible --break-system-packages
+
+# Vérifier l'installation
+ansible --version
+```
+
+### 7.3.3 Commandes Ansible
+
+**Listing 7.5 – Commandes Ansible**
+```bash
+# Tester la connectivité (ping)
+ansible all -i inventaire.ini -m ping
+ansible webservers -i inventaire.ini -m ping
+
+# Exécuter une commande ad-hoc
+ansible all -i inventaire.ini -m command -a "uptime"
+ansible all -i inventaire.ini -m shell -a "df -h"
+ansible webservers -i inventaire.ini -m service \
+    -a "name=nginx state=restarted" --become
+
+# Copier un fichier
+ansible all -i inventaire.ini -m copy \
+    -a "src=fichier.conf dest=/etc/app/fichier.conf"
+
+# Installer un paquet
+ansible all -i inventaire.ini -m apt \
+    -a "name=nginx state=present" --become
+
+# Exécuter un playbook
+ansible-playbook -i inventaire.ini playbook.yml
+
+# Exécuter en mode dry-run (check)
+ansible-playbook -i inventaire.ini playbook.yml --check
+
+# Afficher les différences
+ansible-playbook -i inventaire.ini playbook.yml --diff
+
+# Limiter l'exécution à un groupe
+ansible-playbook -i inventaire.ini playbook.yml \
+    --limit webservers
+
+# Passer des variables extra
+ansible-playbook -i inventaire.ini playbook.yml \
+    -e "env=production version=2.0.0"
+
+# Afficher les tâches disponibles
+ansible-playbook playbook.yml --list-tasks
+
+# Afficher les hôtes cibles
+ansible-playbook playbook.yml --list-hosts
+
+# Exécuter avec plus de verbosité
+ansible-playbook -i inventaire.ini playbook.yml -v
+ansible-playbook -i inventaire.ini playbook.yml -vvv
+
+# Vérifier la syntaxe d'un playbook
+ansible-playbook playbook.yml --syntax-check
+
+# Gestion des rôles (Galaxy)
+ansible-galaxy role install geerlingguy.nginx
+ansible-galaxy collection install community.docker
+ansible-galaxy list
+
+# Initialiser un nouveau rôle
+ansible-galaxy role init mon-role
+
+# Chiffrer un fichier avec Vault
+ansible-vault encrypt secrets.yml
+ansible-vault decrypt secrets.yml
+ansible-vault view secrets.yml
+ansible-vault edit secrets.yml
+
+# Exécuter avec Vault
+ansible-playbook playbook.yml --ask-vault-pass
+ansible-playbook playbook.yml \
+    --vault-password-file ~/.vault_pass
+```
+
+---
+
 
 
