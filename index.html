@@ -1066,22 +1066,32 @@ node('linux') {
             </div>
 
             <h4>Anatomie de l'Injection de Credentials</h4>
-            <p>Dans Jenkins, on n'écrit <strong>jamais</strong> de mots de passe ou de clés en clair dans un code source. La bonne pratique impose d'utiliser la fonction <code>withCredentials</code> qui injecte temporairement et de manière masquée les secrets le temps d'un bloc d'exécution.</p>
+            <blockquote>
+                <strong>La Règle d'Or des Secrets :</strong> On n'écrit <strong>jamais</strong> de mots de passe ou de clés en clair dans un code source.
+                <br><br>
+                <strong>Le Workflow :</strong>
+                <ol>
+                    <li>Vous configurez et stockez le secret de manière sécurisée dans le <strong>Dashboard Web de Jenkins</strong> (Manage Jenkins > Credentials) en lui donnant un ID unique (ex: <code>db-prod-credentials</code>).</li>
+                    <li>Dans votre <code>Jenkinsfile</code>, vous utilisez la fonction <code>withCredentials()</code> pour faire appel à cet ID. Jenkins va alors injecter temporairement le secret dans votre script, tout en le masquant (<code>****</code>) dans les logs !</li>
+                </ol>
+            </blockquote>
 
             <div class="anatomie-step theme-3">
-                <h5>1. Type : Utilisateur & Mot de passe (Username/Password)</h5>
-            <p>Idéal pour se connecter à un registre Docker, une base de données, ou une API standard.</p>
+                <h5>1. Type : Utilisateur & Mot de passe (Base de Données)</h5>
+            <p>Dans cet exemple, nous appelons le secret <code>db-prod-credentials</code> préalablement configuré dans l'interface Web, et l'injectons pour une opération sur une base de données.</p>
             <pre><code class="language-groovy">// SYNTAXE OBLIGATOIRE : La fonction 'withCredentials' et le binding 'usernamePassword'
 withCredentials([usernamePassword(
-    credentialsId: 'docker-hub-id', // ID exact tel que configuré dans l'interface Jenkins
-    usernameVariable: 'USER',       // Variable injectée contenant l'utilisateur
-    passwordVariable: 'PASS'        // Variable injectée contenant le mot de passe
+    credentialsId: 'db-prod-credentials', // ID exact tel que configuré dans l'interface Jenkins
+    usernameVariable: 'DB_USER',          // Variable injectée contenant l'utilisateur
+    passwordVariable: 'DB_PASS'           // Variable injectée contenant le mot de passe
 )]) {
-    /* SCÉNARIO PROJET : Connexion automatisée à Docker Hub pour pousser une image.
-       Jenkins remplacera automatiquement la valeur par des astérisques (***) dans les logs
-       si elle devait être affichée par erreur.
+    /* SCÉNARIO PROJET : Connexion automatisée à une base de données.
+       Jenkins remplacera automatiquement le mot de passe par des astérisques (***) dans les logs.
     */
-    sh "echo ${PASS} | docker login -u ${USER} --password-stdin"
+    sh '''
+       echo "Exécution des migrations SQL..."
+       mysql -u ${DB_USER} -p${DB_PASS} -h db.production.com mon_application < migrate.sql
+    '''
 }</code></pre>
             </div>
 
