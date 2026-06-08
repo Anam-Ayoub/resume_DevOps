@@ -2599,6 +2599,27 @@ kubectl delete deployment monapp
 </code></pre>
 <hr class="section-divider">
     <h3>6.4.4 Service</h3>
+    <p>Un <strong>Service</strong> Kubernetes est une abstraction qui permet d'exposer un groupe de Pods sur le réseau. Étant donné que les Pods sont éphémères (leurs adresses IP changent constamment au gré des redémarrages), le Service leur fournit une adresse IP fixe et un nom DNS permanent.</p>
+    
+    <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 220px; background: rgba(69, 123, 157, 0.05); padding: 1rem; border-left: 3px solid #457b9d; border-radius: 0 4px 4px 0;">
+            <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: #457b9d;">ClusterIP</h5>
+            <p style="font-size: 0.95rem; margin-bottom: 0;"><strong>Par défaut.</strong> Attribue une IP purement interne. Le service n'est joignable que par les autres applications à l'intérieur du cluster.</p>
+        </div>
+        <div style="flex: 1; min-width: 220px; background: rgba(233, 196, 106, 0.05); padding: 1rem; border-left: 3px solid #e9c46a; border-radius: 0 4px 4px 0;">
+            <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: #e9c46a;">NodePort</h5>
+            <p style="font-size: 0.95rem; margin-bottom: 0;">Ouvre un port spécifique (entre 30000 et 32767) sur toutes les machines physiques du cluster. Utile pour un accès direct occasionnel.</p>
+        </div>
+        <div style="flex: 1; min-width: 220px; background: rgba(42, 157, 143, 0.05); padding: 1rem; border-left: 3px solid #2a9d8f; border-radius: 0 4px 4px 0;">
+            <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: #2a9d8f;">LoadBalancer</h5>
+            <p style="font-size: 0.95rem; margin-bottom: 0;">Demande automatiquement à votre Cloud Provider (AWS, GCP, Azure) de créer un répartiteur de charge public pointant vers votre service.</p>
+        </div>
+        <div style="flex: 1; min-width: 220px; background: rgba(166, 38, 38, 0.05); padding: 1rem; border-left: 3px solid #a62626; border-radius: 0 4px 4px 0;">
+            <h5 style="margin-top: 0; margin-bottom: 0.5rem; color: #a62626;">ExternalName</h5>
+            <p style="font-size: 0.95rem; margin-bottom: 0;">Sert de simple alias DNS (CNAME) pour rediriger les requêtes internes vers un service situé à l'extérieur du cluster (ex: BDD externe).</p>
+        </div>
+    </div>
+
     <h4>Listing 6.8 – Types de Services Kubernetes</h4>
 <pre><code class="language-yaml"># Service ClusterIP (interne au cluster)
 apiVersion: v1
